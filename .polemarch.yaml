@@ -1,0 +1,63 @@
+---
+sync_on_run: true
+templates:
+    test-module:
+        notes: Module test template
+        kind: Module
+        data:
+            group: all
+            vars: {}
+            args: ''
+            module: ping
+            inventory: localhost,
+        options:
+            uptime:
+                args: uptime
+                module: shell
+    test playbook:
+        notes: Playbook test template
+        kind: Task
+        data:
+            vars: {"become": true}
+            playbook: main.yml
+            inventory: localhost,
+        options:
+            update: {"playbook": "other.yml"}
+templates_rewrite: true
+view:
+    fields:
+        string:
+            title: Field string
+            default: 0
+            format: string
+            help: Some help text
+        integer:
+            title: Field integer
+            default: 0
+            format: integer
+            help: Some help text
+        float:
+            title: Field float
+            default: 0
+            format: float
+            help: Some help text
+        boolean:
+            title: Field boolean
+            default: 0
+            format: boolean
+            help: Some help text
+        enum_string:
+            title: Field enum_string
+            default: 0
+            format: string
+            help: Some help text
+            enum: ['Choice1', 'Choice2', 'Choice3']
+        unknown:
+            title: Field unknown
+            default: 0
+            format: invalid_or_unknown
+            help: Some help text
+    playbooks:
+        main.yml:
+            title: Execute title
+            help: Some help text

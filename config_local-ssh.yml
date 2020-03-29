@@ -8,7 +8,7 @@
 
   - name: create dir
     file: 
-        path: "{{local_home}}/.ssh"
+        path: ~/.ssh
         state: directory 
         mode: 0700 
         owner: "{{local_user}}"

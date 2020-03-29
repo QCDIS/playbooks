@@ -1,11 +1,11 @@
 - hosts: localhost
-  gather_facts: False
+  gather_facts: True
+  
+  vars:
+    local_home: "{{ lookup('env','HOME') }}"
+    local_user: "{{ lookup('env','USER') }}"  
   
   tasks:
-  - name: get local_user
-    local_action: command whoami
-    register: local_user
-
   - name: create dir
     file: 
         path: ~/.ssh

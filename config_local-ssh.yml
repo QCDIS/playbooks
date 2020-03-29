@@ -3,6 +3,8 @@
   vars:  
     local_home: "{{ lookup('env','HOME') }}"
     local_user: "{{ lookup('env','USER') }}"  
+  vars_files:
+  - ssh_key.yml
   tasks:
   - name: create dir
     file: 

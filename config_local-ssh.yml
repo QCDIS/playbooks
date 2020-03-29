@@ -1,5 +1,8 @@
 - hosts: localhost
   gather_facts: False
+  vars:  
+    local_home: "{{ lookup('env','HOME') }}"
+    local_user: "{{ lookup('env','USER') }}"  
   tasks:
   - name: create dir
     file: 

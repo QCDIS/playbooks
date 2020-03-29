@@ -1,16 +1,12 @@
 - hosts: k8-master
-  become: true
   gather_facts: False
   tasks:
-
-  
   - name: 
     pause:
         seconds: 10
 
   - name: Verify
     shell: kubectl get nodes
-    become_user: ubuntu
     register: command_output
   
   - name:

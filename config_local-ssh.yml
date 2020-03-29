@@ -1,9 +1,11 @@
 - hosts: localhost
   gather_facts: False
-  vars:  
-    local_home: "{{ lookup('env','HOME') }}"
-    local_user: "{{ lookup('env','USER') }}"  
+  
   tasks:
+  - name: get local_user
+    local_action: command whoami
+    register: local_user
+
   - name: create dir
     file: 
         path: "{{local_home}}/.ssh"
@@ -17,6 +19,6 @@
   - name: Install ssh key
     copy: 
         content: "{{ ssh_private_key_decoded }}"
-        dest: "{{ key_file }}"
+        dest: ~/ssh/id_rsa
         mode: 0600
         owner: "{{local_user}}"

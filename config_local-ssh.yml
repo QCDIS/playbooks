@@ -1,0 +1,19 @@
+- hosts: localhost
+  gather_facts: False
+  tasks:
+  - name: create dir
+    file: 
+        path: "{{local_home}}/.ssh"
+        state: directory 
+        mode: 0700 
+        owner: "{{local_user}}"
+        
+  - shell: echo {{ssh_private_key}} |base64 --decode
+    register: ssh_private_key_decoded
+  
+  - name: Install ssh key
+    copy: 
+        content: "{{ ssh_private_key_decoded }}"
+        dest: "{{ key_file }}"
+        mode: 0600
+        owner: "{{local_user}}"

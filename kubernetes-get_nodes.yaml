@@ -1,4 +1,4 @@
-- hosts: k8-master
+- hosts: master
   gather_facts: False
   tasks:
   - name: 

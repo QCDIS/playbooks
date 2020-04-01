@@ -1,5 +1,5 @@
 ---       
-- hosts: k8-master
+- hosts: master
   tasks:    
     
     - name: disable swap
@@ -67,7 +67,7 @@
       become: yes
         
         
-- hosts: k8-master
+- hosts: master
   tasks: 
     - name: get nodes
       shell: kubectl get nodes

@@ -7,11 +7,21 @@
       with_items:
         - lock
         - lock-frontend
-  
+          
+    - name: Check for Python
+      raw: test -e /usr/bin/python
+      changed_when: false
+      failed_when: false
+      register: check_python    
+      
+    - name: Install Python
+      raw: apt -y update && apt install -y python-minimal
+      when: check_python.rc != 0    
+      
     - name: Update and upgrade apt packages
       apt:
         upgrade: yes
-        update_cache: yes
+        update_cache: yes      
         
     - name: Install aptitude using apt
       apt: name=aptitude state=latest update_cache=yes force_apt_get=yes

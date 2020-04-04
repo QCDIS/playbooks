@@ -1,0 +1,32 @@
+- hosts: all
+  become: yes
+  tasks:
+  
+    - name: Wait for automatic system updates
+      shell: while sudo fuser /var/lib/dpkg/{{ item }} >/dev/null 2>&1; do sleep 3; done;
+      with_items:
+        - lock
+        - lock-frontend
+  
+    - name: Update and upgrade apt packages
+      apt:
+        upgrade: yes
+        update_cache: yes
+        
+    - name: Install aptitude using apt
+      apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
+      
+    - name: Install required packages
+      apt:
+        name: "{{ packages }}"
+        update_cache: yes
+      vars:
+        packages:
+        - ca-certificates
+        - apt-transport-https
+        - curl
+        - gnupg2
+        - software-properties-common        
+        - python3-pip
+        - python-pip      
+        - virtualenv

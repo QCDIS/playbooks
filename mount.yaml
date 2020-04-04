@@ -1,0 +1,33 @@
+- hosts: all
+  become: yes
+  tasks:
+  
+    - name: Check that the /dev/xvdh exists
+      stat:
+        path: /dev/xvdh
+      register: mount_volume
+      
+    - debug:
+        msg: "/dev/xvdh exists"
+      when: mount_volume.stat.exists
+        
+    - name: Create a xfs
+      filesystem:
+        fstype: xfs
+        dev: /dev/xvdh
+      when: mount_volume.stat.exists == True
+    
+    
+    - name: Creates directory
+      file:
+        path: /data
+        state: directory
+      when: mount_volume.stat.exists == True         
+    
+    - name: Mount 
+      mount:
+        path: /data
+        src: /dev/xvdh
+        state: present
+        fstype: xfs
+      when: mount_volume.stat.exists == True    

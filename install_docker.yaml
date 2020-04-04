@@ -2,15 +2,6 @@
   become: yes
   tasks:
   
-    #- name: replace DNS
-      #shell: sed -i "s/nameserver.*/nameserver 8.8.8.8/g" /etc/resolv.conf
-    
-    #- name: replace DNS
-      #lineinfile:
-        #path: /etc/resolv.conf
-        #regexp: 'nameserver.*'
-        #line: nameserver 8.8.8.8
-
     - name: Wait for automatic system updates
       shell: while sudo fuser /var/lib/dpkg/{{ item }} >/dev/null 2>&1; do sleep 3; done;
       with_items:
@@ -25,7 +16,7 @@
     - name: Install aptitude using apt
       apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
       
-    - name: Install  required of packages
+    - name: Install required packages
       apt:
         name: "{{ packages }}"
         update_cache: yes
@@ -102,11 +93,11 @@
         repo: deb https://download.docker.com/linux/ubuntu bionic stable
         state: present   
             
-    - name: Update apt and install docker-ce
+    - name: Update and install docker-ce
       apt: update_cache=yes name=docker-ce state=latest        
            
            
-    - name: Update and upgrade apt packages
+    - name: Update and upgrade
       apt:
         upgrade: yes
         update_cache: yes
@@ -122,11 +113,11 @@
         repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
         state: present   
             
-    - name: Update apt and install docker-ce
+    - name: Update and install docker-ce
       apt: update_cache=yes name=kubeadm state=latest      
       
       
-    - name: Change data-root location in /etc/docker/daemon.json
+    - name: Change data-root location in /etc/docker/daemon.json if mount exists
       shell: |
         echo '{"data-root": "/data"}' > /etc/docker/daemon.json
       when: mount_volume.stat.exists == True
@@ -136,4 +127,4 @@
         name: docker
         state: restarted     
       ignore_errors: yes
-      when: mount_volume.stat.exists == True       
+      when: mount_volume.stat.exists == True  

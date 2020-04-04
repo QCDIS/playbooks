@@ -2,86 +2,11 @@
   become: yes
   tasks:
   
-    - name: Wait for automatic system updates
-      shell: while sudo fuser /var/lib/dpkg/{{ item }} >/dev/null 2>&1; do sleep 3; done;
-      with_items:
-        - lock
-        - lock-frontend
-  
-    - name: Update and upgrade apt packages
-      apt:
-        upgrade: yes
-        update_cache: yes
-        
-    - name: Install aptitude using apt
-      apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
-      
-    - name: Install required packages
-      apt:
-        name: "{{ packages }}"
-        update_cache: yes
-      vars:
-        packages:
-        - ca-certificates
-        - apt-transport-https
-        - curl
-        - gnupg2
-        - software-properties-common        
-        - python3-pip
-        - python-pip      
-        - virtualenv
-        
-        
-
     - name: Check that the /dev/xvdh exists
       stat:
         path: /dev/xvdh
       register: mount_volume
       
-    - debug:
-        msg: "/dev/xvdh exists"
-      when: mount_volume.stat.exists
-        
-    - name: Create a xfs
-      filesystem:
-        fstype: xfs
-        dev: /dev/xvdh
-      when: mount_volume.stat.exists == True
-    
-    
-    - name: Creates directory
-      file:
-        path: /data
-        state: directory
-      when: mount_volume.stat.exists == True         
-       
-    
-    - name: Mount 
-      mount:
-        path: /data
-        src: /dev/xvdh
-        state: present
-        fstype: xfs
-      when: mount_volume.stat.exists == True      
-     
-     
-    - name: check Mount 
-      command: mountpoint -q /data
-      register: volume_stat
-      failed_when: False
-      changed_when: False
-      
-    - debug:
-        msg: volume_stat.rc {{ volume_stat.rc }} 
-      when: mount_volume.stat.exists        
-      
-      
-    - name: Mount manualy
-      shell: 'mount /dev/xvdh /data'
-      when: mount_volume.stat.exists        
-      ignore_errors: yes
-              
-    
     - name: Add Docker GPG apt Key
       apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
@@ -91,31 +16,15 @@
     - name: Add Docker Repository
       apt_repository:
         repo: deb https://download.docker.com/linux/ubuntu bionic stable
-        state: present   
-            
-    - name: Update and install docker-ce
-      apt: update_cache=yes name=docker-ce state=latest        
-           
+        state: present        
            
     - name: Update and upgrade
       apt:
         upgrade: yes
         update_cache: yes
-
-    - name: Add the Kubernetes signing key
-      apt_key:
-        url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
-        state: present   
-        
-
-    - name: Add Docker Repository
-      apt_repository:
-        repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
-        state: present   
             
     - name: Update and install docker-ce
-      apt: update_cache=yes name=kubeadm state=latest      
-      
+      apt: update_cache=yes name=docker-ce state=latest              
       
     - name: Change data-root location in /etc/docker/daemon.json if mount exists
       shell: |
@@ -128,3 +37,20 @@
         state: restarted     
       ignore_errors: yes
       when: mount_volume.stat.exists == True  
+      
+        
+#     - name: Add the Kubernetes signing key
+#       apt_key:
+#         url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+#         state: present   
+
+    - name: Add Docker kubernetes
+      apt_repository:
+        repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
+        state: present   
+        
+        
+    - name: Update and install kubeadm
+      apt: update_cache=yes name=kubeadm state=latest            
+
+

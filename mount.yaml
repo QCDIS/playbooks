@@ -31,3 +31,9 @@
         state: present
         fstype: xfs
       when: mount_volume.stat.exists == True    
+
+    - name: check Mount 
+      command: mountpoint -q /data
+      register: volume_stat
+      failed_when: False
+      changed_when: False

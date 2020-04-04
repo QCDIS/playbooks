@@ -37,3 +37,13 @@
       register: volume_stat
       failed_when: False
       changed_when: False
+      
+      
+    - debug:
+        msg: volume_stat.rc {{ volume_stat.rc }} 
+      when: mount_volume.stat.exists        
+      
+    - name: Mount manualy
+      shell: 'mount /dev/xvdh /data'
+      when: mount_volume.stat.exists        
+      ignore_errors: yes      

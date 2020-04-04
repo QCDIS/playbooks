@@ -3,10 +3,10 @@
   tasks:
 
 
-#     - name: Add the Kubernetes signing key
-#       apt_key:
-#         url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
-#         state: present   
+    - name: Add the Kubernetes signing key
+      apt_key:
+        url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+        state: present   
 
     - name: Add Docker kubernetes
       apt_repository:

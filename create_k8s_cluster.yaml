@@ -33,7 +33,7 @@
       become: yes   
       
     - name: kubeadm set weave
-       shell: kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+      shell: kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
         
     - name: kubectl taint nodes
       shell: kubectl taint nodes --all node-role.kubernetes.io/master-       

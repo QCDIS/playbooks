@@ -47,18 +47,15 @@
     - name: join cmd
       shell: kubeadm token create --print-join-command
       register: k8_join_cmd  
-      when: command_result.rc != 0
       
     - name: Add join cmd to dummy host
       add_host:
         name:   "k8s_join_cmd_holder"
         cmd:  "{{ k8_join_cmd.stdout }}"
-      when: command_result.rc != 0
         
     - name:
       debug:
         msg: "Join command is {{ hostvars['k8s_join_cmd_holder']['cmd'] }}"
-      when: command_result.rc != 0
         
                 
 - hosts: worker

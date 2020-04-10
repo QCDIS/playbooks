@@ -62,10 +62,11 @@
   tasks:
   
     - name: check if in cluster
-      shell: curl http://localhost:10248/healthz
-      register: curl_command_result
+      uri:
+        url: http://localhost:10248/healthz
+      register: url_command_result
       ignore_errors: True
-      
+       
     - name: print kubectl cluster return code
       debug:
         msg: "error message : {{ command_result.rc}}"   

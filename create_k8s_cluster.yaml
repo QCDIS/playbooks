@@ -5,7 +5,7 @@
   
     - name: check kubectl
       shell: kubectl get all
-      register: command_result
+      register: kubectl_command_result
       ignore_errors: True
       
     - name: print kubectl cluster return code
@@ -15,19 +15,19 @@
     - name: disable swap
       become: yes
       shell: swapoff -a     
-      when: command_result.rc != 0
+      when: kubectl_command_result.rc != 0
   
     - name: kubeadm init
       shell: kubeadm init
       become: yes  
-      when: command_result.rc != 0
+      when: kubectl_command_result.rc != 0
   
     - name: Create directory .kube
       file:
         path: $HOME/.kube
         state: directory
         recurse: yes        
-      when: command_result.rc != 0
+      when: kubectl_command_result.rc != 0
         
     - name: copy admin.conf
       become: yes     
@@ -37,12 +37,12 @@
         owner: "{{ ansible_ssh_user }}"
         group: "{{ ansible_ssh_user }}"
         remote_src: True
-      when: command_result.rc != 0
+      when: kubectl_command_result.rc != 0
        
 
     - name: kubectl taint nodes
       shell: kubectl taint nodes --all node-role.kubernetes.io/master-  
-      when: command_result.rc != 0
+      when: kubectl_command_result.rc != 0
       
     - name: join cmd
       shell: kubeadm token create --print-join-command
@@ -60,14 +60,25 @@
                 
 - hosts: worker
   tasks:
+  
+    - name: check if in cluster
+      shell: curl http://localhost:10248/healthz
+      register: curl_command_result
+      ignore_errors: True
       
+    - name: print kubectl cluster return code
+      debug:
+        msg: "error message : {{ command_result.rc}}"   
+
     - name: print join cmd
       debug:
         msg: "[Worker] K8S_TOKEN_HOLDER K8S token is {{ hostvars['k8s_join_cmd_holder']['cmd'] }}"
+      when: curl_command_result.rc != 0
         
     - name: join
       shell: "{{ hostvars['k8s_join_cmd_holder']['cmd'] }}"
       become: yes
+      when: curl_command_result.rc != 0      
         
         
 - hosts: master

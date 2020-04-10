@@ -8,6 +8,11 @@
       register: command_result
       ignore_errors: True
       
+    - name: print kubectl cluster message
+      fail:
+        msg: "kubectl cluster is not setup "
+      when: "'error:' in command_result.stderr"
+      
     - name: disable swap
       become: yes
       shell: swapoff -a     

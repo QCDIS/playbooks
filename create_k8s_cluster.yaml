@@ -3,7 +3,7 @@
   tasks:
     
     - name: Get a list of pods
-      debug:
+      k8s_info:
         msg: "AAAAAAAAAAAAAAA"
   
     - name: disable swap

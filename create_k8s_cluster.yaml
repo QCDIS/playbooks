@@ -1,11 +1,11 @@
 ---       
 - hosts: master
   tasks:    
-  - name: Get a list of all service objects
-    k8s_info:
-      api_version: v1
-      kind: Pod
-    register: pod_list
+    - name: Get a list of all service objects
+      k8s_info:
+        api_version: v1
+        kind: Pod
+      register: pod_list
   
     - name: disable swap
       become: yes

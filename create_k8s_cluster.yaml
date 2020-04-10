@@ -10,7 +10,7 @@
       
     - name: print kubectl cluster return code
       debug:
-        msg: "error message : {{ command_result.rc}}"   
+        msg: "error message : {{ kubectl_command_result.rc}}"   
       
     - name: disable swap
       become: yes

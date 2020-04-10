@@ -9,19 +9,15 @@
       ignore_errors: True
       
     - name: print kubectl cluster message
-      fail:
-        msg: "kubectl cluster is not setup "
-      when: "'error:' in command_result.stderr"
+        msg: "error message : {{ command_result.rc}}"
       
-    - name: disable swap
-      become: yes
-      shell: swapoff -a     
-      when: "'error:' in command_result.stderr"
+#     - name: disable swap
+#       become: yes
+#       shell: swapoff -a     
   
-    - name: kubeadm init
-      shell: kubeadm init
-      become: yes  
-      when: "'error:' in command_result.stderr"
+#     - name: kubeadm init
+#       shell: kubeadm init
+#       become: yes  
   
 #     - name: Create directory .kube
 #       file:

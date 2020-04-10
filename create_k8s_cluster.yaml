@@ -69,8 +69,8 @@
        
     - name: print kubectl cluster return code
       debug:
-        msg: "error message : {{ url_command_result.rc}}"   
-      when: url_command_result
+        msg: "error message : {{ url_command_result}}"   
+      when: url_command_result is defined
 
     - name: print join cmd
       debug:

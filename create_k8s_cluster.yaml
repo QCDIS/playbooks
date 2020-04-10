@@ -1,19 +1,25 @@
----       
+---
+- hosts: localhost
+  connection: local 
+  tasks:
+  
+    - name:
+      pip:
+        name:
+          - kubernetes
+          - openshift
+      
+        
+  
 - hosts: master
-  tasks: 
+  tasks:   
+    - name: disable swap
+      become: yes
+      shell: swapoff -a      
   
-  
-    - k8s_info:
-        kind: Pod
-      register: pod_list
-  
-#     - name: disable swap
-#       become: yes
-#       shell: swapoff -a      
-  
-#     - name: kubeadm init
-#       shell: kubeadm init
-#       become: yes      
+    - name: kubeadm init
+      shell: kubeadm init
+      become: yes      
   
 #     - name: Create directory .kube
 #       file:

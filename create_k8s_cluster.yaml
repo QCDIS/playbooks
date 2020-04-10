@@ -69,18 +69,17 @@
        
     - name: print kubectl cluster return code
       debug:
-        msg: "error message : {{ url_command_result}}"   
-      when: url_command_result is defined
+        msg: "error message : {{url_command_result.status}}"   
 
     - name: print join cmd
       debug:
         msg: "[Worker] K8S_TOKEN_HOLDER K8S token is {{ hostvars['k8s_join_cmd_holder']['cmd'] }}"
-      when: url_command_result.rc != 0
+      when: url_command_result.status != 200
         
     - name: join
       shell: "{{ hostvars['k8s_join_cmd_holder']['cmd'] }}"
       become: yes
-      when: url_command_result.rc != 0      
+      when: url_command_result.status != 200
         
         
 - hosts: master

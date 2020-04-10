@@ -12,9 +12,10 @@
       debug:
         msg: "error message : {{ command_result.rc}}"   
       
-#     - name: disable swap
-#       become: yes
-#       shell: swapoff -a     
+    - name: disable swap
+      become: yes
+      shell: swapoff -a     
+      when: command_result.rc != 0
   
 #     - name: kubeadm init
 #       shell: kubeadm init

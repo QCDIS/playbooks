@@ -25,16 +25,12 @@
         group: "{{ ansible_ssh_user }}"
         remote_src: True
         
-    - name: set bridge
-      sysctl:
-        name: net.bridge.bridge-nf-call-iptables
-        value: 1
-        state: present    
-      become: yes   
-      
-    - name: kubeadm set weave
-      shell: kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
-        
+#     - name: set bridge
+#       sysctl:
+#         name: net.bridge.bridge-nf-call-iptables
+#         value: 1
+#         state: present    
+#       become: yes           
     - name: kubectl taint nodes
       shell: kubectl taint nodes --all node-role.kubernetes.io/master-       
       
@@ -54,9 +50,9 @@
                 
 - hosts: worker
   tasks:
-    - name: disable swap
-      become: yes
-      shell: swapoff -a
+#     - name: disable swap
+#       become: yes
+#       shell: swapoff -a
       
     - name: print join cmd
       debug:
@@ -69,6 +65,9 @@
         
 - hosts: master
   tasks: 
+    - name: kubeadm set weave
+      shell: kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+
     - name: get nodes
       shell: kubectl get nodes
       register: nodes_out

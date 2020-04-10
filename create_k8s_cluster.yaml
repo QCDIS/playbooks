@@ -2,10 +2,9 @@
 - hosts: master
   tasks:
     
-    - name:  Get a list of pods
-      k8s_info:
-        kind: Pod
-      register: pod_list
+    - name: Get a list of pods
+      debug:
+        msg: "AAAAAAAAAAAAAAA":
   
     - name: disable swap
       become: yes

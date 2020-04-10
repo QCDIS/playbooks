@@ -4,7 +4,7 @@
     
     - name: Get a list of pods
       debug:
-        msg: "AAAAAAAAAAAAAAA":
+        msg: "AAAAAAAAAAAAAAA"
   
     - name: disable swap
       become: yes

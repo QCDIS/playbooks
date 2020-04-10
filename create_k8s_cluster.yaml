@@ -1,28 +1,25 @@
 ---       
 - hosts: master
   tasks:    
-    
+  - name: Get a list of all service objects
+    k8s_info:
+      api_version: v1
+      kind: Pod
+    register: pod_list
+  
     - name: disable swap
       become: yes
-      shell: swapoff -a
-  
-    - name: Check if kubectl is installed 
-      command: kubectl cluster-info
-      changed_when: false
-      register: kubernetes_info
-      
+      shell: swapoff -a      
   
     - name: kubeadm init
       shell: kubeadm init
       become: yes      
-      when: kubernetes_info.stat.exists == True
   
     - name: Create directory .kube
       file:
         path: $HOME/.kube
         state: directory
         recurse: yes        
-      when: kubernetes_info.stat.exists == True
         
     - name: copy admin.conf
       become: yes     
@@ -32,7 +29,6 @@
         owner: "{{ ansible_ssh_user }}"
         group: "{{ ansible_ssh_user }}"
         remote_src: True
-      when: kubernetes_info.stat.exists == True        
         
 #     - name: set bridge
 #       sysctl:
@@ -43,12 +39,10 @@
 
     - name: kubectl taint nodes
       shell: kubectl taint nodes --all node-role.kubernetes.io/master-       
-      when: kubernetes_info.stat.exists == True      
       
     - name: join cmd
       shell: kubeadm token create --print-join-command
-      register: k8_join_cmd
-      when: kubernetes_info.stat.exists == True      
+      register: k8_join_cmd  
       
     - name: Add join cmd to dummy host
       add_host:

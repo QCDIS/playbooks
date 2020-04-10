@@ -3,6 +3,14 @@
   connection: local 
   tasks:
   
+    - name: Install pip
+      apt:
+        name: "{{ packages }}"
+        update_cache: yes
+      vars:
+        packages:
+        - python-pip      
+  
     - name:
       pip:
         name:

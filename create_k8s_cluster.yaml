@@ -17,85 +17,83 @@
       shell: swapoff -a     
       when: command_result.rc != 0
   
-#     - name: kubeadm init
-#       shell: kubeadm init
-#       become: yes  
+    - name: kubeadm init
+      shell: kubeadm init
+      become: yes  
+      when: command_result.rc != 0
   
-#     - name: Create directory .kube
-#       file:
-#         path: $HOME/.kube
-#         state: directory
-#         recurse: yes        
+    - name: Create directory .kube
+      file:
+        path: $HOME/.kube
+        state: directory
+        recurse: yes        
+      when: command_result.rc != 0
         
-#     - name: copy admin.conf
-#       become: yes     
-#       copy:
-#         src: /etc/kubernetes/admin.conf
-#         dest: "/home/{{ ansible_ssh_user }}/.kube/config"
-#         owner: "{{ ansible_ssh_user }}"
-#         group: "{{ ansible_ssh_user }}"
-#         remote_src: True
-        
-# #     - name: set bridge
-# #       sysctl:
-# #         name: net.bridge.bridge-nf-call-iptables
-# #         value: 1
-# #         state: present    
-# #       become: yes 
+    - name: copy admin.conf
+      become: yes     
+      copy:
+        src: /etc/kubernetes/admin.conf
+        dest: "/home/{{ ansible_ssh_user }}/.kube/config"
+        owner: "{{ ansible_ssh_user }}"
+        group: "{{ ansible_ssh_user }}"
+        remote_src: True
+      when: command_result.rc != 0
+       
 
-#     - name: kubectl taint nodes
-#       shell: kubectl taint nodes --all node-role.kubernetes.io/master-       
+    - name: kubectl taint nodes
+      shell: kubectl taint nodes --all node-role.kubernetes.io/master-  
+      when: command_result.rc != 0
       
-#     - name: join cmd
-#       shell: kubeadm token create --print-join-command
-#       register: k8_join_cmd  
+    - name: join cmd
+      shell: kubeadm token create --print-join-command
+      register: k8_join_cmd  
+      when: command_result.rc != 0
       
-#     - name: Add join cmd to dummy host
-#       add_host:
-#         name:   "k8s_join_cmd_holder"
-#         cmd:  "{{ k8_join_cmd.stdout }}"
+    - name: Add join cmd to dummy host
+      add_host:
+        name:   "k8s_join_cmd_holder"
+        cmd:  "{{ k8_join_cmd.stdout }}"
+      when: command_result.rc != 0
         
-#     - name:
-#       debug:
-#         msg: "Join command is {{ hostvars['k8s_join_cmd_holder']['cmd'] }}"
+    - name:
+      debug:
+        msg: "Join command is {{ hostvars['k8s_join_cmd_holder']['cmd'] }}"
+      when: command_result.rc != 0
         
                 
-# - hosts: worker
-#   tasks:
-# #     - name: disable swap
-# #       become: yes
-# #       shell: swapoff -a
+- hosts: worker
+  tasks:
       
-#     - name: print join cmd
-#       debug:
-#         msg: "[Worker] K8S_TOKEN_HOLDER K8S token is {{ hostvars['k8s_join_cmd_holder']['cmd'] }}"
+    - name: print join cmd
+      debug:
+        msg: "[Worker] K8S_TOKEN_HOLDER K8S token is {{ hostvars['k8s_join_cmd_holder']['cmd'] }}"
         
-#     - name: join
-#       shell: "{{ hostvars['k8s_join_cmd_holder']['cmd'] }}"
-#       become: yes
+    - name: join
+      shell: "{{ hostvars['k8s_join_cmd_holder']['cmd'] }}"
+      become: yes
         
         
-# - hosts: master
-#   tasks: 
-#     - name: kubeadm set weave
-#       shell: kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+- hosts: master
+  tasks: 
+    - name: kubeadm set weave
+      shell: kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
 
-#     - name: get nodes
-#       shell: kubectl get nodes
-#       register: nodes_out
+    - name: get nodes
+      shell: kubectl get nodes
+      register: nodes_out
               
-#     - name: print nodes
-#       debug:
-#         var: nodes_out
+    - name: print nodes
+      debug:
+        var: nodes_out
         
         
-#     - name: get api key
-#       shell: kubectl describe secret $(kubectl get secrets | grep default | cut -f1 -d ' ') | grep -E '^token' | cut -f2 -d':' | tr -d '\t'
-#       register: api_key
+    - name: get api key
+      shell: kubectl describe secret $(kubectl get secrets | grep default | cut -f1 -d ' ') | grep -E '^token' | cut -f2 -d':' | tr -d '\t'
+      register: api_key
               
-#     - name: print api_key
-#       debug:
-#         var: api_key
+    - name: print api_key
+      debug:
+        var: api_key
         
         
         

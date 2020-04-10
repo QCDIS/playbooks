@@ -6,15 +6,23 @@
       become: yes
       shell: swapoff -a
   
+    - name: Check if kubectl is installed 
+      command: kubectl cluster-info
+      changed_when: false
+      register: kubernetes_info
+      
+  
     - name: kubeadm init
       shell: kubeadm init
       become: yes      
+      when: kubernetes_info.stat.exists == True
   
     - name: Create directory .kube
       file:
         path: $HOME/.kube
         state: directory
         recurse: yes        
+      when: kubernetes_info.stat.exists == True
         
     - name: copy admin.conf
       become: yes     
@@ -24,19 +32,23 @@
         owner: "{{ ansible_ssh_user }}"
         group: "{{ ansible_ssh_user }}"
         remote_src: True
+      when: kubernetes_info.stat.exists == True        
         
 #     - name: set bridge
 #       sysctl:
 #         name: net.bridge.bridge-nf-call-iptables
 #         value: 1
 #         state: present    
-#       become: yes           
+#       become: yes 
+
     - name: kubectl taint nodes
       shell: kubectl taint nodes --all node-role.kubernetes.io/master-       
+      when: kubernetes_info.stat.exists == True      
       
     - name: join cmd
       shell: kubeadm token create --print-join-command
       register: k8_join_cmd
+      when: kubernetes_info.stat.exists == True      
       
     - name: Add join cmd to dummy host
       add_host:

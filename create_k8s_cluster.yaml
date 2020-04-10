@@ -1,7 +1,8 @@
 ---       
 - hosts: master
-  tasks:    
-    - name: Get a list of all service objects
+  tasks:
+    
+    - name: Get a list of pods
       k8s_info:
         api_version: v1
         kind: Pod

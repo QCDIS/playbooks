@@ -8,8 +8,9 @@
       register: command_result
       ignore_errors: True
       
-    - name: print kubectl cluster message
-        msg: "error message : {{ command_result.rc}}"
+    - name: print kubectl cluster return code
+      debug:
+        msg: "error message : {{ command_result.rc}}"   
       
 #     - name: disable swap
 #       become: yes

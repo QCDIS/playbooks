@@ -3,8 +3,8 @@
 - hosts: master
   tasks:   
   
-    - name: check kubectl cluster
-      shell: kubectl cluster-info
+    - name: check kubectl
+      shell: kubectl get all
       register: command_result
       ignore_errors: True
       

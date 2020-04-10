@@ -3,8 +3,7 @@
   tasks: 
   
   
-    - name: Get pods
-      k8s_info:
+    - k8s_info:
         kind: Pod
       register: pod_list
   

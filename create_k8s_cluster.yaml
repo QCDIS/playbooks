@@ -1,5 +1,4 @@
 ---        
-  
 - hosts: master
   tasks:   
   
@@ -38,8 +37,17 @@
         group: "{{ ansible_ssh_user }}"
         remote_src: True
       when: kubectl_command_result.rc != 0
+      
+    - name: set bridge
+      sysctl:
+        name: net.bridge.bridge-nf-call-iptables
+        value: 1
+        state: present    
+      become: yes   
+      
+    - name: kubeadm set weave
+      shell: kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"     
        
-
     - name: kubectl taint nodes
       shell: kubectl taint nodes --all node-role.kubernetes.io/master-  
       when: kubectl_command_result.rc != 0
@@ -75,6 +83,12 @@
       debug:
         msg: "[Worker] K8S_TOKEN_HOLDER K8S token is {{ hostvars['k8s_join_cmd_holder']['cmd'] }}"
       when: url_command_result.status != 200
+      
+      
+    - name: disable swap
+      become: yes
+      shell: swapoff -a    
+      when: url_command_result.status != 200
         
     - name: join
       shell: "{{ hostvars['k8s_join_cmd_holder']['cmd'] }}"
@@ -84,8 +98,6 @@
         
 - hosts: master
   tasks: 
-    - name: kubeadm set weave
-      shell: kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
 
     - name: get nodes
       shell: kubectl get nodes

@@ -1,0 +1,19 @@
+---        
+  
+- hosts: all
+  tasks:   
+  
+  
+    - name: kubeadm reset -f
+      shell: kubeadm reset -f
+      become: yes  
+      
+    - name: Clean kube
+      file:
+        state: absent
+        path: $HOME/.kube
+        
+
+       
+
+

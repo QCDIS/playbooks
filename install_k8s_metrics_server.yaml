@@ -1,0 +1,33 @@
+---       
+- hosts: k8-master
+  tasks:    
+  
+    - name: Install  required of packages
+      become: true
+      apt:
+        name: "{{ packages }}"
+        update_cache: yes
+      vars:
+        packages:
+        - unzip     
+        #- python3-pip
+      
+    #- name: install pip 
+      #pip: 
+        #name:   
+         #- kubernetes 
+         #- openshift
+                    
+    - name: Extract zip
+      unarchive:
+        src: https://surfdrive.surf.nl/files/index.php/s/RCxPtHnz1agrY7V/download
+        dest: ~/
+        remote_src: yes
+                
+    #- name: Create a Service object by reading the definition from a file
+      #k8s:
+        #state: present
+        #src: ~/kubernetes/
+        
+    - name: Execute the command in remote shell; stdout goes to the specified file on the remote.
+      shell: kubectl create -f ~/kubernetes/    

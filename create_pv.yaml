@@ -1,0 +1,75 @@
+- hosts: all
+  tasks:
+  
+    - name: get IP geolocation data
+      ipinfoio_facts: 
+      register: ipdata        
+
+- hosts: master
+  tasks:  
+  
+    #- name: print IP geolocation data
+      #debug:
+        #var: "hostvars[\"{{ item }}\"][\"ipdata\"][\"ansible_facts\"]"
+      #with_inventory_hostnames:
+       #- all            
+        
+
+    - name: Download persistentVolume.yaml
+      get_url:
+        url: https://raw.githubusercontent.com/skoulouzis/playbooks/master/persistentVolume.yaml
+        dest: ~/persistentVolume.yaml
+        
+    - name: Copy persistentVolume
+      copy:
+        src: ~/persistentVolume.yaml
+        dest: "~/{{ item }}_persistentVolume.yaml"
+        remote_src: yes
+      with_inventory_hostnames:
+        - all           
+    
+        
+    - name: Add host
+      lineinfile:
+        path: ~/persistentVolume.yaml
+        dest: "~/{{ item }}_persistentVolume.yaml"
+        regexp: "    server: HOST"
+        line: "    server: {{ item }}"
+      with_inventory_hostnames:
+        - all   
+    - name: Add name
+      lineinfile:
+        path: ~/persistentVolume.yaml
+        dest: "~/{{ item }}_persistentVolume.yaml"
+        regexp: "  name: PV_NAME"
+        line: "  name: pv-nfs-{{ item }}"
+      with_inventory_hostnames:
+        - all          
+        
+        
+    - name: Add loc
+      lineinfile:
+        path: ~/persistentVolume.yaml
+        dest: "~/{{ item }}_persistentVolume.yaml"
+        regexp: "    location: COORDINATES"
+        line: "    location: {{ hostvars[item]['ipdata']['ansible_facts']['city'] }}"
+      with_inventory_hostnames:
+       - all     
+              
+    - name: kubectl apply
+      shell: "kubectl apply -f ~/{{ item }}_persistentVolume.yaml"
+      with_inventory_hostnames:
+        - all  
+        
+                
+                
+    - name: Get a list of PersistentVolume
+      k8s_info:
+        api_version: v1
+        kind: PersistentVolume
+      register: pv_list        
+      
+    - name: print groups.master
+      debug:
+        var: pv_list   
+        

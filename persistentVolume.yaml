@@ -11,5 +11,5 @@ spec:
   accessModes:
     - ReadWriteMany
   nfs:
-    server: fry.lab.uvalight.net
+    server: HOST
     path: "/mnt/kubedata/"

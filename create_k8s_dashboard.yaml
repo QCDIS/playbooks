@@ -1,7 +1,7 @@
 ---       
 - hosts: master
   vars:
-    k8s_state: absent
+    k8s_state: present
   tasks:   
 
     - pip:
@@ -49,7 +49,7 @@
             metadata:
                 name: kubernetes-dashboard
 
-                
+
     - name: Create kubernetes-dashboard ServiceAccount
       k8s:
         state: "{{k8s_state}}"
@@ -60,28 +60,28 @@
                 labels:
                     k8s-app: kubernetes-dashboard
                 name: kubernetes-dashboard
-                namespace: kubernetes-dashboard            
-                
+                namespace: kubernetes-dashboard
+
 
     - name: Create kubernetes-dashboard Service
       k8s:
         state: "{{k8s_state}}"
         definition:
-            apiVersion: v1   
-            kind: Service
-            metadata:
-                labels:
-                    k8s-app: kubernetes-dashboard
-                name: kubernetes-dashboard
-                namespace: kubernetes-dashboard
-            spec:
-                type: NodePort
-                ports:
-                    - port: 8443
-                      nodePort: 30443
+          kind: Service
+          apiVersion: v1
+          metadata:
+            labels:
+              k8s-app: kubernetes-dashboard
+            name: kubernetes-dashboard
+            namespace: kubernetes-dashboard
+          spec:
+            type: NodePort
+            ports:
+              - port: 8443
+                nodePort: 30443
             selector:
-                k8s-app: kubernetes-dashboard
-                
+              k8s-app: kubernetes-dashboard
+
     - name: Create kubernetes-dashboard-certs Secret
       k8s:
         state: "{{k8s_state}}"
@@ -93,8 +93,8 @@
                     k8s-app: kubernetes-dashboard
                 name: kubernetes-dashboard-certs
                 namespace: kubernetes-dashboard
-            type: Opaque     
-            
+            type: Opaque
+
     - name: Create kubernetes-dashboard-csrf Secret
       k8s:
         state: "{{k8s_state}}"
@@ -109,7 +109,7 @@
           type: Opaque
           data:
             csrf: ""
-                
+
     - name: Create kubernetes-dashboard-key-holder Secret
       k8s:
         state: "{{k8s_state}}"
@@ -121,20 +121,20 @@
                     k8s-app: kubernetes-dashboard
                 name: kubernetes-dashboard-key-holder
                 namespace: kubernetes-dashboard
-            type: Opaque                 
-                
-                
+            type: Opaque
+
+
     - name: Create kubernetes-dashboard-settings ConfigMap
       k8s:
         state: "{{k8s_state}}"
         definition:
-            apiVersion: v1      
+            apiVersion: v1
             kind: ConfigMap
             metadata:
                 labels:
                     k8s-app: kubernetes-dashboard
                 name: kubernetes-dashboard-settings
-                namespace: kubernetes-dashboard      
+                namespace: kubernetes-dashboard
 
     - name: Create kubernetes-dashboard Role
       k8s:
@@ -167,8 +167,8 @@
                   resources: ["services/proxy"]
                   resourceNames: ["heapster", "http:heapster:", "https:heapster:", "dashboard-metrics-scraper", "http:dashboard-metrics-scraper"]
                   verbs: ["get"]
-              
-                
+
+
     - name: Create kubernetes-dashboard ClusterRole
       k8s:
         state: "{{k8s_state}}"
@@ -183,9 +183,9 @@
                 # Allow Metrics Scraper to get metrics from the Metrics server
                 - apiGroups: ["metrics.k8s.io"]
                   resources: ["pods", "nodes"]
-                  verbs: ["get", "list", "watch"]       
-                
-                
+                  verbs: ["get", "list", "watch"]
+
+
     - name: Create kubernetes-dashboard RoleBinding
       k8s:
         state: "{{k8s_state}}"
@@ -204,8 +204,8 @@
             subjects:
                 - kind: ServiceAccount
                   name: kubernetes-dashboard
-                  namespace: kubernetes-dashboard      
-                  
+                  namespace: kubernetes-dashboard
+
     - name: Create kubernetes-dashboard ClusterRoleBinding
       k8s:
         state: "{{k8s_state}}"
@@ -221,10 +221,10 @@
             subjects:
                 - kind: ServiceAccount
                   name: kubernetes-dashboard
-                  namespace: kubernetes-dashboard       
-                  
-                  
-                  
+                  namespace: kubernetes-dashboard
+
+
+
     - name: Create kubernetes-dashboard Deployment
       k8s:
         state: "{{k8s_state}}"

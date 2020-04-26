@@ -4,6 +4,7 @@ metadata:
   name: PV_NAME
   labels:
     type: local
+    location: COORDINATES
 spec:
   storageClassName: manual
   capacity:

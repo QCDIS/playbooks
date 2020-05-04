@@ -38,6 +38,7 @@
       vars:
         packages:
         - nfs-kernel-server
+        - nfs-common 
         
         
     - name: Create dir 
@@ -52,12 +53,12 @@
     - name: Add a line to a file if the file does not exist, without passing regexp
       lineinfile:
         path: /etc/exports
-        line: /mnt/kubedata/ 145.100.128.0/21(rw,sync,no_subtree_check,insecure)
+        line: /mnt/kubedata/ 145.100.128.0/21(rw,sync,no_subtree_check,no_root_squash,no_all_squash,insecure)
         
     - name: Add a line to a file if the file does not exist, without passing regexp
       lineinfile:
         path: /etc/exports
-        line: /mnt/kubedata/ 145.146.100.0/24(rw,sync,no_subtree_check,insecure)
+        line: /mnt/kubedata/ 145.146.100.0/24(rw,sync,no_subtree_check,no_root_squash,no_all_squash,insecure)
         
     - name: exportfs
       shell: exportfs -rav

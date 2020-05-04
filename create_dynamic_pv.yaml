@@ -1,0 +1,22 @@
+- hosts: all
+  tasks:
+  
+    - name: get IP geolocation data
+      ipinfoio_facts: 
+      register: ipdata        
+      
+    - name: Create dir 
+      file:
+        path: /persistentvolumes/
+        state: directory
+        owner: "{{ ansible_ssh_user }}"
+        group: "{{ ansible_ssh_user }}"
+        mode: 777
+
+- hosts: master
+  tasks:          
+          
+    
+    - name: kubectl apply
+      shell: "helm install nfs-provisioner  stable/nfs-client-provisioner --set nfs.server={{ groups.master }} --set nfs.path=/mnt/kubedata/"
+

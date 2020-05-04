@@ -13,7 +13,30 @@
         state: absent
         path: $HOME/.kube
         
-
-       
+    #- name: reset iptables
+      #iptables:
+        #chain: INPUT
+        #ctstate: ESTABLISHED,RELATED
+        #jump: ACCEPT
+    #become: yes
+    
+    #- name: reset iptables
+      #shell: "iptables {{ item }"
+      #become: yes     
+      #with_items:
+        #- "-P INPUT ACCEPT"
+        #- "-P OUTPUT ACCEPT"
+        #- "-P FORWARD ACCEPT"
+        #- "-F"
+        
+        
+    - name: reset iptables
+      shell: "iptables {{ item }}"
+      become: yes          
+      with_items:
+      - "-P INPUT ACCEPT"
+      - "-P OUTPUT ACCEPT"
+      - "-P FORWARD ACCEPT"
+      - "-F"
 
 

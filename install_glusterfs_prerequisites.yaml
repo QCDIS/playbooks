@@ -32,4 +32,5 @@
         update_cache: yes
       vars:
         packages:
+          - python-apt
 

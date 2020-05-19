@@ -1,0 +1,67 @@
+---        
+- hosts: master
+  tasks:         
+    - name: join cmd
+      shell: kubeadm token create --print-join-command
+      register: k8_join_cmd  
+      
+    - name: Add join cmd to dummy host
+      add_host:
+        name:   "k8s_join_cmd_holder"
+        cmd:  "{{ k8_join_cmd.stdout }}"
+        
+    - name:
+      debug:
+        msg: "Join command is {{ hostvars['k8s_join_cmd_holder']['cmd'] }}"
+        
+                
+- hosts: worker
+  tasks:
+  
+    - name: check if in cluster
+      uri:
+        url: http://localhost:10248/healthz
+      register: url_command_result
+      ignore_errors: True
+       
+    - name: print kubectl cluster return code
+      debug:
+        msg: "error message : {{url_command_result.status}}"   
+
+    - name: print join cmd
+      debug:
+        msg: "[Worker] K8S_TOKEN_HOLDER K8S token is {{ hostvars['k8s_join_cmd_holder']['cmd'] }}"
+      when: url_command_result.status != 200
+      
+      
+    - name: disable swap
+      become: yes
+      shell: swapoff -a    
+      when: url_command_result.status != 200
+        
+    - name: join
+      shell: "{{ hostvars['k8s_join_cmd_holder']['cmd'] }}"
+      become: yes
+      when: url_command_result.status != 200
+        
+        
+- hosts: master
+  tasks: 
+
+    - name: get nodes
+      shell: kubectl get nodes
+      register: nodes_out
+              
+    - name: print nodes
+      debug:
+        var: nodes_out
+        
+        
+    - name: get api key
+      shell: kubectl describe secret $(kubectl get secrets | grep default | cut -f1 -d ' ') | grep -E '^token' | cut -f2 -d':' | tr -d '\t'
+      register: api_key
+              
+    - name: print api_key
+      debug:
+        var: api_key
+    

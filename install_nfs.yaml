@@ -18,10 +18,10 @@
       raw: apt -y update && apt install -y python-minimal
       when: check_python.rc != 0    
       
-    - pip:
-        name:
-            - openshift==0.11.0
-            - kubernetes==11.0.0      
+    #- pip:
+        #name:
+            #- openshift==0.11.0
+            #- kubernetes==11.0.0      
       
     - name: Update and upgrade apt packages
       apt:
@@ -50,12 +50,12 @@
         mode: 777 
 
         
-    - name: Add a line to a file if the file does not exist, without passing regexp
+    - name: Add a line exports
       lineinfile:
         path: /etc/exports
         line: /mnt/kubedata/ 145.100.128.0/21(rw,sync,no_subtree_check,no_root_squash,no_all_squash,insecure)
         
-    - name: Add a line to a file if the file does not exist, without passing regexp
+    - name: Add a line exports
       lineinfile:
         path: /etc/exports
         line: /mnt/kubedata/ 145.146.100.0/24(rw,sync,no_subtree_check,no_root_squash,no_all_squash,insecure)

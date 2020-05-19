@@ -1,0 +1,80 @@
+---        
+#- hosts: all
+  #tasks:
+  
+    #- name: get IP geolocation data
+      #ipinfoio_facts: 
+      #register: ipdata    
+  
+- hosts: master
+  vars:
+    ingress_namespce: nginx-ingress
+    httpPort: 80
+    httpsPort: 443
+  tasks:   
+  
+    - name: Install helm
+      snap:
+        name:
+        - helm
+
+        
+    - name: delete ClusterRoleBinding
+      shell: "kubectl delete ClusterRoleBinding {{item}}"
+      with_items:
+        - "nginx-ingress-nginx-ingress"
+      ignore_errors: True        
+        
+    - name: delete ClusterRole
+      shell: "kubectl delete ClusterRole {{item}}"
+      with_items:
+        - "nginx-ingress-nginx-ingress"
+      ignore_errors: True
+      
+    - name: delete CustomResourceDefinition
+      shell: "kubectl delete CustomResourceDefinition {{item}}"
+      with_items:
+        - "virtualserverroutes.k8s.nginx.org"
+        - "transportservers.k8s.nginx.org"
+        - "virtualservers.k8s.nginx.org"
+      ignore_errors: True      
+      
+    - name: Create a k8s namespace
+      k8s:
+        name: "{{ingress_namespce}}"
+        api_version: v1
+        kind: Namespace
+        state: present
+    
+    
+    - name: Install nginx-ingress
+      shell: "/snap/bin/helm install nginx-ingress --namespace {{ingress_namespce}} --set controller.service.httpsPort.port={{httpsPort}} --set controller.service.httpsPort.targetPort={{httpsPort}} --set controller.service.httpPort.port={{httpPort}} --set controller.service.httpPort.targetPort={{httpPort}} nginx-stable/nginx-ingress"
+      
+  
+    #- name: Install nginx-ingress
+      #helm:
+        #host: localhost
+        #chart:
+            #name: nginx-stable/nginx-ingress
+        #source:
+            #type: repo
+            #location: https://helm.nginx.com/stable
+        #state: present
+        #name: nginx-ingress
+        #namespace: "{{ingress_namespce}}"
+        
+        
+    - name: Get an pods
+      k8s_info:
+        kind: Pod
+        namespace: "{{ingress_namespce}}"
+      register: pods    
+    
+  
+    - name: print pods
+      debug:
+        var: pods
+      
+      
+
+

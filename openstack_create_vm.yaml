@@ -1,11 +1,15 @@
 - hosts: localhost
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
   tasks:
+    - debug: var=ansible_python_interpreter
+    - debug: var=ansible_python_version
+
     - name: install openstacksdk
       pip:
           name:
-            - openstacksdk >= 0.12.0
-            - decorator
-
+            - openstacksdk>=0.12
 
     - name: Authenticate to the cloud and retrieve the service catalog
       os_auth:

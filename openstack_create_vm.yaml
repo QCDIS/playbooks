@@ -6,16 +6,17 @@
       pip:
         name: openstacksdk
 
-   - os_flavor_info:
-     register: result
-
-
     - name: Echo my_env_var again
       shell: "echo $OS_AUTH_URL $OS_PROJECT_ID $OS_AUTH_TYPE $OS_IDENTITY_PROVIDER $OS_PROTOCOL $OS_ACCESS_TOKEN"
       register: ps
 
     - debug: var=ps.stdout_lines      
 
-#     - name: print result
-#       debug:
-#         var: result
+
+    - name: get vm flavors
+      os_flavor_info:
+      register: result
+
+    - name: print result
+      debug:
+        var: result

@@ -2,7 +2,11 @@
   vars:
     ansible_python_interpreter: /usr/bin/python3
   tasks:
-    - os_flavor_facts:
+    - name install openstacksdk
+      pip:
+          name: openstacksdk
+
+    - os_flavor_info:
       environment:
         OS_AUTH_URL: "https://host:35357/v3"
         OS_PROJECT_ID: "ID"

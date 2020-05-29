@@ -38,10 +38,6 @@
         key_name: "deleteme"
         timeout: 200
         flavor: "2d4b92be-3f73-4308-a930-2acc426e4998"
-        security_groups:
-          - ssl
-          - http
-          - 8008
 
 #    - name: remove an instance
 #      os_server:

@@ -42,3 +42,8 @@
           - ssl
           - http
           - 8008
+
+#    - name: remove an instance
+#      os_server:
+#        name: vm1
+#        state: absent

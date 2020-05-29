@@ -32,7 +32,6 @@
     - name: launch an instance
       os_server:
         state: present
-        cloud: mordred
         name: vm1
         availability_zone: nova
         image: b0049ae9-3090-4a76-b9da-c985409b3228

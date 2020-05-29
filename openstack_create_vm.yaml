@@ -20,3 +20,11 @@
     - name: print result
       debug:
         var: result
+
+  - name: Retrieve all available images
+    os_image_info:
+    register: result
+
+  - name: Show images
+    debug:
+      msg: "{{ result.openstack_image }}"

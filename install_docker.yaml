@@ -23,7 +23,7 @@
         upgrade: yes
         update_cache: yes
         autoremove: yes
-        autoremove: yes
+        autoclean: yes
             
     - name: Update and install docker-ce
       apt: update_cache=yes name=docker-ce state=latest              

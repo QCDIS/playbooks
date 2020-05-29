@@ -2,9 +2,9 @@
   vars:
     ansible_python_interpreter: /usr/bin/python3
   tasks:
-    - name install openstacksdk
+    - name: install openstacksdk
       pip:
-          name: openstacksdk
+        name: openstacksdk
 
     - os_flavor_info:
       environment:

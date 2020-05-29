@@ -28,3 +28,18 @@
     - name: Show images
       debug:
         msg: "{{ result.openstack_image }}"
+
+    - name: launch an instance
+      os_server:
+        state: present
+        cloud: mordred
+        name: vm1
+        availability_zone: nova
+        image: b0049ae9-3090-4a76-b9da-c985409b3228
+        key_name: deleteme
+        timeout: 200
+        flavor: 2d4b92be-3f73-4308-a930-2acc426e4998
+        security_groups:
+          - ssl
+          - http
+          - 8008

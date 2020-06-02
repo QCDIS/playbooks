@@ -32,8 +32,8 @@
         timeout: 200
         flavor: "6e514065-9013-4ce1-908a-0dcc173125e4"
         network: "00129b7b-c6aa-4cef-822f-8793324a075e"
-
-#    - name: remove an instance
-#      os_server:
-#        name: vm1
-#        state: absent
+        
+    - name: remove an instance
+      os_server:
+        name: vm1
+        state: absent

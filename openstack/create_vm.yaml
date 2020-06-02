@@ -14,23 +14,23 @@
 #       debug:
 #         var: flavors
 
-    - name: Retrieve all available images
-      os_image_info:
-      register: images
+#     - name: Retrieve all available images
+#       os_image_info:
+#       register: images
 
-    - name: print images
-      debug:
-        var: images
+#     - name: print images
+#       debug:
+#         var: images
 
-#     - name: launch an instance
-#       os_server:
-#         state: present
-#         name: "vm1"
-#         availability_zone: "nova"
-#         image: "b0049ae9-3090-4a76-b9da-c985409b3228"
-#         key_name: "deleteme"
-#         timeout: 200
-#         flavor: "6e514065-9013-4ce1-908a-0dcc173125e4"
+    - name: launch an instance
+      os_server:
+        state: present
+        name: "vm1"
+        availability_zone: "nova"
+        image: "cb54f10d-7da0-4cc4-9887-72126e772761"
+        key_name: "deleteme3"
+        timeout: 200
+        flavor: "6e514065-9013-4ce1-908a-0dcc173125e4"
 
 #    - name: remove an instance
 #      os_server:

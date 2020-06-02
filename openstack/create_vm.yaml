@@ -6,13 +6,13 @@
       pip:
         name: openstacksdk
         
-    - name: get vm flavors
-      os_flavor_info:
-      register: flavors
+#     - name: get vm flavors
+#       os_flavor_info:
+#       register: flavors
 
-    - name: print flavors
-      debug:
-        var: flavors
+#     - name: print flavors
+#       debug:
+#         var: flavors
 
     - name: Retrieve all available images
       os_image_info:
@@ -30,7 +30,7 @@
 #         image: "b0049ae9-3090-4a76-b9da-c985409b3228"
 #         key_name: "deleteme"
 #         timeout: 200
-#         flavor: "2d4b92be-3f73-4308-a930-2acc426e4998"
+#         flavor: "6e514065-9013-4ce1-908a-0dcc173125e4"
 
 #    - name: remove an instance
 #      os_server:

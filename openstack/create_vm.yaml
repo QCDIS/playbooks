@@ -8,19 +8,19 @@
         
     - name: get vm flavors
       os_flavor_info:
-      register: result
+      register: flavors
 
-    - name: print result
+    - name: print flavors
       debug:
-        var: result
+        var: flavors
 
     - name: Retrieve all available images
       os_image_info:
-      register: result
+      register: images
 
-    - name: Show images
+    - name: print images
       debug:
-      msg: "{{ result.openstack_image }}"
+        var: images
 
 #     - name: launch an instance
 #       os_server:

@@ -1,6 +1,14 @@
 - hosts: localhost
   vars:
     ansible_python_interpreter: /usr/bin/python3
+    name: "vm1"
+    availability_zone: "nova"
+    image: "cb54f10d-7da0-4cc4-9887-72126e772761"
+    key_name: "deleteme3"
+    timeout: 200
+    flavor: "6e514065-9013-4ce1-908a-0dcc173125e4"
+    network: "00129b7b-c6aa-4cef-822f-8793324a075e"
+    
   tasks:
     - name: install openstacksdk
       pip:

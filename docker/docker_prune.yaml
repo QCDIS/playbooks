@@ -1,0 +1,24 @@
+- hosts: all
+  become: yes
+  tasks:
+    - name: install docker-py
+      pip: 
+        name: docker
+  
+    - name: Prune everything
+      docker_prune:
+        containers: yes
+        images: yes
+        networks: yes
+        volumes: yes
+        builder_cache: yes
+        
+        
+    - name: list images
+      shell: "docker images"
+      register: images
+      
+      
+    - name: print images
+      debug:
+        var: images      

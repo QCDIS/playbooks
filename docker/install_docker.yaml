@@ -1,0 +1,46 @@
+- hosts: master
+  become: yes
+  tasks:
+  
+    - name: Check that the /dev/xvdh exists
+      stat:
+        path: /dev/xvdh
+      register: mount_volume
+      
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present   
+        
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu bionic stable
+        state: present        
+           
+    - name: Update and upgrade
+      apt:
+        upgrade: yes
+        update_cache: yes
+        autoremove: yes
+        autoclean: yes
+            
+    - name: Update and install docker-ce
+      apt: update_cache=yes name=docker-ce state=latest              
+      
+    - name: Change data-root location in /etc/docker/daemon.json if mount exists
+      shell: |
+        echo '{"data-root": "/data"}' > /etc/docker/daemon.json
+      when: mount_volume.stat.exists == True
+      
+    - name: Restart service docker, in all cases
+      service:
+        name: docker
+        state: restarted     
+      ignore_errors: yes
+      when: mount_volume.stat.exists == True  
+      
+        
+          
+
+

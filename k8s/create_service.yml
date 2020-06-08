@@ -1,0 +1,60 @@
+---
+- hosts: master
+  vars:
+    k8s_state: present
+    service_name: NAME
+    container_port: CONTAINER_PORT
+    docker_image: IMAGE
+  tasks:
+
+    - pip:
+        name:
+            - openshift==0.11.0
+            - kubernetes==11.0.0
+
+    - name: Create deployment
+      k8s:
+        state: "{{k8s_state}}"
+        definition:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            labels:
+              service: "{{service_name}}"
+            name: "{{service_name}}"
+          spec:
+            selector:
+              matchLabels:
+                service: "{{service_name}}"
+            replicas: 1
+            strategy:
+              type: Recreate
+            template:
+              metadata:
+                labels:
+                  service: "{{service_name}}"
+              spec:
+                containers:
+                  image: "{{docker_image}}"
+                  name: "{{service_name}}"
+                  ports:
+                  - containerPort: "{{container_port}}"
+
+    - name: Create service
+      k8s:
+        state: "{{k8s_state}}"
+        definition:
+          apiVersion: v1
+          kind: Service
+          metadata:
+            labels:
+              service: "{{service_name}}"
+            name: "{{service_name}}"
+          spec:
+            type: NodePort
+            ports:
+            - port: "{{container_port}}"
+              protocol: TCP
+              name: "{{container_port}}"
+            selector:
+              service: "{{service_name}}"

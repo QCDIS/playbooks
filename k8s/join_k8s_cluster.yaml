@@ -55,7 +55,7 @@
         sysctl_set: yes
         state: present
         reload: yes     
-      with_itmes:
+      with_items:
         - net.bridge.bridge-nf-call-ip6tables
         - net.ipv4.ip_forward
         

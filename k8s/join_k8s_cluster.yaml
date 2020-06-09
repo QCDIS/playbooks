@@ -42,12 +42,11 @@
     - name: update kernel settings
       become: yes
       sysctl:
-        name: bridge-nf-call-iptables
+        name: net.bridge.bridge-nf-call-iptables
         value: 1
         sysctl_set: yes
         state: present
-        reload: yes      
-      when: url_command_result.status != 200           
+        reload: yes        
         
     - name: join
       shell: "{{ hostvars['k8s_join_cmd_holder']['cmd'] }}"

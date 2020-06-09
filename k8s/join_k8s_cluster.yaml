@@ -16,14 +16,6 @@
         
                 
 - hosts: worker
-  vars:
-    ip_modules:
-      - ip_vs
-      - ip_vs_rr
-      - ip_vs_wrr
-      - ip_vs_sh
-      - nf_conntrack_ipv4
-      - br_netfilter
   tasks:
   
     - name: check if in cluster
@@ -46,54 +38,7 @@
       become: yes
       shell: swapoff -a    
       when: url_command_result.status != 200
-      
-    - name: Configure network
-      become: yes
-      command: modprobe {{ item }}
-      loop: "{{ ip_modules }}"  
-      
-      
-    - name: Modprobe
-      become: yes
-      lineinfile:
-        path: "/etc/modules"
-        line: "{{ item }}"
-        create: yes
-        state: present
-      loop: "{{ ip_modules }}"
 
-    - name: Iptables
-      become: yes
-      tags:
-        - os-settings
-      sysctl:
-          name: "{{ item }}"
-          value: 1
-          sysctl_set: yes
-          state: present
-          reload: yes
-      loop:
-        - 'net.bridge.bridge-nf-call-iptables'
-#         - 'net.bridge.bridge-nf-call-ip6tables'
-
-    - name: Allow IP routing
-      become: yes
-      sysctl:
-        name: net.ipv4.ip_forward
-        value: 1
-        state: present
-        reload: yes
-        sysctl_set: yes
-        
-            
-    - name: update kernel settings
-      become: yes
-      sysctl:
-        name: net.bridge.bridge-nf-call-iptables
-        value: 1
-        sysctl_set: yes
-        state: present
-        reload: yes        
         
     - name: update kernel settings
       become: yes

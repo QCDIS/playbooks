@@ -38,6 +38,12 @@
       become: yes
       shell: swapoff -a    
       when: url_command_result.status != 200
+      
+      
+    - name: Add the br_netfilter module
+      modprobe:
+        name: br_netfilter
+        state: present      
 
         
     - name: update kernel settings

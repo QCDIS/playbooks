@@ -50,11 +50,14 @@
     - name: update kernel settings
       become: yes
       sysctl:
-        name: net.bridge.bridge-nf-call-ip6tables
+        name: "{{item}}"
         value: 1
         sysctl_set: yes
         state: present
-        reload: yes                
+        reload: yes     
+      with_itmes:
+        - net.bridge.bridge-nf-call-ip6tables
+        - net.ipv4.ip_forward
         
     - name: join
       shell: "{{ hostvars['k8s_join_cmd_holder']['cmd'] }}"

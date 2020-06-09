@@ -2,11 +2,24 @@
 - hosts: master
   vars:
     k8s_state: present
-    service_name: NAME
-    container_port: CONTAINER_PORT
-    docker_image: IMAGE
+    service_name: lookup('env','DOCKER_SERVICE_NAME')
+    container_port: lookup('env','CONTAINER_PORT')
+    docker_image:  lookup('env','DOCKER_IMAGE')
   tasks:
 
+    - name: print service_name
+      debug:
+        var: "{{service_name}}"
+        
+    - name: print container_port
+      debug:
+        var: "{{container_port}}"      
+        
+    - name: print docker_image
+      debug:
+        var: "{{docker_image}}"            
+       
+       
     - pip:
         name:
             - openshift==0.11.0

@@ -74,7 +74,7 @@
           reload: yes
       loop:
         - 'net.bridge.bridge-nf-call-iptables'
-        - 'net.bridge.bridge-nf-call-ip6tables'
+#         - 'net.bridge.bridge-nf-call-ip6tables'
 
     - name: Allow IP routing
       sysctl:

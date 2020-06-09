@@ -53,21 +53,21 @@
                   ports:
                   - containerPort: "{{container_port}}"
 
-    - name: Create service
-      k8s:
-        state: "{{k8s_state}}"
-        definition:
-          apiVersion: v1
-          kind: Service
-          metadata:
-            labels:
-              service: "{{service_name}}"
-            name: "{{service_name}}"
-          spec:
-            type: NodePort
-            ports:
-            - port: "{{container_port}}"
-              protocol: TCP
-              name: "{{container_port}}"
-            selector:
-              service: "{{service_name}}"
+#     - name: Create service
+#       k8s:
+#         state: "{{k8s_state}}"
+#         definition:
+#           apiVersion: v1
+#           kind: Service
+#           metadata:
+#             labels:
+#               service: "{{service_name}}"
+#             name: "{{service_name}}"
+#           spec:
+#             type: NodePort
+#             ports:
+#             - port: "{{container_port}}"
+#               protocol: TCP
+#               name: "{{container_port}}"
+#             selector:
+#               service: "{{service_name}}"

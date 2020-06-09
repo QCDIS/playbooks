@@ -47,14 +47,14 @@
         state: present      
 
         
-    - name: update kernel settings
+        
+    - name: update sysctl param
       become: yes
       sysctl:
-        name: "{{item}}"
+        name: "{{ item }}"
         value: 1
-        sysctl_set: yes
         state: present
-        reload: yes     
+        reload: yes
       with_items:
         - net.bridge.bridge-nf-call-ip6tables
         - net.ipv4.ip_forward

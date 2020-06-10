@@ -19,6 +19,10 @@
     - name: print docker_image
       debug:
         var: "{{docker_image}}"            
+        
+    - name: print namespace
+      debug:
+        var: "{{namespace}}"               
        
     - pip:
         name:

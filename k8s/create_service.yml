@@ -5,7 +5,7 @@
     service_name: lookup('env','DOCKER_SERVICE_NAME')
     container_port: lookup('env','CONTAINER_PORT')
     docker_image:  lookup('env','DOCKER_IMAGE')
-    namespace:  confAppication
+    namespace:  articonf
   tasks:
 
     - name: print service_name

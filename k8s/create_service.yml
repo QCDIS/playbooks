@@ -18,11 +18,7 @@
         
     - name: print docker_image
       debug:
-        var: "{{docker_image}}"            
-        
-    - name: print namespace
-      debug:
-        var: "{{namespace}}"               
+        var: "{{docker_image}}"                       
        
     - pip:
         name:
@@ -32,7 +28,7 @@
             
     - name: Create a k8s namespace
       k8s:
-        name: "{{namespace}}"
+        name: confAppication
         api_version: v1
         kind: Namespace
         state: present            
@@ -44,7 +40,7 @@
           apiVersion: apps/v1
           kind: Deployment
           metadata:
-            namespace: "{{namespace}}"
+            namespace: confAppication
             labels:
               service: "{{service_name}}"
             name: "{{service_name}}"
@@ -73,7 +69,7 @@
           apiVersion: v1
           kind: Service
           metadata:
-            namespace: "{{namespace}}"
+            namespace: confAppication
             labels:
               service: "{{service_name}}"
             name: "{{service_name}}"

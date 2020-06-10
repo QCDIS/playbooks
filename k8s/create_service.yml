@@ -5,7 +5,7 @@
     service_name: lookup('env','DOCKER_SERVICE_NAME')
     container_port: lookup('env','CONTAINER_PORT')
     docker_image:  lookup('env','DOCKER_IMAGE')
-    namespace:  lookup('env','K8s_NAMESPACE')
+    namespace:  confAppication
   tasks:
 
     - name: print service_name

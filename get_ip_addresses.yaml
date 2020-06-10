@@ -1,22 +1,12 @@
 - hosts: localhost
   vars:
-    k8s_state: present
-    service_name: lookup('env','DOCKER_SERVICE_NAME')
-    container_port: lookup('env','CONTAINER_PORT')
-    docker_image:  lookup('env','DOCKER_IMAGE')
+    some_var: lookup('env','SOME_VAR')
   tasks:
 
     - name: print service_name
       debug:
-        var: "{{service_name}}"
+        var: "{{some_var}}"
         
-    - name: print container_port
-      debug:
-        var: "{{container_port}}"      
-        
-    - name: print docker_image
-      debug:
-        var: "{{docker_image}}"  
         
     - debug: var=ansible_all_ipv4_addresses
     - debug: var=ansible_default_ipv4.address

@@ -6,6 +6,7 @@
     container_port: lookup('env','CONTAINER_PORT')
     docker_image:  lookup('env','DOCKER_IMAGE')
     namespace:  application
+    ansible_python_interpreter: /usr/bin/python3    
   tasks:
 
     - name: print service_name

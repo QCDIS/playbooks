@@ -5,6 +5,7 @@
     service_name: lookup('env','DOCKER_SERVICE_NAME')
     container_port: lookup('env','CONTAINER_PORT')
     docker_image:  lookup('env','DOCKER_IMAGE')
+    namespace:  lookup('env','K8s_NAMESPACE')
   tasks:
 
     - name: print service_name
@@ -19,11 +20,18 @@
       debug:
         var: "{{docker_image}}"            
        
-       
     - pip:
         name:
             - openshift==0.11.0
             - kubernetes==11.0.0
+            
+            
+    - name: Create a k8s namespace
+    `  k8s:
+        name: "{{namespace}}"
+        api_version: v1
+        kind: Namespace
+        state: present            
 
     - name: Create deployment
       k8s:
@@ -32,6 +40,7 @@
           apiVersion: apps/v1
           kind: Deployment
           metadata:
+            namespace: "{{namespace}}"
             labels:
               service: "{{service_name}}"
             name: "{{service_name}}"
@@ -53,21 +62,22 @@
                   ports:
                   - containerPort: "{{container_port}}"
 
-#     - name: Create service
-#       k8s:
-#         state: "{{k8s_state}}"
-#         definition:
-#           apiVersion: v1
-#           kind: Service
-#           metadata:
-#             labels:
-#               service: "{{service_name}}"
-#             name: "{{service_name}}"
-#           spec:
-#             type: NodePort
-#             ports:
-#             - port: "{{container_port}}"
-#               protocol: TCP
-#               name: "{{container_port}}"
-#             selector:
-#               service: "{{service_name}}"
+    - name: Create service
+      k8s:
+        state: "{{k8s_state}}"
+        definition:
+          apiVersion: v1
+          kind: Service
+          metadata:
+            namespace: "{{namespace}}"
+            labels:
+              service: "{{service_name}}"
+            name: "{{service_name}}"
+          spec:
+            type: NodePort
+            ports:
+            - port: "{{container_port}}"
+              protocol: TCP
+              name: "{{container_port}}"
+            selector:
+              service: "{{service_name}}"

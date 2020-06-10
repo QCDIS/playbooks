@@ -29,7 +29,7 @@
             
     - name: Create a k8s namespace
       k8s:
-        name: confAppication
+        name: "{{namespace}}"
         api_version: v1
         kind: Namespace
         state: present            
@@ -41,7 +41,7 @@
           apiVersion: apps/v1
           kind: Deployment
           metadata:
-            namespace: confAppication
+            namespace: "{{namespace}}"
             labels:
               service: "{{service_name}}"
             name: "{{service_name}}"
@@ -70,7 +70,7 @@
           apiVersion: v1
           kind: Service
           metadata:
-            namespace: confAppication
+            namespace: "{{namespace}}"
             labels:
               service: "{{service_name}}"
             name: "{{service_name}}"

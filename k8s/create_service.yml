@@ -43,25 +43,25 @@
           metadata:
             namespace: "{{namespace}}"
             labels:
-              service: "{{service_name}}"
-            name: "{{service_name}}"
+              service: ws-pema
+            name: ws-pema
           spec:
             selector:
               matchLabels:
-                service: "{{service_name}}"
+                service: ws-pema
             replicas: 1
             strategy:
               type: Recreate
             template:
               metadata:
                 labels:
-                  service: "{{service_name}}"
+                  service: ws-pema
               spec:
                 containers:
-                  image: "{{docker_image}}"
-                  name: "{{service_name}}"
+                  image: alogo53/ws-pema-lifewatch
+                  name: ws-pema
                   ports:
-                  - containerPort: "{{container_port}}"
+                  - containerPort: 8080
 
     - name: Create service
       k8s:
@@ -72,13 +72,13 @@
           metadata:
             namespace: "{{namespace}}"
             labels:
-              service: "{{service_name}}"
-            name: "{{service_name}}"
+              service: ws-pema
+            name: ws-pema
           spec:
             type: NodePort
             ports:
-            - port: "{{container_port}}"
+            - port: 8080
               protocol: TCP
-              name: "{{container_port}}"
+              name: 8080
             selector:
-              service: "{{service_name}}"
+              service: ws-pema

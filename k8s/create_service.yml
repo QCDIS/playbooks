@@ -1,26 +1,24 @@
----
 - hosts: master
+  gather_facts: true
   vars:
     k8s_state: present
-#     ansible_python_interpreter: /usr/bin/python3    
-    local_shell:  "{{ lookup('env','SHELL') }}"
   
   tasks:
-    - debug:
-        msg: "{{ local_shell }}"    
-
-
     - name: print service_name
       debug:
-        var: "{{ service_name }}"
+        var: "{{ ansible_env.DOCKER_SERVICE_NAME }}"
         
     - name: print container_port
       debug:
-        var: "{{ container_port }}"      
+        var: "{{ ansible_env.CONTAINER_PORT }}"
         
     - name: print docker_image
       debug:
-        var: "{{ docker_image }}"    
+        var: "{{ ansible_env.DOCKER_IMAGE }}"
+        
+    - name: print namespace
+      debug:
+        var: "{{ ansible_env.K8s_NAMESPACE }}"        
        
     - pip:
         name:
@@ -30,7 +28,7 @@
             
     - name: Create a k8s namespace
       k8s:
-        name: application
+        name: "{{ ansible_env.K8s_NAMESPACE }}"        
         api_version: v1
         kind: Namespace
         state: present            
@@ -42,27 +40,27 @@
           apiVersion: apps/v1
           kind: Deployment
           metadata:
-            namespace: application
+            namespace: "{{ ansible_env.K8s_NAMESPACE }}"        
             annotations:
             labels:
-              service: "{{ service_name }}"
-            name: "{{ service_name }}"
+              service: "{{ ansible_env.DOCKER_SERVICE_NAME }}"
+            name: "{{ ansible_env.DOCKER_SERVICE_NAME }}"
           spec:
             selector:
               matchLabels:
-                service: "{{ service_name }}"
+                service: "{{ ansible_env.DOCKER_SERVICE_NAME }}"
             replicas: 1
             template:
               metadata:
                 labels:
-                  service: "{{ service_name }}"
+                  service: "{{ ansible_env.DOCKER_SERVICE_NAME }}"
               spec:
                 containers:
-                - image: "{{ docker_image }}"
-                  name: "{{ service_name }}"
+                - image: "{{ ansible_env.DOCKER_IMAGE }}"
+                  name: "{{ ansible_env.DOCKER_SERVICE_NAME }}"
                   imagePullPolicy: Always
                   ports:
-                  - containerPort: "{{ container_port }}"
+                  - containerPort: "{{ ansible_env.CONTAINER_PORT }}"
 
 
     - name: Create service
@@ -72,16 +70,16 @@
           apiVersion: v1
           kind: Service
           metadata:
-            namespace: application
+            namespace: "{{ ansible_env.K8s_NAMESPACE }}"        
             labels:
-              service: "{{ service_name }}"
-            name: "{{ service_name }}"
+              service: "{{ ansible_env.DOCKER_SERVICE_NAME }}"
+            name: "{{ ansible_env.DOCKER_SERVICE_NAME }}"
           spec:
             type: NodePort  
             ports:
-            - port: "{{ container_port }}"
+            - port: "{{ ansible_env.CONTAINER_PORT }}"
               protocol: TCP
               name: http
             selector:
-              service: "{{ service_name }}"
+              service: "{{ ansible_env.DOCKER_SERVICE_NAME }}"
 

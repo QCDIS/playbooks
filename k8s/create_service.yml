@@ -77,23 +77,23 @@
 #                   - containerPort: "{{ container_port }}"
 
 
-    - name: Create service
-      k8s:
-        state: "{{k8s_state}}"
-        definition:
-          apiVersion: v1
-          kind: Service
-          metadata:
-            namespace: "{{ k8s_namespace }}"        
-            labels:
-              service: "{{ docker_service_name }}"
-            name: "{{ docker_service_name }}"
-          spec:
-            type: NodePort  
-            ports:
-            - port: "{{ container_port }}"
-              protocol: TCP
-              name: http
-            selector:
-              service: "{{ docker_service_name }}"
+#     - name: Create service
+#       k8s:
+#         state: "{{k8s_state}}"
+#         definition:
+#           apiVersion: v1
+#           kind: Service
+#           metadata:
+#             namespace: "{{ k8s_namespace }}"        
+#             labels:
+#               service: "{{ docker_service_name }}"
+#             name: "{{ docker_service_name }}"
+#           spec:
+#             type: NodePort  
+#             ports:
+#             - port: "{{ container_port }}"
+#               protocol: TCP
+#               name: http
+#             selector:
+#               service: "{{ docker_service_name }}"
 

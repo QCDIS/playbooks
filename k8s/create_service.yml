@@ -42,7 +42,7 @@
             
     - name: Create a k8s namespace
       k8s:
-        name: "{{ ansible_env.K8s_NAMESPACE }}"        
+        name: "{{ k8s_namespace }}"        
         api_version: v1
         kind: Namespace
         state: present            
@@ -54,27 +54,27 @@
           apiVersion: apps/v1
           kind: Deployment
           metadata:
-            namespace: "{{ ansible_env.K8s_NAMESPACE }}"        
+            namespace: "{{ k8s_namespace }}"        
             annotations:
             labels:
-              service: "{{ ansible_env.DOCKER_SERVICE_NAME }}"
-            name: "{{ ansible_env.DOCKER_SERVICE_NAME }}"
+              service: "{{ docker_service_name }}"
+            name: "{{ docker_service_name }}"
           spec:
             selector:
               matchLabels:
-                service: "{{ ansible_env.DOCKER_SERVICE_NAME }}"
+                service: "{{ docker_service_name }}"
             replicas: 1
             template:
               metadata:
                 labels:
-                  service: "{{ ansible_env.DOCKER_SERVICE_NAME }}"
+                  service: "{{ docker_service_name }}"
               spec:
                 containers:
-                - image: "{{ ansible_env.DOCKER_IMAGE }}"
-                  name: "{{ ansible_env.DOCKER_SERVICE_NAME }}"
+                - image: "{{ docker_image }}"
+                  name: "{{ docker_service_name }}"
                   imagePullPolicy: Always
                   ports:
-                  - containerPort: "{{ ansible_env.CONTAINER_PORT }}"
+                  - containerPort: "{{ container_port }}"
 
 
     - name: Create service
@@ -84,16 +84,16 @@
           apiVersion: v1
           kind: Service
           metadata:
-            namespace: "{{ ansible_env.K8s_NAMESPACE }}"        
+            namespace: "{{ k8s_namespace }}"        
             labels:
-              service: "{{ ansible_env.DOCKER_SERVICE_NAME }}"
-            name: "{{ ansible_env.DOCKER_SERVICE_NAME }}"
+              service: "{{ docker_service_name }}"
+            name: "{{ docker_service_name }}"
           spec:
             type: NodePort  
             ports:
-            - port: "{{ ansible_env.CONTAINER_PORT }}"
+            - port: "{{ container_port }}"
               protocol: TCP
               name: http
             selector:
-              service: "{{ ansible_env.DOCKER_SERVICE_NAME }}"
+              service: "{{ docker_service_name }}"
 

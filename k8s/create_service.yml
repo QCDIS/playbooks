@@ -11,15 +11,15 @@
 
     - name: print service_name
       debug:
-        var: "{{service_name}}"
+        var: "{{ service_name }}"
         
     - name: print container_port
       debug:
-        var: "{{container_port}}"      
+        var: "{{ container_port }}"      
         
     - name: print docker_image
       debug:
-        var: "{{docker_image}}"                       
+        var: "{{ docker_image }}"                       
        
     - pip:
         name:
@@ -44,24 +44,24 @@
             namespace: application
             annotations:
             labels:
-              service: ws-pema
-            name: ws-pema
+              service: "{{ service_name }}"
+            name: "{{ service_name }}"
           spec:
             selector:
               matchLabels:
-                service: ws-pema
+                service: "{{ service_name }}"
             replicas: 1
             template:
               metadata:
                 labels:
-                  service: ws-pema
+                  service: "{{ service_name }}"
               spec:
                 containers:
-                - image: alogo53/ws-pema-lifewatch
-                  name: ws-pema
+                - image: "{{ docker_image }}"
+                  name: "{{ service_name }}"
                   imagePullPolicy: Always
                   ports:
-                  - containerPort: 8080
+                  - containerPort: "{{ container_port }}"
 
 
     - name: Create service
@@ -73,14 +73,14 @@
           metadata:
             namespace: application
             labels:
-              service: ws-pema
-            name: ws-pema
+              service: "{{ service_name }}"
+            name: "{{ service_name }}"
           spec:
             type: NodePort  
             ports:
-            - port: 8080
+            - port: "{{ container_port }}"
               protocol: TCP
               name: http
             selector:
-              service: ws-pema
+              service: "{{ service_name }}"
 

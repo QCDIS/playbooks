@@ -3,8 +3,8 @@ kind: Service
 metadata:
   namespace: K8s_NAMESPACE
   labels:
-    service: DOCKER_SERVICE_NAME
-  name: DOCKER_SERVICE_NAME
+    service: SERVICE_NAME
+  name: SERVICE_NAME
 spec:
   type: NodePort  
   ports:
@@ -12,4 +12,4 @@ spec:
     protocol: TCP
     name: http
   selector:
-    service: DOCKER_SERVICE_NAME
+    service: SERVICE_NAME

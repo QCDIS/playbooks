@@ -27,10 +27,10 @@
       debug:
         msg: "{{ item }}"    
       with_items:
-        - "{{ docker_image }}"
-        - "{{ docker_service_name }}"
-        - "{{ container_port }}"
-        - "{{ k8s_namespace }}"
+        - '{{ docker_image }}'
+        - '{{ docker_service_name }}'
+        - '{{ container_port }}'
+        - '{{ k8s_namespace }}'
         
         
     - lineinfile:

@@ -35,7 +35,7 @@
         
     - lineinfile:
         dest: "/tmp/file"
-        line: "container_port: { '{'+container_port+'}' }"        
+        line: "container_port: {{ container_port }}"        
         create: yes
         
        

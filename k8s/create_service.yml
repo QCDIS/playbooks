@@ -47,34 +47,34 @@
         kind: Namespace
         state: present            
 
-#     - name: Create deployment
-#       k8s:
-#         state: "{{k8s_state}}"
-#         definition:
-#           apiVersion: apps/v1
-#           kind: Deployment
-#           metadata:
-#             namespace: "{{ k8s_namespace }}"        
-#             annotations:
-#             labels:
-#               service: "{{ docker_service_name }}"
-#             name: "{{ docker_service_name }}"
-#           spec:
-#             selector:
-#               matchLabels:
-#                 service: "{{ docker_service_name }}"
-#             replicas: 1
-#             template:
-#               metadata:
-#                 labels:
-#                   service: "{{ docker_service_name }}"
-#               spec:
-#                 containers:
-#                 - image: "{{ docker_image }}"
-#                   name: "{{ docker_service_name }}"
-#                   imagePullPolicy: Always
-#                   ports:
-#                   - containerPort: "{{ container_port }}"
+    - name: Create deployment
+      k8s:
+        state: "{{k8s_state}}"
+        definition:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            namespace: "{{ k8s_namespace }}"        
+            annotations:
+            labels:
+              service: "ws-pema"
+            name: "ws-pema"
+          spec:
+            selector:
+              matchLabels:
+                service: "ws-pema"
+            replicas: 1
+            template:
+              metadata:
+                labels:
+                  service: "ws-pema"
+              spec:
+                containers:
+                - image: "alogo53/ws-pema-lifewatch"
+                  name: "ws-pema"
+                  imagePullPolicy: Always
+                  ports:
+                  - containerPort: "8080"
 
 
 #     - name: Create service

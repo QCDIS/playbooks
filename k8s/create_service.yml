@@ -9,6 +9,8 @@
     ansible_python_interpreter: /usr/bin/python3    
   tasks:
 
+    - debug: msg="{{ lookup('env','HOME') }}
+
     - name: print service_name
       debug:
         var: "{{ service_name }}"

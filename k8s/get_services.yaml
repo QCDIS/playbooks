@@ -1,16 +1,24 @@
     
----       
+---        
+- hosts: localhost
+  gather_facts: true
+
+  tasks:
+  
+    - name: Add vars to dummy host
+      add_host:
+        name:   "k8s_deploy_vars_holder" 
+        k8s_namespace:  "{{ ansible_env.K8s_NAMESPACE }}"   
+        
 - hosts: master
   vars:
-    k8s_state: present
-    k8s_namespace: appication
+    k8s_namespace: "{{ hostvars['k8s_deploy_vars_holder']['k8s_namespace'] }}"
+  
   tasks:   
-
     - pip:
         name:
             - openshift==0.11.0
             - kubernetes==11.0.0
-
     
     - name: Get a list of all service objects
       k8s_info:

@@ -38,6 +38,31 @@
       become: yes
       shell: swapoff -a    
       when: url_command_result.status != 200
+      
+      
+    - name: Add the br_netfilter module
+      become: yes    
+      modprobe:
+        name: br_netfilter
+        state: present      
+
+        
+        
+    - name: update sysctl param
+      become: yes
+      sysctl:
+        name: "{{ item }}"
+        value: 1
+        state: present
+        reload: yes
+      with_items:
+        - net.bridge.bridge-nf-call-ip6tables
+        - net.ipv4.ip_forward
+        
+#     - name: kubeadm reset -f
+#       shell: kubeadm reset -f
+#       become: yes     
+#       ignore_errors: True
         
     - name: join
       shell: "{{ hostvars['k8s_join_cmd_holder']['cmd'] }}"

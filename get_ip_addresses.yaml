@@ -1,4 +1,12 @@
-- hosts: all
+- hosts: localhost
+  vars:
+    some_var: lookup('env','SOME_VAR')
   tasks:
+
+    - name: print service_name
+      debug:
+        var: "{{some_var}}"
+        
+        
     - debug: var=ansible_all_ipv4_addresses
     - debug: var=ansible_default_ipv4.address

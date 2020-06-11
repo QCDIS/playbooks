@@ -29,7 +29,7 @@
       with_items:
         - "{{ docker_image }}"
         - "{{ docker_service_name }}"
-        - "%w{{ '{'+container_port+'}' }}"
+        - { '{'+container_port+'}' }
         - "{{ k8s_namespace }}"
         
        

@@ -18,6 +18,6 @@
         namespace: application
       register: service_list        
              
-    - name: print service_list
+    - name: Print service_list
       debug:
-        var: "{{service_list}}"         
+        msg: "{{ service_list }}"     

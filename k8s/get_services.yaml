@@ -3,6 +3,7 @@
 - hosts: master
   vars:
     k8s_state: present
+    k8s_namespace: appication
   tasks:   
 
     - pip:
@@ -15,7 +16,7 @@
       k8s_info:
         api_version: v1
         kind: Service
-        namespace: application
+        namespace: "{{ k8s_namespace }}"
       register: service_list        
              
     - name: Print service_list

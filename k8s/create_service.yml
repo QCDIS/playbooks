@@ -3,12 +3,12 @@
   vars:
     k8s_state: present
     ansible_python_interpreter: /usr/bin/python3    
-  tasks:
+    local_shell:  "{{ lookup('env','SHELL') }}"
 
-    - set_fact: service_name="{{ lookup('env','DOCKER_SERVICE_NAME') }}"
-    - set_fact: container_port="{{ lookup('env','CONTAINER_PORT') }}"
-    - set_fact: docker_image="{{ lookup('env','DOCKER_IMAGE') }}"
-    - set_fact: namespace="{{ lookup('env','K8s_NAMESPACE') }}"
+  
+  tasks:
+    - debug:
+        msg: "{{ local_shell }}"    
 
 
     - name: print service_name

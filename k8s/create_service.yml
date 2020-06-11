@@ -29,13 +29,13 @@
       with_items:
         - "{{ docker_image }}"
         - "{{ docker_service_name }}"
-        - "%w{{ '{'+container_port+'}' }}"
+        - "{{ container_port }}"
         - "{{ k8s_namespace }}"
         
         
     - lineinfile:
         dest: "/tmp/file"
-        line: "container_port: %w{{ '{'+container_port+'}' }}"        
+        line: "container_port: { '{'+container_port+'}' }"        
         create: yes
         
        

@@ -24,15 +24,13 @@
   gather_facts: true
   vars:
     k8s_state: present
+    docker_image: "{{ hostvars['k8s_deploy_vars_holder']['docker_image'] }}"
   
   tasks:
-    - name: Printing all environment variables
-      debug:
-        msg: "{{ ansible_env }}"
 
     - name: Printing docker image
       debug:
-        msg: "{{ ansible_env.DOCKER_IMAGE }}"      
+        msg: "{{ docker_image }}"      
        
     - pip:
         name:

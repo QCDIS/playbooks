@@ -22,14 +22,6 @@
     - name: print docker_image
       debug:
         var: "{{ docker_image }}"    
-        
-    - name: print docker_image
-      debug:
-        var: "{{ ansible_env.HOME }}"            
-
-    - name: print docker_image
-      debug:
-        var: "{{ ansible_env.DOCKER_SERVICE_NAME }}"  
        
     - pip:
         name:

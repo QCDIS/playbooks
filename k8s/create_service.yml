@@ -18,7 +18,7 @@
     k8s_state: present
     docker_image: "{{ hostvars['k8s_deploy_vars_holder']['docker_image'] }}"
     docker_service_name: "{{ hostvars['k8s_deploy_vars_holder']['docker_service_name'] }}"
-    container_port: "{{ hostvars['k8s_deploy_vars_holder']['container_port'] }}"
+    container_port: {{ hostvars['k8s_deploy_vars_holder']['container_port'] }}
     k8s_namespace: "{{ hostvars['k8s_deploy_vars_holder']['k8s_namespace'] }}"
   
   tasks:
@@ -27,16 +27,7 @@
       debug:
         msg: "{{ item }}"    
       with_items:
-        - '{{ docker_image }}'
-        - '{{ docker_service_name }}'
-        - '{{ container_port }}'
-        - '{{ k8s_namespace }}'
-        
-        
-    - lineinfile:
-        dest: "/tmp/file"
-        line: "container_port: {{ container_port }}"        
-        create: yes
+        - "{{ container_port }}"
         
        
        

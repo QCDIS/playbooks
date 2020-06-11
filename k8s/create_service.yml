@@ -1,9 +1,6 @@
-- hosts: master
-  gather_facts: true
-  vars:
-    k8s_state: present
-  
-  tasks:
+---        
+- hosts: localhost
+  tasks:         
     - name: print service_name
       debug:
         var: "{{ ansible_env.DOCKER_SERVICE_NAME }}"
@@ -18,7 +15,24 @@
         
     - name: print namespace
       debug:
-        var: "{{ ansible_env.K8s_NAMESPACE }}"        
+        var: "{{ ansible_env.K8s_NAMESPACE }}"  
+      
+    - name: Add service_name to dummy host
+      add_host:
+        name:   "service_name"
+        cmd:  "{{ ansible_env.DOCKER_SERVICE_NAME }}"
+        
+    - name:
+      debug:
+        msg: "service_name is {{ service_name }}"
+
+- hosts: master
+  gather_facts: true
+  vars:
+    k8s_state: present
+  
+  tasks:
+      
        
     - pip:
         name:

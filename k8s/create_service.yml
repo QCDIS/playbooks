@@ -1,30 +1,15 @@
 ---        
 - hosts: localhost
-  tasks:         
-    - name: print service_name
+  gather_facts: true
+
+  tasks:
+    - name: Printing all environment variables
       debug:
-        var: "{{ ansible_env.DOCKER_SERVICE_NAME }}"
-        
-    - name: print container_port
+        msg: "{{ ansible_env }}"
+
+    - name: Printing docker image
       debug:
-        var: "{{ ansible_env.CONTAINER_PORT }}"
-        
-    - name: print docker_image
-      debug:
-        var: "{{ ansible_env.DOCKER_IMAGE }}"
-        
-    - name: print namespace
-      debug:
-        var: "{{ ansible_env.K8s_NAMESPACE }}"  
-      
-    - name: Add service_name to dummy host
-      add_host:
-        name:   "service_name"
-        cmd:  "{{ ansible_env.DOCKER_SERVICE_NAME }}"
-        
-    - name:
-      debug:
-        msg: "service_name is {{ service_name }}"
+        msg: "{{ ansible_env.DOCKER_IMAGE }}"
 
 - hosts: master
   gather_facts: true
@@ -32,7 +17,13 @@
     k8s_state: present
   
   tasks:
-      
+    - name: Printing all environment variables
+      debug:
+        msg: "{{ ansible_env }}"
+
+    - name: Printing docker image
+      debug:
+        msg: "{{ ansible_env.DOCKER_IMAGE }}"      
        
     - pip:
         name:

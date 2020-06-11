@@ -11,6 +11,15 @@
       debug:
         msg: "{{ ansible_env.DOCKER_IMAGE }}"
 
+    - name: Add DOCKER_IMAGE to dummy host
+      add_host:
+        name:   "k8s_deploy_vars_holder"
+        docker_image:  "{{ ansible_env.DOCKER_IMAGE }}"   
+        
+    - name:
+      debug:
+        msg: "DOCKER_IMAGE is {{ hostvars['k8s_deploy_vars_holder']['docker_image'] }}"        
+
 - hosts: master
   gather_facts: true
   vars:

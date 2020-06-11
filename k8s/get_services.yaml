@@ -1,0 +1,23 @@
+    
+---       
+- hosts: master
+  vars:
+    k8s_state: present
+  tasks:   
+
+    - pip:
+        name:
+            - openshift==0.11.0
+            - kubernetes==11.0.0
+
+    
+    - name: Get a list of all service objects
+      k8s_info:
+        api_version: v1
+        kind: Service
+        namespace: application
+      register: service_list        
+             
+    - name: print service_list
+      debug:
+        var: "{{service_list}}"         

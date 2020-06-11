@@ -2,9 +2,8 @@
 - hosts: master
   vars:
     k8s_state: present
-    ansible_python_interpreter: /usr/bin/python3    
+#     ansible_python_interpreter: /usr/bin/python3    
     local_shell:  "{{ lookup('env','SHELL') }}"
-
   
   tasks:
     - debug:

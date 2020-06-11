@@ -29,7 +29,7 @@
       with_items:
         - "{{ docker_image }}"
         - "{{ docker_service_name }}"
-        - {{ container_port }}
+        - "{{ container_port }}"
         - "{{ k8s_namespace }}"
         
        
@@ -74,7 +74,7 @@
                   name: "ws-pema"
                   imagePullPolicy: Always
                   ports:
-                  - containerPort: 8080
+                  - containerPort: {{ container_port }}
 
 
 #     - name: Create service

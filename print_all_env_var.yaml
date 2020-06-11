@@ -1,1 +1,7 @@
 
+- hosts: localhost
+  gather_facts: true
+  tasks:
+    - name: Printing all the environment​ variables in Ansible
+      debug:
+        msg: "{{ ansible_env }}"

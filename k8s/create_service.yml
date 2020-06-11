@@ -2,14 +2,14 @@
 - hosts: master
   vars:
     k8s_state: present
-    service_name: "{{ lookup('env','DOCKER_SERVICE_NAME') }}"
-    container_port: "{{ lookup('env','CONTAINER_PORT')}}"
-    docker_image:  "{{ lookup('env','DOCKER_IMAGE')}}"
-    namespace:  "{{ lookup('env','K8s_NAMESPACE')}}"
     ansible_python_interpreter: /usr/bin/python3    
   tasks:
 
-    - debug: msg="{{ lookup('env','HOME') }}
+    - set_fact: service_name="{{ lookup('env','DOCKER_SERVICE_NAME') }}"
+    - set_fact: container_port="{{ lookup('env','CONTAINER_PORT') }}"
+    - set_fact: docker_image="{{ lookup('env','DOCKER_IMAGE') }}"
+    - set_fact: namespace="{{ lookup('env','K8s_NAMESPACE') }}"
+
 
     - name: print service_name
       debug:

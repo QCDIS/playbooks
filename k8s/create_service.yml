@@ -4,15 +4,6 @@
 
   tasks:
   
-    -name: Remove quotes from variable
-     shell: ' temp="${CONTAINER_PORT%\"}" && temp="${temp#\"}" && echo "$temp"'
-     register: out
-     
-    
-    - name: Printing out
-      debug:
-        msg: "Out {{ out.stdout }}"    
-
     - name: Add vars to dummy host
       add_host:
         name:   "k8s_deploy_vars_holder"

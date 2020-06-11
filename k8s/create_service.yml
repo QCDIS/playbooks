@@ -3,34 +3,36 @@
   gather_facts: true
 
   tasks:
-    - name: Printing all environment variables
-      debug:
-        msg: "{{ ansible_env }}"
 
-    - name: Printing docker image
-      debug:
-        msg: "{{ ansible_env.DOCKER_IMAGE }}"
-
-    - name: Add DOCKER_IMAGE to dummy host
+    - name: Add vars to dummy host
       add_host:
         name:   "k8s_deploy_vars_holder"
         docker_image:  "{{ ansible_env.DOCKER_IMAGE }}"   
-        
-    - name:
-      debug:
-        msg: "DOCKER_IMAGE is {{ hostvars['k8s_deploy_vars_holder']['docker_image'] }}"        
+        docker_service_name:  "{{ ansible_env.DOCKER_SERVICE_NAME }}"     
+        container_port:  "{{ ansible_env.CONTAINER_PORT }}"    
+        k8s_namespace:  "{{ ansible_env.K8s_NAMESPACE }}"    
 
 - hosts: master
   gather_facts: true
   vars:
     k8s_state: present
     docker_image: "{{ hostvars['k8s_deploy_vars_holder']['docker_image'] }}"
+    docker_service_name: "{{ hostvars['k8s_deploy_vars_holder']['docker_service_name'] }}"
+    container_port: "{{ hostvars['k8s_deploy_vars_holder']['container_port'] }}"
+    k8s_namespace: "{{ hostvars['k8s_deploy_vars_holder']['k8s_namespace'] }}"
   
   tasks:
 
-    - name: Printing docker image
+    - name: Printing k8s vars
       debug:
-        msg: "{{ docker_image }}"      
+        msg: "{{ item }}"    
+      with_items:
+        - docker_image
+        - docker_service_name
+        - container_port
+        - k8s_namespace
+        
+       
        
     - pip:
         name:

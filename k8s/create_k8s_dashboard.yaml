@@ -371,15 +371,15 @@
 
 
 
-    - name: Get a list of pods in kubernetes-dashboard
-      k8s_info:
-        kind: Pod
-        namespace: kubernetes-dashboard
-      register: pod_list
+#     - name: Get a list of pods in kubernetes-dashboard
+#       k8s_info:
+#         kind: Pod
+#         namespace: kubernetes-dashboard
+#       register: pod_list
 
-    - name: print Pods
-      debug:
-        msg: "pod_list : {{ pod_list}}"
+#     - name: print Pods
+#       debug:
+#         msg: "pod_list : {{ pod_list}}"
 
 
 #     - name: Get a list of pods in kubernetes-dashboard

@@ -378,7 +378,7 @@
 
     - name: print k8s_services
       debug:
-        vart: "k8s_services: {{ k8s_services}}"
+        msg: "k8s_services: {{ k8s_services}}"
 
 
     - name: get k8s_dashboard_token

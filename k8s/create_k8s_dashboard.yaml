@@ -381,10 +381,20 @@
         var:  k8s_services
 
 
+    - name: Get a list of services in default ns
+      k8s_info:
+        kind: secret
+        namespace: default
+      register: k8s_sercrets
+      
+    - name: print k8s_sercrets
+      debug:
+        var: k8s_sercrets      
+      
     - name: get k8s_dashboard_token
       shell: kubectl describe secret $(kubectl get secret | grep admin-user | awk '{print $1}') | tail -1
       register: k8s_dashboard_token
 
     - name: print k8s_dashboard_token
       debug:
-        msg: "k8s_dashboard_token: {{ k8s_dashboard_token}}"
+        var: k8s_dashboard_token

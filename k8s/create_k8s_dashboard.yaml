@@ -382,20 +382,20 @@
         msg: "pod_list : {{ pod_list}}"
 
 
-    - name: Get a list of pods in kubernetes-dashboard
-      k8s_info:
-        kind: secret
-      register: secret_names
+#     - name: Get a list of pods in kubernetes-dashboard
+#       k8s_info:
+#         kind: secret
+#       register: secret_names
 
-    - name: print secret_names
-      debug:
-        msg: "secret_names : {{ secret_names}}"
+#     - name: print secret_names
+#       debug:
+#         msg: "secret_names : {{ secret_names}}"
 
 
-    - name: get token
+    - name: get k8s_dashboard_token
       shell: kubectl describe secret $(kubectl get secret | grep admin-user | awk '{print $1}') | tail -1
-      register: dashboard_token
+      register: k8s_dashboard_token
 
-    - name: print dashboard_token
+    - name: print k8s_dashboard_token
       debug:
-        msg: "dashboard_token : {{ dashboard_token}}"
+        msg: "k8s_dashboard_token : {{ k8s_dashboard_token}}"

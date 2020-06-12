@@ -382,14 +382,15 @@
 #         msg: "pod_list : {{ pod_list}}"
 
 
-#     - name: Get a list of pods in kubernetes-dashboard
-#       k8s_info:
-#         kind: secret
-#       register: secret_names
+    - name: Get a list of services in default ns
+      k8s_info:
+        kind: service
+        namespace: default
+      register: k8s_services
 
-#     - name: print secret_names
-#       debug:
-#         msg: "secret_names : {{ secret_names}}"
+    - name: print k8s_services
+      debug:
+        vart: "k8s_services: {{ secret_names}}"
 
 
     - name: get k8s_dashboard_token
@@ -398,4 +399,4 @@
 
     - name: print k8s_dashboard_token
       debug:
-        msg: "k8s_dashboard_token : {{ k8s_dashboard_token}}"
+        msg: "k8s_dashboard_token: {{ k8s_dashboard_token}}"

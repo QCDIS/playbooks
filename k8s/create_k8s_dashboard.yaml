@@ -385,11 +385,11 @@
       k8s_info:
         kind: secret
         namespace: default
-      register: k8s_sercrets
+      register: k8s_secrets
       
-    - name: print k8s_sercrets
+    - name: print k8s_secrets
       debug:
-        var: k8s_sercrets      
+        var: k8s_secrets      
       
     - name: get k8s_dashboard_token
       shell: kubectl describe secret $(kubectl get secret | grep admin-user | awk '{print $1}') | tail -1

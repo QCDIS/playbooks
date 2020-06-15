@@ -370,31 +370,31 @@
 #                     emptyDir: {}
 
 
-#     - name: Get a list of services in default ns
-#       k8s_info:
-#         kind: service
-#         namespace: default
-#       register: k8s_services
+    - name: Get a list of services in default ns
+      k8s_info:
+        kind: service
+        namespace: default
+      register: k8s_services
 
-#     - name: print k8s_services
-#       debug:
-#         var:  k8s_services
+    - name: print k8s_services
+      debug:
+        var:  k8s_services
 
 
-#     - name: Get a list of services in default ns
-#       k8s_info:
-#         kind: secret
-#         namespace: default
-#       register: k8s_secrets
+    - name: Get a list of services in default ns
+      k8s_info:
+        kind: secret
+        namespace: default
+      register: k8s_secrets
       
-#     - name: print k8s_secrets
-#       debug:
-#         var: k8s_secrets      
+    - name: print k8s_secrets
+      debug:
+        var: k8s_secrets      
       
-#     - name: get k8s_dashboard_token
-#       shell: kubectl describe secret $(kubectl get secret | grep admin-user | awk '{print $1}') | tail -1
-#       register: k8s_dashboard_token
+    - name: get k8s_dashboard_token
+      shell: kubectl describe secret $(kubectl get secret | grep admin-user | awk '{print $1}') | tail -1
+      register: k8s_dashboard_token
 
-#     - name: print k8s_dashboard_token
-#       debug:
-#         var: k8s_dashboard_token
+    - name: print k8s_dashboard_token
+      debug:
+        var: k8s_dashboard_token

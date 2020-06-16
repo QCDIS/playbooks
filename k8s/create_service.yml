@@ -71,3 +71,14 @@
       k8s:
         state: "{{k8s_state}}"
         src: /tmp/service_node_port_template.yaml
+        
+        
+    - name: Get a list of services ns
+      k8s_info:
+        kind: service
+        namespace: "{{ k8s_namespace }}"
+      register: k8s_services
+
+    - name: print k8s_services
+      debug:
+        var:  k8s_services        

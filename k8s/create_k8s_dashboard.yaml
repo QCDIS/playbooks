@@ -393,7 +393,7 @@
 #         var: k8s_secrets      
       
     - name: get k8s_dashboard_token
-      shell: kubectl describe secret $(kubectl get secret | grep admin-user | awk '{print $1}') | tail -1 
+      shell: kubectl describe secret $(kubectl get secret | grep admin-user | awk '{print $1}') | tail -1
       register: k8s_dashboard_token
 
     - name: print k8s_dashboard_token

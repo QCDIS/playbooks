@@ -5,22 +5,22 @@
     k8s_namespace: kubernetes-dashboard
   tasks:   
 
-    - pip:
-        name:
-            - openshift==0.11.0
-            - kubernetes==11.0.0
+#     - pip:
+#         name:
+#             - openshift==0.11.0
+#             - kubernetes==11.0.0
 
-    - name: Create admin-user ServiceAccount
-      k8s:
-        state: "{{k8s_state}}"
-        definition:
-            apiVersion: v1
-            kind: ServiceAccount
-            metadata:
-                name: admin-user
-                #namespace: kubernetes-dashboard
-                namespace: default
-                #kube-system     
+#     - name: Create admin-user ServiceAccount
+#       k8s:
+#         state: "{{k8s_state}}"
+#         definition:
+#             apiVersion: v1
+#             kind: ServiceAccount
+#             metadata:
+#                 name: admin-user
+#                 #namespace: kubernetes-dashboard
+#                 namespace: default
+#                 #kube-system     
                 
                 
 #     - name: Create admin-user ClusterRoleBinding
@@ -371,15 +371,15 @@
 #                     emptyDir: {}
 
 
-    - name: Get a list of services ns
-      k8s_info:
-        kind: service
-        namespace: "{{ k8s_namespace }}"
-      register: k8s_services
+#     - name: Get a list of services ns
+#       k8s_info:
+#         kind: service
+#         namespace: "{{ k8s_namespace }}"
+#       register: k8s_services
 
-    - name: print k8s_services
-      debug:
-        var:  k8s_services
+#     - name: print k8s_services
+#       debug:
+#         var:  k8s_services
 
 
 #     - name: Get a list of secrets in default ns

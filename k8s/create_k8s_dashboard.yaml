@@ -2,6 +2,7 @@
 - hosts: master
   vars:
     k8s_state: present
+    k8s_namespace: kubernetes-dashboard
   tasks:   
 
     - pip:
@@ -37,7 +38,7 @@
 #             subjects:
 #             - kind: ServiceAccount
 #               name: admin-user
-#               #namespace: kubernetes-dashboard
+#               #namespace: "{{ k8s_namespace }}"
 #               namespace: default
 
 #     - name: Create kubernetes-dashboard Namespace
@@ -47,7 +48,7 @@
 #             apiVersion: v1
 #             kind: Namespace
 #             metadata:
-#                 name: kubernetes-dashboard
+#                 name: "{{ k8s_namespace }}"
 
 
 #     - name: Create kubernetes-dashboard ServiceAccount
@@ -60,7 +61,7 @@
 #                 labels:
 #                     k8s-app: kubernetes-dashboard
 #                 name: kubernetes-dashboard
-#                 namespace: kubernetes-dashboard
+#                 namespace: "{{ k8s_namespace }}"
 
 
 #     - name: Create kubernetes-dashboard Service
@@ -73,7 +74,7 @@
 #             labels:
 #               k8s-app: kubernetes-dashboard
 #             name: kubernetes-dashboard
-#             namespace: kubernetes-dashboard
+#             namespace: "{{ k8s_namespace }}"
 #           spec:
 #             type: NodePort
 #             ports:
@@ -92,7 +93,7 @@
 #                 labels:
 #                     k8s-app: kubernetes-dashboard
 #                 name: kubernetes-dashboard-certs
-#                 namespace: kubernetes-dashboard
+#                 namespace: "{{ k8s_namespace }}"
 #             type: Opaque
 
 #     - name: Create kubernetes-dashboard-csrf Secret
@@ -105,7 +106,7 @@
 #             labels:
 #               k8s-app: kubernetes-dashboard
 #             name: kubernetes-dashboard-csrf
-#             namespace: kubernetes-dashboard
+#             namespace: "{{ k8s_namespace }}"
 #           type: Opaque
 #           data:
 #             csrf: ""
@@ -120,7 +121,7 @@
 #                 labels:
 #                     k8s-app: kubernetes-dashboard
 #                 name: kubernetes-dashboard-key-holder
-#                 namespace: kubernetes-dashboard
+#                 namespace: "{{ k8s_namespace }}"
 #             type: Opaque
 
 
@@ -134,7 +135,7 @@
 #                 labels:
 #                     k8s-app: kubernetes-dashboard
 #                 name: kubernetes-dashboard-settings
-#                 namespace: kubernetes-dashboard
+#                 namespace: "{{ k8s_namespace }}"
 
 #     - name: Create kubernetes-dashboard Role
 #       k8s:
@@ -146,7 +147,7 @@
 #                 labels:
 #                     k8s-app: kubernetes-dashboard
 #                 name: kubernetes-dashboard
-#                 namespace: kubernetes-dashboard
+#                 namespace: "{{ k8s_namespace }}"
 #             rules:
 #             # Allow Dashboard to get, update and delete Dashboard exclusive secrets.
 #                 - apiGroups: [""]
@@ -196,7 +197,7 @@
 #                 labels:
 #                     k8s-app: kubernetes-dashboard
 #                 name: kubernetes-dashboard
-#                 namespace: kubernetes-dashboard
+#                 namespace: "{{ k8s_namespace }}"
 #             roleRef:
 #                 apiGroup: rbac.authorization.k8s.io
 #                 kind: Role
@@ -204,7 +205,7 @@
 #             subjects:
 #                 - kind: ServiceAccount
 #                   name: kubernetes-dashboard
-#                   namespace: kubernetes-dashboard
+#                   namespace: "{{ k8s_namespace }}"
 
 #     - name: Create kubernetes-dashboard ClusterRoleBinding
 #       k8s:
@@ -221,7 +222,7 @@
 #             subjects:
 #                 - kind: ServiceAccount
 #                   name: kubernetes-dashboard
-#                   namespace: kubernetes-dashboard
+#                   namespace: "{{ k8s_namespace }}"
 
 
 
@@ -235,7 +236,7 @@
 #             labels:
 #               k8s-app: kubernetes-dashboard
 #             name: kubernetes-dashboard
-#             namespace: kubernetes-dashboard
+#             namespace: "{{ k8s_namespace }}"
 #           spec:
 #             replicas: 1
 #             revisionHistoryLimit: 10
@@ -256,7 +257,7 @@
 #                         protocol: TCP
 #                     args:
 #                       - --auto-generate-certificates
-#                       - --namespace=kubernetes-dashboard
+#                       - --namespace="{{ k8s_namespace }}"
 #                       # Uncomment the following line to manually specify Kubernetes API server Host
 #                       # If not specified, Dashboard will attempt to auto discover the API server and connect
 #                       # to it. Uncomment only if the default does not work.
@@ -304,7 +305,7 @@
 #             labels:
 #               k8s-app: dashboard-metrics-scraper
 #             name: dashboard-metrics-scraper
-#             namespace: kubernetes-dashboard
+#             namespace: "{{ k8s_namespace }}"
 #           spec:
 #             ports:
 #               - port: 8000
@@ -323,7 +324,7 @@
 #             labels:
 #               k8s-app: dashboard-metrics-scraper
 #             name: dashboard-metrics-scraper
-#             namespace: kubernetes-dashboard
+#             namespace: "{{ k8s_namespace }}"
 #           spec:
 #             replicas: 1
 #             revisionHistoryLimit: 10
@@ -370,10 +371,10 @@
 #                     emptyDir: {}
 
 
-    - name: Get a list of services in default ns
+    - name: Get a list of services ns
       k8s_info:
         kind: service
-        namespace: default
+        namespace: "{{ k8s_namespace }}"
       register: k8s_services
 
     - name: print k8s_services
@@ -381,7 +382,7 @@
         var:  k8s_services
 
 
-    - name: Get a list of services in default ns
+    - name: Get a list of secrets in default ns
       k8s_info:
         kind: secret
         namespace: default
@@ -391,10 +392,10 @@
       debug:
         var: k8s_secrets      
       
-    - name: get k8s_dashboard_token
-      shell: kubectl describe secret $(kubectl get secret | grep admin-user | awk '{print $1}') | tail -1
-      register: k8s_dashboard_token
+#     - name: get k8s_dashboard_token
+#       shell: kubectl describe secret $(kubectl get secret | grep admin-user | awk '{print $1}') | tail -1
+#       register: k8s_dashboard_token
 
-    - name: print k8s_dashboard_token
-      debug:
-        var: k8s_dashboard_token
+#     - name: print k8s_dashboard_token
+#       debug:
+#         var: k8s_dashboard_token

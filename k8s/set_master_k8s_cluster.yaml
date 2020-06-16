@@ -7,72 +7,72 @@
       register: kubectl_command_result
       ignore_errors: True
       
-#     - name: print kubectl cluster return code
-#       debug:
-#         msg: "kubectl return code : {{ kubectl_command_result.rc}}"   
+    - name: print kubectl cluster return code
+      debug:
+        msg: "kubectl return code : {{ kubectl_command_result.rc}}"   
       
-#     - name: disable swap
-#       become: yes
-#       shell: swapoff -a     
-#       when: kubectl_command_result.rc != 0
+    - name: disable swap
+      become: yes
+      shell: swapoff -a     
+      when: kubectl_command_result.rc != 0
   
-#     - name: kubeadm init
-#       shell: kubeadm init --ignore-preflight-errors=NumCPU
-#       become: yes  
-#       when: kubectl_command_result.rc != 0
+    - name: kubeadm init
+      shell: kubeadm init --ignore-preflight-errors=NumCPU
+      become: yes  
+      when: kubectl_command_result.rc != 0
   
-#     - name: Create directory .kube
-#       file:
-#         path: $HOME/.kube
-#         state: directory
-#         recurse: yes        
-#       when: kubectl_command_result.rc != 0
+    - name: Create directory .kube
+      file:
+        path: $HOME/.kube
+        state: directory
+        recurse: yes        
+      when: kubectl_command_result.rc != 0
         
-#     - name: copy admin.conf
-#       become: yes     
-#       copy:
-#         src: /etc/kubernetes/admin.conf
-#         dest: "/home/{{ ansible_ssh_user }}/.kube/config"
-#         owner: "{{ ansible_ssh_user }}"
-#         group: "{{ ansible_ssh_user }}"
-#         remote_src: True
-#       when: kubectl_command_result.rc != 0
+    - name: copy admin.conf
+      become: yes     
+      copy:
+        src: /etc/kubernetes/admin.conf
+        dest: "/home/{{ ansible_ssh_user }}/.kube/config"
+        owner: "{{ ansible_ssh_user }}"
+        group: "{{ ansible_ssh_user }}"
+        remote_src: True
+      when: kubectl_command_result.rc != 0
       
-#     - name: set bridge
-#       sysctl:
-#         name: net.bridge.bridge-nf-call-iptables
-#         value: 1
-#         state: present    
-#       become: yes   
+    - name: set bridge
+      sysctl:
+        name: net.bridge.bridge-nf-call-iptables
+        value: 1
+        state: present    
+      become: yes   
       
-#     - name: kubeadm set weave
-#       shell: kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"     
+    - name: kubeadm set weave
+      shell: kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"     
        
-#     - name: kubectl taint nodes
-#       shell: kubectl taint nodes --all node-role.kubernetes.io/master-  
-#       when: kubectl_command_result.rc != 0
+    - name: kubectl taint nodes
+      shell: kubectl taint nodes --all node-role.kubernetes.io/master-  
+      when: kubectl_command_result.rc != 0
       
         
         
-# - hosts: master
-#   tasks: 
+- hosts: master
+  tasks: 
 
-#     - name: get nodes
-#       shell: kubectl get nodes
-#       register: nodes_out
+    - name: get nodes
+      shell: kubectl get nodes
+      register: nodes_out
               
-#     - name: print nodes
-#       debug:
-#         var: nodes_out
+    - name: print nodes
+      debug:
+        var: nodes_out
         
         
-#     - name: get api key
-#       shell: kubectl describe secret $(kubectl get secrets | grep default | cut -f1 -d ' ') | grep -E '^token' | cut -f2 -d':' | tr -d '\t'
-#       register: api_key
+    - name: get api key
+      shell: kubectl describe secret $(kubectl get secrets | grep default | cut -f1 -d ' ') | grep -E '^token' | cut -f2 -d':' | tr -d '\t'
+      register: api_key
               
-#     - name: print api_key
-#       debug:
-#         var: api_key
+    - name: print api_key
+      debug:
+        var: api_key
         
         
         

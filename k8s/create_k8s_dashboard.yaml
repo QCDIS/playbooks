@@ -12,8 +12,7 @@
             - openshift==0.11.0
             - kubernetes==11.0.0
 
-    - name: Create admin-user ServiceAccount
-      when: k8s_dashboard_installed.stat.exists == True                
+    - name: Create admin-user ServiceAccount            
       k8s:
         state: "{{k8s_state}}"
         definition:

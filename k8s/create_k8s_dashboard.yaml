@@ -3,13 +3,14 @@
   vars:
     k8s_state: present
     k8s_namespace: kubernetes-dashboard
+    k8s_dashboard_installed: lookup('env', 'k8s_dashboard_installed') 
   tasks:   
 
     - pip:
         name:
             - openshift==0.11.0
             - kubernetes==11.0.0
-        when: "{{ lookup('env', 'k8s_dashboard_installed') }}" == True            
+        when: k8s_dashboard_installed.stat.exists == True
 
     - name: Create admin-user ServiceAccount
       k8s:

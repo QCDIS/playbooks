@@ -9,6 +9,7 @@
         name:
             - openshift==0.11.0
             - kubernetes==11.0.0
+        when: "{{ lookup('env', 'k8s_dashboard_installed') }}" == True            
 
     - name: Create admin-user ServiceAccount
       k8s:
@@ -402,3 +403,5 @@
     - name: print k8s_dashboard_token
       debug:
         var: k8s_dashboard_token
+      environment:
+        k8s_dashboard_installed: True

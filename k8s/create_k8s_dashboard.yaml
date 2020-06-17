@@ -1,5 +1,6 @@
 ---       
 - hosts: master
+  gather_facts: no
   vars:
     k8s_state: present
     k8s_namespace: kubernetes-dashboard

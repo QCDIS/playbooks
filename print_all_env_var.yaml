@@ -1,0 +1,12 @@
+
+- hosts: localhost
+  gather_facts: true
+
+  tasks:
+    - name: Printing all environment variables
+      debug:
+        msg: "{{ ansible_env }}"
+
+    - name: Printing docker image
+      debug:
+        msg: "{{ ansible_env.DOCKER_IMAGE }}"

@@ -1,26 +1,33 @@
----
+---        
+- hosts: localhost
+  gather_facts: true
+
+  tasks:
+  
+    - name: Add vars to dummy host
+      add_host:
+        name:   "k8s_deploy_vars_holder"
+        docker_image:  "{{ ansible_env.DOCKER_IMAGE }}"   
+        docker_service_name:  "{{ ansible_env.DOCKER_SERVICE_NAME }}"     
+        container_port:  "{{ lookup('env','CONTAINER_PORT') }}"     
+        k8s_namespace:  "{{ ansible_env.K8s_NAMESPACE }}"    
+
 - hosts: master
+  gather_facts: true
   vars:
     k8s_state: present
-    service_name: "{{ lookup('env','DOCKER_SERVICE_NAME') }}"
-    container_port: "{{ lookup('env','CONTAINER_PORT')}}"
-    docker_image:  "{{ lookup('env','DOCKER_IMAGE')}}"
-    namespace:  "{{ lookup('env','K8s_NAMESPACE')}}"
-    ansible_python_interpreter: /usr/bin/python3    
-  tasks:
+    docker_image: "{{ hostvars['k8s_deploy_vars_holder']['docker_image'] }}"
+    docker_service_name: "{{ hostvars['k8s_deploy_vars_holder']['docker_service_name'] }}"
+    
+    k8s_namespace: "{{ hostvars['k8s_deploy_vars_holder']['k8s_namespace'] }}"
+  
+  tasks:  
+  
+    - set_fact:
+        container_port: "{{ hostvars['k8s_deploy_vars_holder']['container_port'] }}"
+        when: hostvars['k8s_deploy_vars_holder']['container_port'].stat.exists
+        
 
-    - name: print service_name
-      debug:
-        var: "{{service_name}}"
-        
-    - name: print container_port
-      debug:
-        var: "{{container_port}}"      
-        
-    - name: print docker_image
-      debug:
-        var: "{{docker_image}}"                       
-       
     - pip:
         name:
             - openshift==0.11.0
@@ -29,58 +36,80 @@
             
     - name: Create a k8s namespace
       k8s:
-        name: application
+        name: "{{ k8s_namespace }}"        
         api_version: v1
         kind: Namespace
         state: present            
+        
+    - name: Download deployment_template.yaml
+      get_url:
+        url: https://raw.githubusercontent.com/QCDIS/playbooks/master/k8s/deployment_template.yaml
+        dest: /tmp/deployment_template.yaml
+        
+        
+    - name: Download service_node_port_template.yaml
+      get_url:
+        url: https://raw.githubusercontent.com/QCDIS/playbooks/master/k8s/service_node_port_template.yaml
+        dest: /tmp/service_node_port_template.yaml
+        
+        
+    - name: replace multiple 
+      replace:
+        path: "{{ item.path }}"
+        regexp: "{{ item.regexp1 }}"
+        replace: "{{ item.replace }}"
+      with_items:
+        - { path: '/tmp/deployment_template.yaml', regexp1: 'K8s_NAMESPACE', replace: "{{ k8s_namespace }}"}
+        - { path: '/tmp/deployment_template.yaml', regexp1: 'SERVICE_NAME', replace: "{{ docker_service_name }}"}    
+        - { path: '/tmp/deployment_template.yaml', regexp1: 'DOCKER_IMAGE', replace: "{{ docker_image }}"}  
+        - { path: '/tmp/service_node_port_template.yaml', regexp1: 'K8s_NAMESPACE', replace: "{{ k8s_namespace }}"}
+        - { path: '/tmp/service_node_port_template.yaml', regexp1: 'SERVICE_NAME', replace: "{{ docker_service_name }}"}            
+        
+    - name: add ports
+      replace:
+        path: "{{ item.path }}"
+        regexp: "{{ item.regexp1 }}"
+        replace: "{{ item.replace }}"
+      with_items:
+        - { path: '/tmp/deployment_template.yaml', regexp1: 'CONTAINER_PORT', replace: "{{ container_port }}"}  
+        - { path: '/tmp/service_node_port_template.yaml', regexp1: 'CONTAINER_PORT', replace: "{{ container_port }}"}  
+      when: container_port is defined
+      
+      
+    - name: delete ports
+      replace:
+        path: "{{ item.path }}"
+        regexp: "{{ item.regexp1 }}"
+        replace: "{{ item.replace }}"
+      with_items:
+        - { path: '/tmp/deployment_template.yaml', regexp1: 'ports:', replace: ""}        
+        - { path: '/tmp/deployment_template.yaml', regexp1: '- containerPort: CONTAINER_PORT', replace: ""}  
+        - { path: '/tmp/service_node_port_template.yaml', regexp1: 'ports:', replace: ""}  
+        - { path: '/tmp/service_node_port_template.yaml', regexp1: '- port: CONTAINER_PORT', replace: ""}  
+        - { path: '/tmp/service_node_port_template.yaml', regexp1: 'protocol: TCP', replace: ""}  
+        - { path: '/tmp/service_node_port_template.yaml', regexp1: 'name: http', replace: ""}  
+      when: container_port is undefined      
+       
+      
 
     - name: Create deployment
       k8s:
         state: "{{k8s_state}}"
-        definition:
-          apiVersion: apps/v1
-          kind: Deployment
-          metadata:
-            namespace: application
-            annotations:
-            labels:
-              service: ws-pema
-            name: ws-pema
-          spec:
-            selector:
-              matchLabels:
-                service: ws-pema
-            replicas: 1
-            template:
-              metadata:
-                labels:
-                  service: ws-pema
-              spec:
-                containers:
-                - image: alogo53/ws-pema-lifewatch
-                  name: ws-pema
-                  imagePullPolicy: Always
-                  ports:
-                  - containerPort: 8080
+        src: /tmp/deployment_template.yaml
 
 
     - name: Create service
       k8s:
         state: "{{k8s_state}}"
-        definition:
-          apiVersion: v1
-          kind: Service
-          metadata:
-            namespace: application
-            labels:
-              service: ws-pema
-            name: ws-pema
-          spec:
-            type: NodePort  
-            ports:
-            - port: 8080
-              protocol: TCP
-              name: http
-            selector:
-              service: ws-pema
+        src: /tmp/service_node_port_template.yaml
+        
+        
+    - name: Get a list of services ns
+      k8s_info:
+        kind: service
+        namespace: "{{ k8s_namespace }}"
+      register: k8s_services
 
+    - name: print k8s_services
+      debug:
+        var:  k8s_services        

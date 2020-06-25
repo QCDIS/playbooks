@@ -18,10 +18,16 @@
     k8s_state: present
     docker_image: "{{ hostvars['k8s_deploy_vars_holder']['docker_image'] }}"
     docker_service_name: "{{ hostvars['k8s_deploy_vars_holder']['docker_service_name'] }}"
-    container_port: "{{ hostvars['k8s_deploy_vars_holder']['container_port'] }}"
+    
     k8s_namespace: "{{ hostvars['k8s_deploy_vars_holder']['k8s_namespace'] }}"
   
-  tasks:      
+  tasks:  
+  
+    - set_fact:
+        container_port: "{{ hostvars['k8s_deploy_vars_holder']['container_port'] }}"
+        when: hostvars['k8s_deploy_vars_holder']['container_port'].stat.exists
+        
+
     - pip:
         name:
             - openshift==0.11.0
@@ -56,10 +62,35 @@
         - { path: '/tmp/deployment_template.yaml', regexp1: 'K8s_NAMESPACE', replace: "{{ k8s_namespace }}"}
         - { path: '/tmp/deployment_template.yaml', regexp1: 'SERVICE_NAME', replace: "{{ docker_service_name }}"}    
         - { path: '/tmp/deployment_template.yaml', regexp1: 'DOCKER_IMAGE', replace: "{{ docker_image }}"}  
-        - { path: '/tmp/deployment_template.yaml', regexp1: 'CONTAINER_PORT', replace: "{{ container_port }}"}  
         - { path: '/tmp/service_node_port_template.yaml', regexp1: 'K8s_NAMESPACE', replace: "{{ k8s_namespace }}"}
-        - { path: '/tmp/service_node_port_template.yaml', regexp1: 'SERVICE_NAME', replace: "{{ docker_service_name }}"}    
+        - { path: '/tmp/service_node_port_template.yaml', regexp1: 'SERVICE_NAME', replace: "{{ docker_service_name }}"}            
+        
+    - name: add ports
+      replace:
+        path: "{{ item.path }}"
+        regexp: "{{ item.regexp1 }}"
+        replace: "{{ item.replace }}"
+      with_items:
+        - { path: '/tmp/deployment_template.yaml', regexp1: 'CONTAINER_PORT', replace: "{{ container_port }}"}  
         - { path: '/tmp/service_node_port_template.yaml', regexp1: 'CONTAINER_PORT', replace: "{{ container_port }}"}  
+      when: container_port is defined
+      
+      
+    - name: delete ports
+      replace:
+        path: "{{ item.path }}"
+        regexp: "{{ item.regexp1 }}"
+        replace: "{{ item.replace }}"
+      with_items:
+        - { path: '/tmp/deployment_template.yaml', regexp1: 'ports:', replace: ""}        
+        - { path: '/tmp/deployment_template.yaml', regexp1: '- containerPort: CONTAINER_PORT', replace: ""}  
+        - { path: '/tmp/service_node_port_template.yaml', regexp1: 'ports:', replace: ""}  
+        - { path: '/tmp/service_node_port_template.yaml', regexp1: '- port: CONTAINER_PORT', replace: ""}  
+        - { path: '/tmp/service_node_port_template.yaml', regexp1: 'protocol: TCP', replace: ""}  
+        - { path: '/tmp/service_node_port_template.yaml', regexp1: 'name: http', replace: ""}  
+      when: container_port is undefined      
+       
+      
 
     - name: Create deployment
       k8s:

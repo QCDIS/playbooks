@@ -25,12 +25,12 @@
   
     - set_fact:
         container_port: "{{ hostvars['k8s_deploy_vars_holder']['container_port'] }}"
-        when: hostvars['k8s_deploy_vars_holder']['container_port'] is defined
+        when: hostvars['k8s_deploy_vars_holder']['container_port'] != ""
 
         
     - debug:
         var: container_port
-      when: container_port is defined
+      when: container_port != ""
         
 
     - pip:
@@ -77,7 +77,7 @@
         replace: "{{ item.replace }}"
       with_items:
         - { path: '/tmp/deployment_template.yaml', regexp1: 'CONTAINER_PORT', replace: "{{ container_port }}"}  
-      when: container_port is defined
+      when: container_port != ""
       
       
     - name: delete ports
@@ -88,8 +88,7 @@
       with_items:
         - { path: '/tmp/deployment_template.yaml', regexp1: '        ports:', replace: ""}        
         - { path: '/tmp/deployment_template.yaml', regexp1: '        - containerPort: CONTAINER_PORT', replace: ""}  
-      when: container_port is undefined
-       
+      when: container_port == ""
       
 
     - name: Create deployment
@@ -103,7 +102,7 @@
       k8s:
         state: "{{k8s_state}}"
         src: /tmp/service_node_port_template.yaml
-        when: container_port is defined
+        when: container_port != ""
       
         
         

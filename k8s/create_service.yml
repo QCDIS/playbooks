@@ -84,10 +84,6 @@
       with_items:
         - { path: '/tmp/deployment_template.yaml', regexp1: 'ports:', replace: ""}        
         - { path: '/tmp/deployment_template.yaml', regexp1: '- containerPort: CONTAINER_PORT', replace: ""}  
-        - { path: '/tmp/service_node_port_template.yaml', regexp1: 'ports:', replace: ""}  
-        - { path: '/tmp/service_node_port_template.yaml', regexp1: '- port: CONTAINER_PORT', replace: ""}  
-        - { path: '/tmp/service_node_port_template.yaml', regexp1: 'protocol: TCP', replace: ""}  
-        - { path: '/tmp/service_node_port_template.yaml', regexp1: 'name: http', replace: ""}  
       when: container_port is undefined      
        
       
@@ -96,6 +92,7 @@
       k8s:
         state: "{{k8s_state}}"
         src: /tmp/deployment_template.yaml
+        when: container_port is defined
 
 
     - name: Create service

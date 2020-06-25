@@ -82,8 +82,8 @@
         regexp: "{{ item.regexp1 }}"
         replace: "{{ item.replace }}"
       with_items:
-        - { path: '/tmp/deployment_template.yaml', regexp1: 'ports:', replace: ""}        
-        - { path: '/tmp/deployment_template.yaml', regexp1: '- containerPort: CONTAINER_PORT', replace: ""}  
+        - { path: '/tmp/deployment_template.yaml', regexp1: '        ports:', replace: ""}        
+        - { path: '/tmp/deployment_template.yaml', regexp1: '        - containerPort: CONTAINER_PORT', replace: ""}  
       when: container_port is undefined      
        
       

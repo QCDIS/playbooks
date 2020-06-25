@@ -29,7 +29,7 @@
         
     - debug:
         var: container_port
-        when: container_port.stat.exists
+      when: container_port.stat.exists
         
 
     - pip:

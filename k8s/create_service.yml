@@ -102,7 +102,7 @@
       k8s:
         state: "{{k8s_state}}"
         src: /tmp/service_node_port_template.yaml
-        when: container_port != ""
+      when: container_port != ""
       
         
         

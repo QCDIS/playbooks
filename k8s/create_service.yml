@@ -92,13 +92,14 @@
       k8s:
         state: "{{k8s_state}}"
         src: /tmp/deployment_template.yaml
-        when: container_port is defined
+       
 
 
     - name: Create service
       k8s:
         state: "{{k8s_state}}"
         src: /tmp/service_node_port_template.yaml
+        when: container_port is defined
         
         
     - name: Get a list of services ns

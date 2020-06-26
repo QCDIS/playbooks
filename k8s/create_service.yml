@@ -18,14 +18,14 @@
     k8s_state: present
     docker_image: "{{ hostvars['k8s_deploy_vars_holder']['docker_image'] }}"
     docker_service_name: "{{ hostvars['k8s_deploy_vars_holder']['docker_service_name'] }}"
-    
+    container_port: "{{ hostvars['k8s_deploy_vars_holder']['container_port'] }}"
     k8s_namespace: "{{ hostvars['k8s_deploy_vars_holder']['k8s_namespace'] }}"
   
   tasks:  
   
-    - set_fact:
-        container_port: "{{ hostvars['k8s_deploy_vars_holder']['container_port'] }}"
-        when: hostvars['k8s_deploy_vars_holder']['container_port'] != ""
+#     - set_fact:
+#         container_port: "{{ hostvars['k8s_deploy_vars_holder']['container_port'] }}"
+#         when: hostvars['k8s_deploy_vars_holder']['container_port'] != ""
 
         
     - debug:
@@ -77,18 +77,18 @@
         replace: "{{ item.replace }}"
       with_items:
         - { path: '/tmp/deployment_template.yaml', regexp1: 'CONTAINER_PORT', replace: "{{ container_port }}"}  
-      when: container_port != ""
+#       when: container_port != ""
       
       
-    - name: delete ports
-      replace:
-        path: "{{ item.path }}"
-        regexp: "{{ item.regexp1 }}"
-        replace: "{{ item.replace }}"
-      with_items:
-        - { path: '/tmp/deployment_template.yaml', regexp1: '        ports:', replace: ""}        
-        - { path: '/tmp/deployment_template.yaml', regexp1: '        - containerPort: CONTAINER_PORT', replace: ""}  
-      when: container_port == ""
+#     - name: delete ports
+#       replace:
+#         path: "{{ item.path }}"
+#         regexp: "{{ item.regexp1 }}"
+#         replace: "{{ item.replace }}"
+#       with_items:
+#         - { path: '/tmp/deployment_template.yaml', regexp1: '        ports:', replace: ""}        
+#         - { path: '/tmp/deployment_template.yaml', regexp1: '        - containerPort: CONTAINER_PORT', replace: ""}  
+#       when: container_port == ""
       
 
     - name: Create deployment
@@ -102,7 +102,7 @@
       k8s:
         state: "{{k8s_state}}"
         src: /tmp/service_node_port_template.yaml
-      when: container_port != ""
+#       when: container_port != ""
       
         
         

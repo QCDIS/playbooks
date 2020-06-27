@@ -11,6 +11,7 @@
         docker_service_name:  "{{ ansible_env.DOCKER_SERVICE_NAME }}"     
         container_port:  "{{ lookup('env','CONTAINER_PORT') }}"     
         k8s_namespace:  "{{ ansible_env.K8s_NAMESPACE }}"    
+        docker_env_variables:  "{{ ansible_env.DOCKER_ENV_VARIABLES }}" 
 
 - hosts: master
   gather_facts: true

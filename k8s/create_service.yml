@@ -34,7 +34,7 @@
         var: docker_env_variables
         
         
-    - copy: content="{{ docker_env_variables }}" dest=/tmp/config_map.yaml
+    - copy: content="{{ docker_env_variables }} | to_nice_yaml( width=50, explicit_start=True, explicit_end=True)" dest=/tmp/config_map.yaml
     
     
     - name: Display /tmp/config_map.yaml contents

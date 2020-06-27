@@ -68,17 +68,10 @@
         - { path: '/tmp/deployment_template.yaml', regexp1: 'K8s_NAMESPACE', replace: "{{ k8s_namespace }}"}
         - { path: '/tmp/deployment_template.yaml', regexp1: 'SERVICE_NAME', replace: "{{ docker_service_name }}"}    
         - { path: '/tmp/deployment_template.yaml', regexp1: 'DOCKER_IMAGE', replace: "{{ docker_image }}"}  
-        - { path: '/tmp/service_node_port_template.yaml', regexp1: 'K8s_NAMESPACE', replace: "{{ k8s_namespace }}"}
-        - { path: '/tmp/service_node_port_template.yaml', regexp1: 'SERVICE_NAME', replace: "{{ docker_service_name }}"}            
-        
-    - name: add ports
-      replace:
-        path: "{{ item.path }}"
-        regexp: "{{ item.regexp1 }}"
-        replace: "{{ item.replace }}"
-      with_items:
         - { path: '/tmp/deployment_template.yaml', regexp1: 'CONTAINER_PORT', replace: "{{ container_port }}"}  
-#       when: container_port != ""
+        - { path: '/tmp/service_node_port_template.yaml', regexp1: 'K8s_NAMESPACE', replace: "{{ k8s_namespace }}"}
+        - { path: '/tmp/service_node_port_template.yaml', regexp1: 'SERVICE_NAME', replace: "{{ docker_service_name }}"}    
+        
       
       
 #     - name: delete ports

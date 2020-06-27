@@ -21,6 +21,7 @@
     docker_service_name: "{{ hostvars['k8s_deploy_vars_holder']['docker_service_name'] }}"
     container_port: "{{ hostvars['k8s_deploy_vars_holder']['container_port'] }}"
     k8s_namespace: "{{ hostvars['k8s_deploy_vars_holder']['k8s_namespace'] }}"
+    docker_env_variables: "{{ hostvars['k8s_deploy_vars_holder']['docker_env_variables'] }}"
   
   tasks:  
   

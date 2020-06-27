@@ -31,8 +31,18 @@
 
         
     - debug:
-        var: docker_env_variables.keys
+        var: docker_env_variables
         
+        
+    - copy: content="{{ docker_env_variables }}" dest=/tmp/config_map.yaml
+    
+    
+    - name: Display /tmp/config_map.yaml contents
+      command: cat /tmp/config_map.yaml
+      register: command_output    
+
+    - debug:
+        var: command_output.stdout
 
 #     - pip:
 #         name:

@@ -31,7 +31,7 @@
 
         
     - debug:
-        var: docker_env_variables
+        var: docker_env_variables.keys
         
 
     - pip:

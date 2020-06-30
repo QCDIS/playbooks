@@ -13,27 +13,27 @@
             - kubernetes==11.0.0
             
             
-    - name: Download k8s_dashboard.yaml
-      get_url:
-        url: https://raw.githubusercontent.com/QCDIS/playbooks/master/k8s/k8s_dashboard.yaml
-        dest: /tmp/k8s_dashboard.yaml         
+#     - name: Download k8s_dashboard.yaml
+#       get_url:
+#         url: https://raw.githubusercontent.com/QCDIS/playbooks/master/k8s/k8s_dashboard.yaml
+#         dest: /tmp/k8s_dashboard.yaml         
 
 
-    - name: Create k8s_dashboard
-      k8s:
-        state: "{{k8s_state}}"
-        src: /tmp/k8s_dashboard.yaml
+#     - name: Create k8s_dashboard
+#       k8s:
+#         state: "{{k8s_state}}"
+#         src: /tmp/k8s_dashboard.yaml
 
 
-#     - name: Get a list of secrets in default ns
-#       k8s_info:
-#         kind: secret
-#         namespace: default
-#       register: k8s_secrets
+# #     - name: Get a list of secrets in default ns
+# #       k8s_info:
+# #         kind: secret
+# #         namespace: default
+# #       register: k8s_secrets
       
-#     - name: print k8s_secrets
-#       debug:
-#         var: k8s_secrets      
+# #     - name: print k8s_secrets
+# #       debug:
+# #         var: k8s_secrets      
       
     - name: get k8s_dashboard_token
       shell: kubectl describe secret $(kubectl get secret | grep admin-user | awk '{print $1}') | tail -1

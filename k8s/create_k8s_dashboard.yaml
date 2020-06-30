@@ -44,6 +44,6 @@
   
     - name: print k8s_dashboard_token
       debug:
-        var: k8s_dashboard_token
+        var: k8s_dashboard_token.stdout
       environment:
         k8s_dashboard_installed: True

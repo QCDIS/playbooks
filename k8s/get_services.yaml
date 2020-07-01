@@ -19,13 +19,12 @@
             - openshift==0.11.0
             - kubernetes==11.0.0
     
-    - name: Get a list of all service objects
+    - name: Get a list of services
       k8s_info:
-        api_version: v1
         kind: Service
         namespace: "{{ k8s_namespace }}"
-      register: k8s_services        
-             
-    - name: Print k8s_services
+      register: k8s_services
+      
+    - name: print k8s_secrets
       debug:
-        var: "{{ k8s_services }}"     
+        var: k8s_services      

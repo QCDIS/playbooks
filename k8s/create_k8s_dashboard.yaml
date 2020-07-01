@@ -47,3 +47,14 @@
         var: k8s_dashboard_token
       environment:
         k8s_dashboard_installed: True
+        
+        
+    - name: Get a list of services
+      k8s_info:
+        kind: Service
+        namespace: "{{ k8s_namespace }}"
+      register: k8s_services
+      
+    - name: print k8s_secrets
+      debug:
+        var: k8s_services              

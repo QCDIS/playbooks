@@ -2,19 +2,18 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: K8s_NAMESPACE
-  annotations:
   labels:
-    service: SERVICE_NAME
+    io.kompose.service: SERVICE_NAME
   name: SERVICE_NAME
 spec:
   selector:
     matchLabels:
-      service: SERVICE_NAME
+      io.kompose.service: SERVICE_NAME
   replicas: 1
   template:
     metadata:
       labels:
-        service: SERVICE_NAME
+        io.kompose.service: SERVICE_NAME
     spec:
       containers:
       - env:

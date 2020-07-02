@@ -44,69 +44,69 @@
     - debug:
         var: command_output.stdout
 
-#     - pip:
-#         name:
-#             - openshift==0.11.0
-#             - kubernetes==11.0.0
+    - pip:
+        name:
+            - openshift==0.11.0
+            - kubernetes==11.0.0
             
             
-#     - name: Create a k8s namespace
-#       k8s:
-#         name: "{{ k8s_namespace }}"        
-#         api_version: v1
-#         kind: Namespace
-#         state: present            
+    - name: Create a k8s namespace
+      k8s:
+        name: "{{ k8s_namespace }}"        
+        api_version: v1
+        kind: Namespace
+        state: present            
         
-#     - name: Download deployment_template.yaml
-#       get_url:
-#         url: https://raw.githubusercontent.com/QCDIS/playbooks/master/k8s/deployment_template.yaml
-#         dest: /tmp/deployment_template.yaml
-        
-        
-#     - name: Download service_node_port_template.yaml
-#       get_url:
-#         url: https://raw.githubusercontent.com/QCDIS/playbooks/master/k8s/service_node_port_template.yaml
-#         dest: /tmp/service_node_port_template.yaml
+    - name: Download deployment_template.yaml
+      get_url:
+        url: https://raw.githubusercontent.com/QCDIS/playbooks/master/k8s/deployment_template.yaml
+        dest: /tmp/deployment_template.yaml
         
         
-#     - name: replace multiple 
+    - name: Download service_node_port_template.yaml
+      get_url:
+        url: https://raw.githubusercontent.com/QCDIS/playbooks/master/k8s/service_node_port_template.yaml
+        dest: /tmp/service_node_port_template.yaml
+        
+        
+    - name: replace multiple 
+      replace:
+        path: "{{ item.path }}"
+        regexp: "{{ item.regexp1 }}"
+        replace: "{{ item.replace }}"
+      with_items:
+        - { path: '/tmp/deployment_template.yaml', regexp1: 'K8s_NAMESPACE', replace: "{{ k8s_namespace }}"}
+        - { path: '/tmp/deployment_template.yaml', regexp1: 'SERVICE_NAME', replace: "{{ docker_service_name }}"}    
+        - { path: '/tmp/deployment_template.yaml', regexp1: 'DOCKER_IMAGE', replace: "{{ docker_image }}"}  
+        - { path: '/tmp/deployment_template.yaml', regexp1: 'CONTAINER_PORT', replace: "{{ container_port }}"}  
+        - { path: '/tmp/service_node_port_template.yaml', regexp1: 'K8s_NAMESPACE', replace: "{{ k8s_namespace }}"}
+        - { path: '/tmp/service_node_port_template.yaml', regexp1: 'SERVICE_NAME', replace: "{{ docker_service_name }}"}    
+        
+      
+      
+#     - name: delete ports
 #       replace:
 #         path: "{{ item.path }}"
 #         regexp: "{{ item.regexp1 }}"
 #         replace: "{{ item.replace }}"
 #       with_items:
-#         - { path: '/tmp/deployment_template.yaml', regexp1: 'K8s_NAMESPACE', replace: "{{ k8s_namespace }}"}
-#         - { path: '/tmp/deployment_template.yaml', regexp1: 'SERVICE_NAME', replace: "{{ docker_service_name }}"}    
-#         - { path: '/tmp/deployment_template.yaml', regexp1: 'DOCKER_IMAGE', replace: "{{ docker_image }}"}  
-#         - { path: '/tmp/deployment_template.yaml', regexp1: 'CONTAINER_PORT', replace: "{{ container_port }}"}  
-#         - { path: '/tmp/service_node_port_template.yaml', regexp1: 'K8s_NAMESPACE', replace: "{{ k8s_namespace }}"}
-#         - { path: '/tmp/service_node_port_template.yaml', regexp1: 'SERVICE_NAME', replace: "{{ docker_service_name }}"}    
-        
-      
-      
-# #     - name: delete ports
-# #       replace:
-# #         path: "{{ item.path }}"
-# #         regexp: "{{ item.regexp1 }}"
-# #         replace: "{{ item.replace }}"
-# #       with_items:
-# #         - { path: '/tmp/deployment_template.yaml', regexp1: '        ports:', replace: ""}        
-# #         - { path: '/tmp/deployment_template.yaml', regexp1: '        - containerPort: CONTAINER_PORT', replace: ""}  
-# #       when: container_port == ""
+#         - { path: '/tmp/deployment_template.yaml', regexp1: '        ports:', replace: ""}        
+#         - { path: '/tmp/deployment_template.yaml', regexp1: '        - containerPort: CONTAINER_PORT', replace: ""}  
+#       when: container_port == ""
       
 
-#     - name: Create deployment
-#       k8s:
-#         state: "{{k8s_state}}"
-#         src: /tmp/deployment_template.yaml
+    - name: Create deployment
+      k8s:
+        state: "{{k8s_state}}"
+        src: /tmp/deployment_template.yaml
        
 
 
-#     - name: Create service
-#       k8s:
-#         state: "{{k8s_state}}"
-#         src: /tmp/service_node_port_template.yaml
-# #       when: container_port != ""
+    - name: Create service
+      k8s:
+        state: "{{k8s_state}}"
+        src: /tmp/service_node_port_template.yaml
+#       when: container_port != ""
       
         
         

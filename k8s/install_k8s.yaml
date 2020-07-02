@@ -7,11 +7,11 @@
         url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
         state: present   
 
-#     - name: Add kubernetes
-#       apt_repository:
-#         repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
-#         state: present   
+    - name: Add kubernetes
+      apt_repository:
+        repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
+        state: present   
         
-#     - name: Update and install kubeadm
-#       apt: update_cache=yes name=kubeadm state=latest            
+    - name: Update and install kubeadm
+      apt: update_cache=yes name=kubeadm state=latest            
 

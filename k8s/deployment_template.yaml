@@ -20,7 +20,7 @@ spec:
       - env:
         - name: NAME
           value: VALUE
-      - image: DOCKER_IMAGE
+        image: DOCKER_IMAGE
         name: SERVICE_NAME
         imagePullPolicy: Always
         ports:

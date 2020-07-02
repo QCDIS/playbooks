@@ -18,7 +18,8 @@ spec:
     spec:
       containers:
       - env:
-        - KEY: VALUE
+        - name: NAME
+          value: VALUE
       - image: DOCKER_IMAGE
         name: SERVICE_NAME
         imagePullPolicy: Always

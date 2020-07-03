@@ -1,9 +1,9 @@
 ---        
 - hosts: localhost
-  gather_facts: no
+  gather_facts: yes
 
   tasks:
-  
+    
     - name: Add vars to dummy host
       add_host:
         name:   "k8s_deploy_vars_holder"

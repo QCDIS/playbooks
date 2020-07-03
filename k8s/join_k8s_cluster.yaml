@@ -10,9 +10,9 @@
         name:   "k8s_join_cmd_holder"
         cmd:  "{{ k8_join_cmd.stdout }}"
         
-    - name:
-      debug:
-        msg: "Join command is {{ hostvars['k8s_join_cmd_holder']['cmd'] }}"
+#     - name:
+#       debug:
+#         msg: "Join command is {{ hostvars['k8s_join_cmd_holder']['cmd'] }}"
         
                 
 - hosts: worker
@@ -24,9 +24,9 @@
       register: url_command_result
       ignore_errors: True
        
-    - name: print kubectl cluster return code
-      debug:
-        msg: "error message : {{url_command_result.status}}"   
+#     - name: print kubectl cluster return code
+#       debug:
+#         msg: "error message : {{url_command_result.status}}"   
 
     - name: print join cmd
       debug:
@@ -70,23 +70,23 @@
       when: url_command_result.status != 200
         
         
-- hosts: master
-  tasks: 
+# - hosts: master
+#   tasks: 
 
-    - name: get nodes
-      shell: kubectl get nodes
-      register: nodes_out
+#     - name: get nodes
+#       shell: kubectl get nodes
+#       register: nodes_out
               
-    - name: print nodes
-      debug:
-        var: nodes_out
+#     - name: print nodes
+#       debug:
+#         var: nodes_out
         
         
-    - name: get api key
-      shell: kubectl describe secret $(kubectl get secrets | grep default | cut -f1 -d ' ') | grep -E '^token' | cut -f2 -d':' | tr -d '\t'
-      register: api_key
+#     - name: get api key
+#       shell: kubectl describe secret $(kubectl get secrets | grep default | cut -f1 -d ' ') | grep -E '^token' | cut -f2 -d':' | tr -d '\t'
+#       register: api_key
               
-    - name: print api_key
-      debug:
-        var: api_key
+#     - name: print api_key
+#       debug:
+#         var: api_key
     

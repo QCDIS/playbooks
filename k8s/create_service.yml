@@ -30,19 +30,19 @@
 #         when: hostvars['k8s_deploy_vars_holder']['container_port'] != ""
 
         
-    - debug:
-        var: docker_env_variables
+#     - debug:
+#         var: docker_env_variables
         
         
-    - copy: content="{{ docker_env_variables }} | to_nice_yaml( width=50, explicit_start=True, explicit_end=True)" dest=/tmp/config_map.yaml
+#     - copy: content="{{ docker_env_variables }} | to_nice_yaml( width=50, explicit_start=True, explicit_end=True)" dest=/tmp/config_map.yaml
     
     
-    - name: Display /tmp/config_map.yaml contents
-      command: cat /tmp/config_map.yaml
-      register: command_output    
+#     - name: Display /tmp/config_map.yaml contents
+#       command: cat /tmp/config_map.yaml
+#       register: command_output    
 
-    - debug:
-        var: command_output.stdout
+#     - debug:
+#         var: command_output.stdout
 
     - pip:
         name:

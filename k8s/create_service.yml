@@ -1,6 +1,6 @@
 ---        
 - hosts: localhost
-  gather_facts: true
+  gather_facts: no
 
   tasks:
   
@@ -14,7 +14,7 @@
         docker_env_variables:  "{{ ansible_env.DOCKER_ENV_VARIABLES }}" 
 
 - hosts: master
-  gather_facts: true
+  gather_facts: no
   vars:
     k8s_state: present
     docker_image: "{{ hostvars['k8s_deploy_vars_holder']['docker_image'] }}"

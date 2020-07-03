@@ -3,6 +3,13 @@
   gather_facts: no
   tasks:
   
+  
+    - name: Wait for automatic system updates
+      shell: while sudo fuser /var/lib/dpkg/{{ item }} >/dev/null 2>&1; do sleep 3; done;
+      with_items:
+        - lock
+        - lock-frontend  
+  
     - name: Check that the /dev/xvdh exists
       stat:
         path: /dev/xvdh

@@ -7,10 +7,21 @@
         path: /dev/xvdh
       register: mount_volume
       
+    - name: Update and upgrade
+      apt:
+        upgrade: yes
+        update_cache: yes
+        autoremove: yes
+        autoremove: yes      
+      
     - name: Add Docker GPG apt Key
       apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
         state: present   
+        
+    - name: Update and upgrade
+      apt:
+        update_cache: yes       
         
 
     - name: Add Docker Repository
@@ -18,13 +29,11 @@
         repo: deb https://download.docker.com/linux/ubuntu bionic stable
         state: present        
            
+
     - name: Update and upgrade
       apt:
-        upgrade: yes
-        update_cache: yes
-        autoremove: yes
-        autoremove: yes
-            
+        update_cache: yes       
+        
     - name: Update and install docker-ce
       apt: update_cache=yes name=docker-ce state=latest              
       

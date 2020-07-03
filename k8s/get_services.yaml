@@ -1,7 +1,7 @@
     
 ---        
 - hosts: localhost
-  gather_facts: true
+  gather_facts: no
 
   tasks:
     - name: Add vars to dummy host
@@ -10,6 +10,7 @@
         k8s_namespace: "{{ ansible_env.K8s_NAMESPACE }}"   
         
 - hosts: master
+  gather_facts: no
   vars:
     k8s_namespace: "{{ hostvars['k8s_deploy_vars_holder']['k8s_namespace'] }}"
   

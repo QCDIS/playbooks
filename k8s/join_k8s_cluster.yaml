@@ -30,10 +30,10 @@
 #       debug:
 #         msg: "error message : {{url_command_result.status}}"   
 
-    - name: print join cmd
-      debug:
-        msg: "[Worker] K8S_TOKEN_HOLDER K8S token is {{ hostvars['k8s_join_cmd_holder']['cmd'] }}"
-      when: url_command_result.status != 200
+#     - name: print K8S_TOKEN
+#       debug:
+#         msg: "[Worker] K8S_TOKEN_HOLDER K8S token is {{ hostvars['k8s_join_cmd_holder']['cmd'] }}"
+#       when: url_command_result.status != 200
       
       
     - name: disable swap

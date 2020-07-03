@@ -15,8 +15,15 @@
         path: /dev/xvdh
       register: mount_volume
       
-    - name: Updates apt cache
-      action: apt update_cache=true
+    - name: Update
+      apt:
+        update_cache: yes
+      register: update_result
+      ignore_errors: True        
+      
+    - name: fail the play if the previous command did not succeed
+      shell: "apt update"
+      when: "'FAILED' in update_result.stderr"      
       
     - name: Add Docker GPG apt Key
       apt_key:

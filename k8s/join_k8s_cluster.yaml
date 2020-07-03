@@ -1,5 +1,6 @@
 ---        
 - hosts: master
+  gather_facts: no
   tasks:         
     - name: join cmd
       shell: kubeadm token create --print-join-command
@@ -16,6 +17,7 @@
         
                 
 - hosts: worker
+  gather_facts: no
   tasks:
   
     - name: check if in cluster

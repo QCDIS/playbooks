@@ -22,8 +22,8 @@
       ignore_errors: True        
       
     - name: fail the play if the previous command did not succeed
-      shell: "apt update"
-      when: "'FAILED' in update_result.stderr"      
+      debug:
+        var: update_result
       
     - name: Add Docker GPG apt Key
       apt_key:

@@ -15,7 +15,7 @@
         path: /dev/xvdh
       register: mount_volume
       
-    - name: Update and upgrade
+    - name: Update and upgrade1
       apt:
         upgrade: yes
         update_cache: yes
@@ -27,9 +27,12 @@
         url: https://download.docker.com/linux/ubuntu/gpg
         state: present   
         
-    - name: Update and upgrade
+    - name: Update and upgrade2
       apt:
-        update_cache: yes       
+        upgrade: yes
+        update_cache: yes
+        autoremove: yes
+        autoremove: yes      
         
 
     - name: Add Docker Repository

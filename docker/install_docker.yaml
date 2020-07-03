@@ -21,9 +21,10 @@
       register: update_result
       ignore_errors: True        
       
-    - name: fail the play if the previous command did not succeed
-      debug:
-        var: update_result
+    - name: Update from shell
+      shell: apt update
+      when: update_result.failed == True 
+      
       
     - name: Add Docker GPG apt Key
       apt_key:

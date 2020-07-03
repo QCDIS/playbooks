@@ -15,12 +15,9 @@
         path: /dev/xvdh
       register: mount_volume
       
-    - name: Update and upgrade1
+    - name: Update
       apt:
-        upgrade: yes
-        update_cache: yes
-        autoremove: yes
-        autoremove: yes      
+        update_cache: yes     
       
     - name: Add Docker GPG apt Key
       apt_key:

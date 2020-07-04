@@ -1,0 +1,16 @@
+---        
+- hosts: localhost
+  gather_facts: yes
+  vars:
+    docker_env_variables:  "{{ ansible_env.DOCKER_ENV_VARIABLES }}" 
+
+  tasks:
+    
+    - name: Add vars to dummy host
+      add_host:
+        name:   "k8s_deploy_vars_holder"
+        docker_env_variables:  "{{ ansible_env.DOCKER_ENV_VARIABLES }}" 
+        
+        
+#     - debug:
+#         var: docker_env_variables        

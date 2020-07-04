@@ -13,7 +13,7 @@
         
     - name: replace 
       set_fact:
-        new__env_variables: "{{  docker_env_variables | regex_replace('map\[', '') }}"
+        new__env_variables: "{{  docker_env_variables | regex_replace('map[', '') }}"
         
     - debug:
         var:  new__env_variables

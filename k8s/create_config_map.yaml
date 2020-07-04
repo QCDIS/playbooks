@@ -11,5 +11,9 @@
         name:   "k8s_deploy_vars_holder"
         docker_env_variables:  "{{ ansible_env.DOCKER_ENV_VARIABLES }}" 
         
+    - name: replace 
+      set_fact:
+        new__env_variables: "{{  docker_env_variables | regex_replace('map[', '') | | regex_replace(']', '')  }}"
+        
     - debug:
-        var: docker_env_variables.split()
+        var:  new__env_variables

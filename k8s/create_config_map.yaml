@@ -12,5 +12,4 @@
         docker_env_variables:  "{{ ansible_env.DOCKER_ENV_VARIABLES }}" 
         
     - debug:
-        var: item
-        with_items: docker_env_variables
+        var: docker_env_variables.split()

@@ -12,4 +12,5 @@
         docker_env_variables:  "{{ ansible_env.DOCKER_ENV_VARIABLES }}" 
         
     - debug:
-        var: docker_env_variables.map 
+        var: item
+        with_items: docker_env_variables

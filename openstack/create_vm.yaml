@@ -14,21 +14,21 @@
       pip:
         name: openstacksdk
         
-#     - name: get vm flavors
-#       os_flavor_info:
-#       register: flavors
+    - name: get vm flavors
+      os_flavor_info:
+      register: flavors
 
-#     - name: print flavors
-#       debug:
-#         var: flavors
+    - name: print flavors
+      debug:
+        var: flavors
 
-#     - name: Retrieve all available images
-#       os_image_info:
-#       register: images
+    - name: Retrieve all available images
+      os_image_info:
+      register: images
 
-#     - name: print images
-#       debug:
-#         var: images
+    - name: print images
+      debug:
+        var: images
 
     - name: launch an instance
       os_server:

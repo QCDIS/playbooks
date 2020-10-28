@@ -58,7 +58,6 @@ metadata:
 spec:
   type: NodePort  
   ports:
-  - port: 443
   - port: 8443
     protocol: TCP
     name: https

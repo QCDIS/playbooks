@@ -10,6 +10,11 @@
     - name: print kubectl cluster return code
       debug:
         msg: "kubectl return code : {{ kubectl_command_result.rc}}"   
+        
+    - name: kubeadm reset -f
+      shell: kubeadm reset -f
+      become: yes     
+      ignore_errors: True        
       
     - name: disable swap
       become: yes

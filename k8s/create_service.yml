@@ -3,9 +3,8 @@
   gather_facts: true
 
   tasks:
-  
     - name: Add vars to dummy host
-      add_host:
+        add_host:
         name:   "k8s_deploy_vars_holder"
         docker_image:  "{{ ansible_env.DOCKER_IMAGE }}"   
         docker_service_name:  "{{ ansible_env.DOCKER_SERVICE_NAME }}"     

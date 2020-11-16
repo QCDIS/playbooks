@@ -59,10 +59,10 @@
         - net.bridge.bridge-nf-call-ip6tables
         - net.ipv4.ip_forward
         
-#     - name: kubeadm reset -f
-#       shell: kubeadm reset -f
-#       become: yes     
-#       ignore_errors: True
+    - name: kubeadm reset -f
+      shell: kubeadm reset -f
+      become: yes     
+      ignore_errors: True
         
     - name: join
       shell: "{{ hostvars['k8s_join_cmd_holder']['cmd'] }}"

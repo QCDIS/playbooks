@@ -1,16 +1,27 @@
 - hosts: localhost
   vars:
-    region: "{{ vpc_env.REGION }}"
-    cidr_block:  "{{ vpc_env.CIDR_BLOCK }}"
-    aws_access_key: "{{ vpc_env.AWS_ACCESS_KEY }}"
-    aws_secret_key: "{{ vpc_env.AWS_SECRET_KEY }}"
+    region: "{{ ansible_env.REGION }}"
+    cidr_block:  "{{ ansible_env.CIDR_BLOCK }}"
+    aws_access_key: "{{ ansible_env.AWS_ACCESS_KEY }}"
+    aws_secret_key: "{{ ansible_env.AWS_SECRET_KEY }}"
 
   tasks:
-    - ec2_vpc:
-        aws_access_key: "{{ aws_access_key }}"
-        aws_secret_key: "{{ aws_access_key }}"
-        state: present
-        cidr_block: "{{ cidr_block }}"
-        resource_tags: { "Environment":"Development" }
-        region: "{{ region }}"
+     - debug:
+         var: region
+
+     - debug:
+         var: cidr_block
+
+     - debug:
+         var: aws_access_key
+
+     - debug:
+         var: aws_secret_key
+#    - ec2_vpc:
+#        aws_access_key: "{{ aws_access_key }}"
+#        aws_secret_key: "{{ aws_access_key }}"
+#        state: present
+#        cidr_block: "{{ cidr_block }}"
+#        resource_tags: { "Environment":"Development" }
+#        region: "{{ region }}"
 

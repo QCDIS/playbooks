@@ -4,6 +4,7 @@
     cidr_block:  "{{ ansible_env.CIDR_BLOCK }}"
     aws_access_key: "{{ ansible_env.AWS_ACCESS_KEY }}"
     aws_secret_key: "{{ ansible_env.AWS_SECRET_KEY }}"
+    vpc_name: "{{ ansible_env.VPC_NAME }}"
 
   tasks:
      - debug:
@@ -18,11 +19,11 @@
      - debug:
          var: aws_secret_key
 
-     - ec2_vpc:
+     - amazon.aws.ec2_vpc_net:
          aws_access_key: "{{ aws_access_key }}"
          aws_secret_key: "{{ aws_access_key }}"
          state: present
+         name: "{{ vpc_name }}"
          cidr_block: "{{ cidr_block }}"
-         resource_tags: { "Environment":"Development" }
          region: "{{ region }}"
 

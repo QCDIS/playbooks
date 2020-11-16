@@ -17,11 +17,12 @@
 
      - debug:
          var: aws_secret_key
-    - ec2_vpc:
-        aws_access_key: "{{ aws_access_key }}"
-        aws_secret_key: "{{ aws_access_key }}"
-        state: present
-        cidr_block: "{{ cidr_block }}"
-        resource_tags: { "Environment":"Development" }
-        region: "{{ region }}"
+
+     - ec2_vpc:
+         aws_access_key: "{{ aws_access_key }}"
+         aws_secret_key: "{{ aws_access_key }}"
+         state: present
+         cidr_block: "{{ cidr_block }}"
+         resource_tags: { "Environment":"Development" }
+         region: "{{ region }}"
 

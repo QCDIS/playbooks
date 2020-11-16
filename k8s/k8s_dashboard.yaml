@@ -16,18 +16,7 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: kubernetes-dashboard
-
----
-
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  labels:
-    k8s-app: kubernetes-dashboard
-  name: kubernetes-dashboard
-  namespace: kubernetes-dashboard
-
----
+---  
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -45,7 +34,18 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: admin-user
+  namespace: kubernetes-dashboard  
+
+---
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    k8s-app: kubernetes-dashboard
+  name: kubernetes-dashboard
   namespace: kubernetes-dashboard
+
 ---
 
 kind: Service
@@ -61,9 +61,6 @@ spec:
   - port: 8443
     protocol: TCP
     name: https
-  #ports:
-    #- port: 443
-      #targetPort: 8443
   selector:
     k8s-app: kubernetes-dashboard
 
@@ -211,7 +208,7 @@ spec:
     spec:
       containers:
         - name: kubernetes-dashboard
-          image: kubernetesui/dashboard:v2.0.0
+          image: kubernetesui/dashboard:v2.0.4
           imagePullPolicy: Always
           ports:
             - containerPort: 8443

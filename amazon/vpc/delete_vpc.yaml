@@ -1,54 +1,17 @@
 - hosts: localhost
-  vars:
-    ansible_python_interpreter: /usr/bin/python3
-    region: "{{ ansible_env.REGION }}"
-    cidr_block: "{{ ansible_env.CIDR_BLOCK }}"
-    aws_access_key: "{{ ansible_env.AWS_ACCESS_KEY }}"
-    aws_secret_key: "{{ ansible_env.AWS_SECRET_KEY }}"
-    vpc_name: "{{ ansible_env.VPC_NAME }}"
 
   tasks:
-#    - debug:
-#        var: region
-#
-#    - debug:
-#        var: cidr_block
-#
-#    - debug:
-#        var: aws_access_key
-#
-#    - debug:
-#        var: aws_secret_key
-#
-#     - amazon.aws.ec2_vpc_net:
-#         aws_access_key: "{{ aws_access_key }}"
-#         aws_secret_key: "{{ aws_access_key }}"
-#         state: present
-#         name: "{{ vpc_name }}"
-#         cidr_block: "{{ cidr_block }}"
-#         resource_tags: { "Environment":"Development" }
-#         region: "{{ region }}"
-#         when: ansible_version.full >= "2.10"
-    - pip:
-        name: botocore
-
-    - name: ec2_vpc_net
-      ec2_vpc_net:
-         aws_access_key: "{{ aws_access_key }}"
-         aws_secret_key: "{{ aws_secret_key }}"
-         state: absent
-         name: "{{ vpc_name }}"
-         cidr_block: "{{ cidr_block }}"
-         tags:
-           module: ec2_vpc_net
-           this: works
-         region: "{{ region }}"
-         #         when: ansible_version.full <= "2.10"
-      register: delete_vpc
-
-
-    - debug:
-         var: delete_vpc.vpc
+    - import_tasks: 2.9/vpc.yaml
+      when: ansible_version.full <= "2.9.15"
+      vars:
+        ansible_python_interpreter: /usr/bin/python3
+        region: "{{ ansible_env.REGION }}"
+        cidr_block: "{{ ansible_env.CIDR_BLOCK }}"
+        aws_access_key: "{{ ansible_env.AWS_ACCESS_KEY }}"
+        aws_secret_key: "{{ ansible_env.AWS_SECRET_KEY }}"
+        vpc_name: delete#"{{ ansible_env.VPC_NAME }}"
+        state: absent
+        debug: false
 
 
 

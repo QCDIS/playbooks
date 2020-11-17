@@ -36,7 +36,7 @@
       ec2_vpc_net:
          aws_access_key: "{{ aws_access_key }}"
          aws_secret_key: "{{ aws_secret_key }}"
-         state: absent
+         state: present
          name: "{{ vpc_name }}"
          cidr_block: "{{ cidr_block }}"
          tags:
@@ -44,11 +44,11 @@
            this: works
          region: "{{ region }}"
          #         when: ansible_version.full <= "2.10"
-      register: delete_vpc
+      register: create_vpc
 
 
     - debug:
-         var: delete_vpc.vpc
+         var: "{{ create_vpc.vpc }}"
 
 
 

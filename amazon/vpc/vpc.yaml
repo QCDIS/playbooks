@@ -1,52 +1,50 @@
+---
+  - debug:
+      var: region
+      when: debug
 
-#    region: "{{ ansible_env.REGION }}"
-#    cidr_block: "{{ ansible_env.CIDR_BLOCK }}"
-#    aws_access_key: "{{ ansible_env.AWS_ACCESS_KEY }}"
-#    aws_secret_key: "{{ ansible_env.AWS_SECRET_KEY }}"
-#    vpc_name: "{{ ansible_env.VPC_NAME }}"
+  - debug:
+      var: cidr_block
+      when: debug
 
-  tasks:
-#    - debug:
-#        var: region
-#
-#    - debug:
-#        var: cidr_block
-#
-#    - debug:
-#        var: aws_access_key
-#
-#    - debug:
-#        var: aws_secret_key
-#
-#     - amazon.aws.ec2_vpc_net:
-#         aws_access_key: "{{ aws_access_key }}"
-#         aws_secret_key: "{{ aws_access_key }}"
-#         state: present
-#         name: "{{ vpc_name }}"
-#         cidr_block: "{{ cidr_block }}"
-#         resource_tags: { "Environment":"Development" }
-#         region: "{{ region }}"
-#         when: ansible_version.full >= "2.10"
-    - pip:
-        name: botocore
+  - debug:
+      var: aws_access_key
+      when: debug
+  - debug:
+      var: aws_secret_key
+      when: debug
 
-    - name: ec2_vpc_net
-      ec2_vpc_net:
-         aws_access_key: "{{ aws_access_key }}"
-         aws_secret_key: "{{ aws_secret_key }}"
-         state: "{{ state }}"
-         name: "{{ vpc_name }}"
-         cidr_block: "{{ cidr_block }}"
-         tags:
-           module: ec2_vpc_net
-           this: works
-         region: "{{ region }}"
-         #         when: ansible_version.full <= "2.10"
-      register: create_vpc
+  - name: amazon.aws.ec2_vpc_net
+    amazon.aws.ec2_vpc_net:
+      aws_access_key: "{{ aws_access_key }}"
+      aws_secret_key: "{{ aws_access_key }}"
+      state: "{{ state }}"
+      name: "{{ vpc_name }}"
+      cidr_block: "{{ cidr_block }}"
+      resource_tags: { "Environment":"Development" }
+      region: "{{ region }}"
+    when: ansible_version.full >= "2.10"
+    register: vpc_output
 
+  - pip:
+      name: botocore
+
+  - name: ec2_vpc_net
+    ec2_vpc_net:
+      aws_access_key: "{{ aws_access_key }}"
+      aws_secret_key: "{{ aws_secret_key }}"
+      state: "{{ state }}"
+      name: "{{ vpc_name }}"
+      cidr_block: "{{ cidr_block }}"
+      tags:
+        module: ec2_vpc_net
+        this: works
+      region: "{{ region }}"
+    when: ansible_version.full <= "2.10"
+    register: vpc_output
 
     - debug:
-         var: create_vpc.vpc
+         var: vpc_output.vpc
 
 
 

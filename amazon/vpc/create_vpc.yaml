@@ -11,6 +11,7 @@
         aws_secret_key: "{{ ansible_env.AWS_SECRET_KEY }}"
         vpc_name: "{{ ansible_env.VPC_NAME }}"
         state: present
+        debug: false
 #    - debug:
 #        var: region
 #

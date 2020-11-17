@@ -1,18 +1,13 @@
   - debug:
-      var: region
-    when: "{{ debug }}"
-
-  - debug:
-      var: cidr_block
-    when: "{{ debug }}"
-
-  - debug:
-      var: aws_access_key
-    when: "{{ debug }}"
-
-  - debug:
-      var: aws_secret_key
-    when: "{{ debug }}"
+      var: "{{ item }}"
+    with_items:
+     - "{{ aws_access_key }}"
+     - "{{  aws_secret_key }}"
+     - "{{  state }}"
+     - "{{  vpc_name }}"
+     - "{{  cidr_block }}"
+     - "{{  region }}"
+    when: debug|bool == True
 
   - pip:
       name: botocore
@@ -31,7 +26,7 @@
     register: vpc_output
 
   - debug:
-      var: vpc_output.vpc
+      var: vpc_output
 
 
 

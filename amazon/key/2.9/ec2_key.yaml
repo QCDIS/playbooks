@@ -3,28 +3,27 @@
     with_items:
      - "{{ aws_access_key }}"
      - "{{  aws_secret_key }}"
-     - "{{  state }}"
-     - "{{  vpc_name }}"
-     - "{{  cidr_block }}"
-     - "{{  region }}"
+     - "{{ state }}"
+     - "{{ key_name }}"
+     - "{{ region }}"
     when: debug|bool == True
 
   - pip:
       name: botocore
 
-  - name: amazon.aws.ec2_vpc_net
-    amazon.aws.ec2_vpc_net:
+
+
+  - name: ec2_key
+    ec2_key:
       aws_access_key: "{{ aws_access_key }}"
       aws_secret_key: "{{ aws_secret_key }}"
       state: "{{ state }}"
-      name: "{{ vpc_name }}"
-      cidr_block: "{{ cidr_block }}"
-      resource_tags: { "Environment":"Development" }
+      name: "{{ key_name }}"
       region: "{{ region }}"
-    register: vpc_output
+    register: key_output
 
   - debug:
-      var: vpc_output
+      var: key_output
 
 
 

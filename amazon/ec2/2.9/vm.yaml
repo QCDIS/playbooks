@@ -1,0 +1,67 @@
+
+  - debug:
+      var: "{{ item }}"
+    with_items:
+     - "{{ aws_access_key }}"
+     - "{{  aws_secret_key }}"
+     - "{{  key_name }}"
+     - "{{  instance_type }}"
+     - "{{  ami }}"
+     - "{{  wait }}"
+     - "{{  count }}"
+     - "{{  vpc_subnet_id }}"
+     - "{{  assign_public_ip }}"
+     - "{{  region }}"
+     - "{{  wait }}"
+     - "{{ state }}"
+     when: debug|bool == True
+
+  - pip:
+      name: botocore
+
+  - name: ec2
+    ec2:
+      aws_access_key: "{{ aws_access_key }}"
+      aws_secret_key: "{{ aws_secret_key }}"
+      key_name: "{{ key_name }}"
+      instance_type: "{{ instance_type }}"
+      image: "{{ ami }}"
+      wait: "{{ wait }}"
+      count: "{{ count }}"
+      vpc_subnet_id: "{{ vpc_subnet_id }}"
+      assign_public_ip: "{{ assign_public_ip }}"
+      region: "{{ region }}"
+      state: "{{ state }}"
+    register: ec2_output
+    when: not "{{ volumes }}"
+
+
+  - name: ec2
+    ec2:
+      aws_access_key: "{{ aws_access_key }}"
+      aws_secret_key: "{{ aws_access_key }}"
+      key_name: "{{ key_name }}"
+      instance_type: "{{ instance_type }}"
+      image: "{{ ami }}"
+      wait: "{{ wait }}"
+      count: "{{ count }}"
+      vpc_subnet_id: "{{ vpc_subnet_id }}"
+      assign_public_ip: "{{ assign_public_ip }}"
+      region: "{{ region }}"
+      state: "{{ state }}"
+      volumes:
+        - device_name: "{{ volumes.device_name }}"
+          snapshot: "{{ volumes.snapshot }}"
+          volume_type: "{{ volumes.volume_type }}"
+#          iops: 1000
+          volume_size: "{{ volumes.volume_size }}"
+          delete_on_termination: "{{ volumes.delete_on_termination }}"
+    register: ec2_output
+    when: "{{ volumes }}"
+
+
+  - debug:
+      var: ec2_output
+
+
+

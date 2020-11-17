@@ -1,0 +1,35 @@
+  - debug:
+      var: region
+    when: "{{ debug }}"
+
+  - debug:
+      var: cidr_block
+    when: "{{ debug }}"
+
+  - debug:
+      var: aws_access_key
+    when: "{{ debug }}"
+
+  - debug:
+      var: aws_secret_key
+    when: "{{ debug }}"
+
+  - pip:
+      name: botocore
+
+  - name: amazon.aws.ec2_vpc_net
+    amazon.aws.ec2_vpc_net:
+      aws_access_key: "{{ aws_access_key }}"
+      aws_secret_key: "{{ aws_access_key }}"
+      state: "{{ state }}"
+      name: "{{ vpc_name }}"
+      cidr_block: "{{ cidr_block }}"
+      resource_tags: { "Environment":"Development" }
+      region: "{{ region }}"
+    register: vpc_output
+
+  - debug:
+      var: vpc_output.vpc
+
+
+

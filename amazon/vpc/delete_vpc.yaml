@@ -2,7 +2,6 @@
 
   tasks:
     - import_tasks: 2.9/vpc.yaml
-      when: ansible_version.full <= "2.9.15"
       vars:
         ansible_python_interpreter: /usr/bin/python3
         region: "{{ ansible_env.REGION }}"

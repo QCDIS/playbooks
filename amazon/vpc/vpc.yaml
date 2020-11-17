@@ -1,11 +1,11 @@
 - hosts: localhost
-  vars:
-    ansible_python_interpreter: /usr/bin/python3
-    region: "{{ ansible_env.REGION }}"
-    cidr_block: "{{ ansible_env.CIDR_BLOCK }}"
-    aws_access_key: "{{ ansible_env.AWS_ACCESS_KEY }}"
-    aws_secret_key: "{{ ansible_env.AWS_SECRET_KEY }}"
-    vpc_name: "{{ ansible_env.VPC_NAME }}"
+#  vars:
+#    ansible_python_interpreter: /usr/bin/python3
+#    region: "{{ ansible_env.REGION }}"
+#    cidr_block: "{{ ansible_env.CIDR_BLOCK }}"
+#    aws_access_key: "{{ ansible_env.AWS_ACCESS_KEY }}"
+#    aws_secret_key: "{{ ansible_env.AWS_SECRET_KEY }}"
+#    vpc_name: "{{ ansible_env.VPC_NAME }}"
 
   tasks:
 #    - debug:
@@ -36,7 +36,7 @@
       ec2_vpc_net:
          aws_access_key: "{{ aws_access_key }}"
          aws_secret_key: "{{ aws_secret_key }}"
-         state: present
+         state: "{{ state }}"
          name: "{{ vpc_name }}"
          cidr_block: "{{ cidr_block }}"
          tags:
@@ -48,7 +48,7 @@
 
 
     - debug:
-         var: "{{ create_vpc.vpc }}"
+         var: create_vpc.vpc
 
 
 

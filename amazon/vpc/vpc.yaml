@@ -1,4 +1,3 @@
----
   - debug:
       var: region
       when: debug

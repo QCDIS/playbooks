@@ -17,14 +17,17 @@
          aws_secret_key: "{{ aws_secret_key }}"
          state: absent
          name: "{{ vpc_name }}"
-#         cidr_block: "{{ cidr_block }}"
-#         region: "{{ region }}"
+         cidr_block: "{{ cidr_block }}"
+         tags:
+           module: ec2_vpc_net
+           this: works
+         region: "{{ region }}"
          #         when: ansible_version.full <= "2.10"
       register: delete_vpc
 
 
     - debug:
-         msg: "{{ delete_vpc.vpc }}"
+         var: "{{ delete_vpc }}"
 
 
 

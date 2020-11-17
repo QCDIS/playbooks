@@ -48,7 +48,7 @@
 
 
     - debug:
-         msg: "{{ create_vpc.vpc }}"
+         var: "{{ create_vpc }}"
 
 
 

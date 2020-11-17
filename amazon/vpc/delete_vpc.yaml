@@ -27,7 +27,7 @@
 
 
     - debug:
-         var: "{{ delete_vpc }}"
+         var: "{{ delete_vpc.vpc }}"
 
 
 

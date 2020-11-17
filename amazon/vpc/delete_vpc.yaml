@@ -23,11 +23,11 @@
            this: works
          region: "{{ region }}"
          #         when: ansible_version.full <= "2.10"
-      register: delete_vpc
+      register: create_vpc
 
 
     - debug:
-         var: "{{ delete_vpc.vpc }}"
+         var: "{{ create_vpc.vpc }}"
 
 
 

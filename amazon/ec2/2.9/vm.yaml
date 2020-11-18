@@ -14,7 +14,7 @@
      - "{{  region }}"
      - "{{  wait }}"
      - "{{ state }}"
-     when: debug|bool == True
+    when: debug|bool == True
 
   - pip:
       name: botocore

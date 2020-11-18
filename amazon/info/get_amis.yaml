@@ -9,5 +9,5 @@
         region: "{{ ansible_env.REGION }}"
       register: ec2_ami_info_output
 
-  - debug:
-      var: ec2_ami_info_output
+    - debug:
+        var: ec2_ami_info_output

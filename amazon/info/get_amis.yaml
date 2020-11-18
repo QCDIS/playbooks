@@ -6,4 +6,5 @@
     - ec2_ami_info:
         aws_access_key: "{{ ansible_env.AWS_ACCESS_KEY }}"
         aws_secret_key: "{{ ansible_env.AWS_SECRET_KEY }}"
+        region: "{{ ansible_env.REGION }}"
 

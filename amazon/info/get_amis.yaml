@@ -4,7 +4,10 @@
 
   tasks:
     - pip:
-        name: botocore
+        name: "{{ item }}"
+      with_items:
+        - boto3
+        - botocore
 
     - ec2_ami_info:
         aws_access_key: "{{ ansible_env.AWS_ACCESS_KEY }}"

@@ -4,5 +4,9 @@
         "AWS_SECRET_KEY":"XXXXXXXXXXXXXXXXXXX",
         "VPC_NAME":"DELETE_ME",
         "KEY_NAME":"DELETE_ME",
-        "INSTANCE_TYPE": "t2.micro"
+        "INSTANCE_TYPE": "t2.micro",
+        "AMI_OS": "Ubuntu",
+        "AMI_ARCHITECTURE": "x86_64",
+        "AMI_OS_VERSION": "18.06",
+        "AMI_ID": "ami-0dc8d444ee2a42d8a"
 }}

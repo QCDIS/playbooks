@@ -10,3 +10,6 @@
         region: "{{ ansible_env.REGION }}"
         state: absent
         debug: false
+
+    - debug:
+        var: key_output

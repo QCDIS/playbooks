@@ -22,8 +22,7 @@
       region: "{{ region }}"
     register: key_output
 
-  - debug:
-      var: key_output
+
 
 
 

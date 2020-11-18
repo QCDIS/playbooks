@@ -1,0 +1,9 @@
+- hosts: localhost
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  tasks:
+    - import_tasks: 2.9/vol.yaml
+      vars:
+        region: "{{ ansible_env.REGION }}"
+        aws_access_key: "{{ ansible_env.AWS_ACCESS_KEY }}"
+        aws_secret_key: "{{ ansible_env.AWS_SECRET_KEY }}"

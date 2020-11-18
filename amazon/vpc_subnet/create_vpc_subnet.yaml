@@ -2,15 +2,17 @@
   vars:
     ansible_python_interpreter: /usr/bin/python3
   tasks:
-    - import_tasks: 2.9/vpc.yaml
+    - import_tasks: 2.9/subnet.yaml
       vars:
         region: "{{ ansible_env.REGION }}"
-        cidr_block: "{{ ansible_env.CIDR_BLOCK }}"
         aws_access_key: "{{ ansible_env.AWS_ACCESS_KEY }}"
         aws_secret_key: "{{ ansible_env.AWS_SECRET_KEY }}"
-        vpc_name: "{{ ansible_env.VPC_NAME }}"
-        state: absent
-        debug: False
+        vpc_id: "{{ ansible_env.VPC_ID }}"
+        cidr: "{{ansible_env.CIDR_BLOCK }}"
+        state: present
+        debug: false
+
+
 
     - debug:
         var: vpc_output

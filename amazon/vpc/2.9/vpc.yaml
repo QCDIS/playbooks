@@ -25,8 +25,7 @@
       region: "{{ region }}"
     register: vpc_output
 
-  - debug:
-      var: vpc_output
+
 
 
 

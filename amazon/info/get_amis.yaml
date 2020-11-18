@@ -10,9 +10,11 @@
         aws_access_key: "{{ ansible_env.AWS_ACCESS_KEY }}"
         aws_secret_key: "{{ ansible_env.AWS_SECRET_KEY }}"
         region: "{{ ansible_env.REGION }}"
+#        image_ids: ami-0dc8d444ee2a42d8a
         filters:
-          name: "{{ ansible_env.OS }}-*"
-
+          description: "*{{ ansible_env.AMI_OS }}, {{ ansible_env.AMI_OS_VERSION }}*"
+          architecture: "{{ ansible_env.AMI_ARCHITECTURE }}"
+          state: "available"
 
       register: ec2_ami_info_output
 

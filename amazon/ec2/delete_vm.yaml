@@ -1,38 +1,19 @@
 - hosts: localhost
   vars:
     ansible_python_interpreter: /usr/bin/python3
+    instance_ids:
+      - 'i-xxxxxx'
+      - 'i-xxxxxx'
+      - 'i-xxxxxx'
   tasks:
-
-#    - import_tasks: 2.10/vpc.yaml
-#      when: (ansible_version.major == "2") and (ansible_version.minor => "10")
-#      vars:
-#        ansible_python_interpreter: /usr/bin/python3
-#        region: "{{ ansible_env.REGION }}"
-#        cidr_block: "{{ ansible_env.CIDR_BLOCK }}"
-#        aws_access_key: "{{ ansible_env.AWS_ACCESS_KEY }}"
-#        aws_secret_key: "{{ ansible_env.AWS_SECRET_KEY }}"
-#        vpc_name: "{{ ansible_env.VPC_NAME }}"
-#        state: present
-#        debug: false
-#
-    - import_tasks: 2.9/vm.yaml
-      vars:
+    - ec2:
         region: "{{ ansible_env.REGION }}"
-        cidr_block: "{{ ansible_env.CIDR_BLOCK }}"
         aws_access_key: "{{ ansible_env.AWS_ACCESS_KEY }}"
         aws_secret_key: "{{ ansible_env.AWS_SECRET_KEY }}"
-        key_name: "{{ ansible_env.KEY_NAME}}"
-        instance_type: "{{ ansible_env.INSTANCE_TYPE }}"
-        image: "{{ ansible_env.AMI }}"
-        wait: "{{ ansible_env.WAIT }}"
-        count: "{{ ansible_env.COUNT }}"
-        vpc_subnet_id: "{{ ansible_env.VPC_SUBNET_ID }}"
-        assign_public_ip: "{{ ansible_env.ASSIGN_PUBLIC_IP }}"
-        volumes:
-          device_name: "{{ ansible_env.VOLUMES_DEVICE_NAME }}"
-          snapshot: "{{ ansible_env.VOLUMES_SNAPSHOT }}"
-          volume_type: "{{ ansible_env.VOLUMES_VOLUME_TYPE }}"
-          volume_size: "{{ ansible_env.VOLUMES_VOLUME_SIZE }}"
-          delete_on_termination: "{{ ansible_env.VOLUMES_DELETE_ON_TERMINATION }}"
+        instance_ids: ['i-005a3afab4dd6cb23', 'i-03bf0bbc92348f7cf', 'i-095bb81b5e8612523']
         state: absent
-        debug: false
+      register: ec2_output
+
+
+    - debug:
+        var: ec2_output

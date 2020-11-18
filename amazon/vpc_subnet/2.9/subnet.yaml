@@ -1,0 +1,18 @@
+
+  - pip:
+      name: ['botocore','boto3']
+
+  - name: ec2_vpc_net
+    ec2_vpc_subnet:
+      aws_access_key: "{{ aws_access_key }}"
+      aws_secret_key: "{{ aws_secret_key }}"
+      state: "{{ state }}"
+      region: "{{ region }}"
+      vpc_id: "{{ vpc_id }}"
+      cidr: "{{ cidr }}"
+    register: vpc_output
+
+
+
+
+

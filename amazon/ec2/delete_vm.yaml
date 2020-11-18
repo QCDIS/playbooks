@@ -33,5 +33,5 @@
           volume_type: "{{ ansible_env.VOLUMES_VOLUME_TYPE }}"
           volume_size: "{{ ansible_env.VOLUMES_VOLUME_SIZE }}"
           delete_on_termination: "{{ ansible_env.VOLUMES_DELETE_ON_TERMINATION }}"
-        state: present
+        state: absent
         debug: false

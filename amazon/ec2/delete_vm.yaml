@@ -1,16 +1,14 @@
 - hosts: localhost
   vars:
     ansible_python_interpreter: /usr/bin/python3
-    instance_ids:
-      - 'i-xxxxxx'
-      - 'i-xxxxxx'
-      - 'i-xxxxxx'
+    instance_ids: "{{ ansible_env.INSTANCE_IDS.split(',') }}"
   tasks:
+
     - ec2:
         region: "{{ ansible_env.REGION }}"
         aws_access_key: "{{ ansible_env.AWS_ACCESS_KEY }}"
         aws_secret_key: "{{ ansible_env.AWS_SECRET_KEY }}"
-        instance_ids: ['i-005a3afab4dd6cb23', 'i-03bf0bbc92348f7cf', 'i-095bb81b5e8612523']
+        instance_ids: " {{ instance_ids }}"
         state: absent
       register: ec2_output
 

@@ -9,7 +9,7 @@
     when: debug|bool == True
 
   - pip:
-      name: botocore
+      name: ['botocore','boto3']
 
 
 

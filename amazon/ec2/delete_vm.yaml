@@ -1,6 +1,8 @@
 - hosts: localhost
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   tasks:
-    -
+
 #    - import_tasks: 2.10/vpc.yaml
 #      when: (ansible_version.major == "2") and (ansible_version.minor => "10")
 #      vars:
@@ -15,7 +17,6 @@
 #
     - import_tasks: 2.9/vm.yaml
       vars:
-        ansible_python_interpreter: /usr/bin/python3
         region: "{{ ansible_env.REGION }}"
         cidr_block: "{{ ansible_env.CIDR_BLOCK }}"
         aws_access_key: "{{ ansible_env.AWS_ACCESS_KEY }}"

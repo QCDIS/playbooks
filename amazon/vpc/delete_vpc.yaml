@@ -1,9 +1,9 @@
 - hosts: localhost
-
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   tasks:
     - import_tasks: 2.9/vpc.yaml
       vars:
-        ansible_python_interpreter: /usr/bin/python3
         region: "{{ ansible_env.REGION }}"
         cidr_block: "{{ ansible_env.CIDR_BLOCK }}"
         aws_access_key: "{{ ansible_env.AWS_ACCESS_KEY }}"

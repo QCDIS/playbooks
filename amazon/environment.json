@@ -1,0 +1,8 @@
+{"ENV": {"REGION": "eu-west-1",
+        "CIDR_BLOCK":"172.31.0.0/16",
+        "AWS_ACCESS_KEY":"XXXXXXXXXXXXXXXXXX",
+        "AWS_SECRET_KEY":"XXXXXXXXXXXXXXXXXXX",
+        "VPC_NAME":"DELETE_ME",
+        "KEY_NAME":"DELETE_ME",
+        "INSTANCE_TYPE": "t2.micro"
+}}

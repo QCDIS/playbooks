@@ -10,7 +10,7 @@
     when: debug|bool == True
 
   - pip:
-      name: botocore
+      name: ['botocore','boto3']
 
   - name: ec2_vpc_net
     ec2_vpc_net:

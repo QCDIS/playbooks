@@ -1,0 +1,4 @@
+- os_keypair:
+    state: "{{ state }}"
+    name: DELTE_ME_FROM_ANSIBLE
+  register: key_output

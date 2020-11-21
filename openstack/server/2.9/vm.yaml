@@ -1,0 +1,10 @@
+
+- os_server:
+    state: "{{ state }}"
+    name: "{{ name }}"
+    image: "{{image}}"
+    key_name: "{{key_name}}"
+#    timeout: 200
+    flavor: "{{flavor}}"
+    network: "{{ network }}"
+  register: os_server_output

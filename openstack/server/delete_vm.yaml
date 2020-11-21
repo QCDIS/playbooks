@@ -9,11 +9,16 @@
        'os_protocol': "{{ ansible_env.OS_PROTOCOL}}"
       }
       ansible_python_interpreter: /usr/bin/python3
-    
-  tasks:
-    - os_flavor_info:
-      register: flavor_info_output
 
+  tasks:
+    - import_tasks: 2.9/vm.yaml
+      vars:
+        state: absent
+        name: "{{ ansible_env.IMAGE_NAME}}"
+        image: "{{ ansible_env.IMAGE_ID}}"
+        key_name: "{{ ansible_env.KEY_NAME}}"
+        flavor: "{{ ansible_env.FLAVOR_ID}}"
+        network: "{{ ansible_env.NETWORK_ID}}"
 
     - debug:
-        var: flavor_info_output
+        var: os_server_output

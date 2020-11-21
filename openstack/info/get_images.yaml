@@ -11,11 +11,9 @@
       ansible_python_interpreter: /usr/bin/python3
     
   tasks:
-    - pip:
-        name: 'openstacksdk'
 
     - os_image_info:
-      register: images
+      register: image_info_output
 
     - debug:
-        var: images
+        var: image_info_output

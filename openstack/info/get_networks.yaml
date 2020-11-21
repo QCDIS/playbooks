@@ -9,11 +9,12 @@
        'os_protocol': "{{ ansible_env.OS_PROTOCOL}}"
       }
       ansible_python_interpreter: /usr/bin/python3
-    
+
   tasks:
-    - os_flavor_info:
-      register: flavor_info_output
+
+    - os_networks_info:
+      register: networks_info_output
 
 
     - debug:
-        var: flavor_info_output
+        var: networks_info_output

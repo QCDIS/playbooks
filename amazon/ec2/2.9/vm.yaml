@@ -16,9 +16,6 @@
      - "{{ state }}"
     when: debug|bool == True
 
-  - pip:
-      name: ['botocore','boto3']
-
   - name: ec2
     ec2:
       aws_access_key: "{{ aws_access_key }}"

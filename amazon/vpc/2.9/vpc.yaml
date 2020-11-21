@@ -9,9 +9,6 @@
      - "{{  region }}"
     when: debug|bool == True
 
-  - pip:
-      name: ['botocore','boto3']
-
   - name: ec2_vpc_net
     ec2_vpc_net:
       aws_access_key: "{{ aws_access_key }}"

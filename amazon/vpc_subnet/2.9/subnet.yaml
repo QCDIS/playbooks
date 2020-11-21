@@ -1,6 +1,4 @@
 
-  - pip:
-      name: ['botocore','boto3']
 
   - name: ec2_vpc_net
     ec2_vpc_subnet:

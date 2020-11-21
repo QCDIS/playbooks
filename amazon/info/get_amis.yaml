@@ -3,8 +3,6 @@
     ansible_python_interpreter: /usr/bin/python3
 
   tasks:
-    - pip:
-        name: ['boto3', 'botocore']
 
     - ec2_ami_info:
         aws_access_key: "{{ ansible_env.AWS_ACCESS_KEY }}"

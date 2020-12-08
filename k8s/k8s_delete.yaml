@@ -1,0 +1,9 @@
+---        
+- hosts: master
+  gather_facts: no
+  tasks:   
+  
+    
+    - shell: kubeadm reset
+      register: kubectl_command_result
+      ignore_errors: True

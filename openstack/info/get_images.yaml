@@ -13,6 +13,9 @@
   tasks:
                 
     - os_image_info:
+      properties:
+        os_distro: "{{ hostvars['localhost']['os'].split()[0] }}" 
+        os_version: "{{ hostvars['localhost']['os'].split()[1] }}" 
       register: image_info_output
       environment: 
         OS_AUTH_URL: "{{ hostvars['localhost']['auth']['auth_url'] }}" 

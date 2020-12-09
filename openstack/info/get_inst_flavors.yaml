@@ -14,7 +14,6 @@
     - os_flavor_info:
         ram: ">= {{ hostvars['localhost']['mem_size'].split()[0] }}"
         vcpus: "{{ hostvars['localhost']['num_cores']}}"
-        disk: ">= {{ hostvars['localhost']['disk_size'].split()[0] }}"
       register: flavor_info_output
       environment:
         OS_AUTH_URL: "{{ hostvars['localhost']['auth']['auth_url'] }}"

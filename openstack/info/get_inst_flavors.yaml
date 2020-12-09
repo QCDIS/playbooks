@@ -12,7 +12,7 @@
     
   tasks:
     - os_flavor_info:
-        ram: ">= {{ hostvars['localhost']['mem_size'].split()[0] }}"
+        ram:  ">=1024" #">= {{ hostvars['localhost']['mem_size'].split()[0] }}"
         vcpus: "{{ hostvars['localhost']['num_cores']}}"
       register: flavor_info_output
       environment:

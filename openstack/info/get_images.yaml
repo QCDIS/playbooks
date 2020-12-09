@@ -28,12 +28,10 @@
         OS_AUTH_TYPE: "{{ hostvars['localhost']['auth']['token_type'] }}" 
         OS_IDENTITY_PROVIDER: "{{ hostvars['localhost']['auth']['identity_provider'] }}" 
         OS_PROTOCOL: "{{ hostvars['localhost']['auth']['protocol'] }}" 
+        
+    - set_stats:
+        data:
+          image_id:  "{{ image_info_output['openstack_image'][0]['id'] }}"        
 
     - debug:
         var: image_info_output['openstack_image'][0]['id']
-        environment: 
-          IMAGE_ID: "{{ image_info_output['openstack_image'][0]['id'] }}"
-          
-          
-    - debug:
-        var: ansible_env.IMAGE_ID       

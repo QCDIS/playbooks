@@ -18,7 +18,8 @@
         auth: 
           auth_url: "{{ hostvars['localhost']['auth']['auth_url'] }}" 
           project_id: "{{ hostvars['localhost']['auth']['project_id'] }}" 
-          protocol: "{{ hostvars['localhost']['auth']['protocol'] }}" 
+          os_protocol: "{{ hostvars['localhost']['auth']['protocol'] }}" 
+          os_identity_provider: "{{ hostvars['localhost']['auth']['identity_provider'] }}" 
           token: "{{ hostvars['localhost']['auth']['token'] }}" 
           token_type: "{{ hostvars['localhost']['auth']['token_type'] }}" 
       register: image_info_output

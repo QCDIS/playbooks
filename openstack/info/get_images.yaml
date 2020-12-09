@@ -35,7 +35,9 @@
         data:
           image_id: "{{ image_info_output['openstack_image'][0]['id'] }}"
       register: set_stats_output
+#      when: image_info_output['openstack_image'] | length > 0
 
     - debug:
         var: set_stats_output
+#      when: image_info_output['openstack_image'] | length > 0
 

@@ -27,7 +27,10 @@
         OS_AUTH_TYPE: "{{ hostvars['localhost']['auth']['token_type'] }}"
         OS_IDENTITY_PROVIDER: "{{ hostvars['localhost']['auth']['identity_provider'] }}"
         OS_PROTOCOL: "{{ hostvars['localhost']['auth']['protocol'] }}"
-        
+
+    - debug:
+        var: image_info_output['openstack_image'][0]['id']
+
     - set_stats:
         data:
           image_id: "{{ image_info_output['openstack_image'][0]['id'] }}"

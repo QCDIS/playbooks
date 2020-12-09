@@ -31,3 +31,9 @@
 
     - debug:
         var: image_info_output['openstack_image'][0]['id']
+        environment: 
+          IMAGE_ID: "{{ image_info_output['openstack_image'][0]['id'] }}"
+          
+          
+    - debug:
+        var: ansible_env.IMAGE_ID       

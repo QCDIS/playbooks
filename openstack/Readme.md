@@ -28,6 +28,7 @@ export OS_PROTOCOL="openid"
 
 ```
 export OS_ACCESS_TOKEN="SECERT"
+export OS_AUTH_URL="https://fedcloud-osservices.egi.cesga.es:5000/v3/"
 export OS_PROJECT_ID=c1c9c25774fe418599bced1d45862c60
 export OS_AUTH_TYPE="v3oidcaccesstoken"
 export OS_IDENTITY_PROVIDER="egi.eu"

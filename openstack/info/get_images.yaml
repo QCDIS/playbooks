@@ -15,14 +15,14 @@
         var: hostvars['localhost']['auth'] 
                 
     - os_image_info:
-        auth: 
-          auth_url: "{{ hostvars['localhost']['auth']['auth_url'] }}" 
-          project_id: "{{ hostvars['localhost']['auth']['project_id'] }}" 
-#           os_protocol: "{{ hostvars['localhost']['auth']['protocol'] }}" 
-          os_identity_provider: "{{ hostvars['localhost']['auth']['identity_provider'] }}" 
-          token: "{{ hostvars['localhost']['auth']['token'] }}" 
-          os_auth_type: "{{ hostvars['localhost']['auth']['token_type'] }}" 
       register: image_info_output
+      environment: 
+        OS_AUTH_URL: "{{ hostvars['localhost']['auth']['auth_url'] }}" 
+        OS_ACCESS_TOKEN: "{{ hostvars['localhost']['auth']['token'] }}" 
+        OS_PROJECT_ID: "{{ hostvars['localhost']['auth']['project_id'] }}" 
+        OS_AUTH_TYPE: "{{ hostvars['localhost']['auth']['token_type'] }}" 
+        OS_IDENTITY_PROVIDER: "{{ hostvars['localhost']['auth']['identity_provider'] }}" 
+        OS_PROTOCOL: "{{ hostvars['localhost']['auth']['protocol'] }}" 
 
     - debug:
         var: image_info_output

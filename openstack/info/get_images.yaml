@@ -29,7 +29,7 @@
         OS_PROTOCOL: "{{ hostvars['localhost']['auth']['protocol'] }}"
 
     - debug:
-        var: image_info_output['openstack_image'][0]['id']
+        var: image_info_output['openstack_image']
 
     - set_stats:
         data:

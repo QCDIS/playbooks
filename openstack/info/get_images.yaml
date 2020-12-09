@@ -11,7 +11,9 @@
       ansible_python_interpreter: /usr/bin/python3
     
   tasks:
-
+    - debug:
+        var: hostvars
+        
     - os_image_info:
         auth_url: "{{ auth_url }}"
       register: image_info_output

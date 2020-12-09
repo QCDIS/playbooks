@@ -12,7 +12,7 @@
     
   tasks:
     - debug:
-        var: hostvars
+        var: hostvars['localhost']
         
     - os_image_info:
         auth_url: "{{ auth_url }}"

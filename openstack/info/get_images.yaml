@@ -11,11 +11,15 @@
       ansible_python_interpreter: /usr/bin/python3
     
   tasks:
+    - debug:
+        var: "{{ hostvars['localhost']['os'].split()[0] | lower}}"   
+    - debug:
+        var: "{{ hostvars['localhost']['os'].split()[1] | lower}}"           
                 
     - os_image_info:
         properties:
-          os_distro: "{{ hostvars['localhost']['os'].split()[0] }}" 
-          os_version: "{{ hostvars['localhost']['os'].split()[1] }}" 
+          os_distro: "{{ hostvars['localhost']['os'].split()[0] | lower}}"   
+          os_version: "{{ hostvars['localhost']['os'].split()[1] | lower}}"    
       register: image_info_output
       environment: 
         OS_AUTH_URL: "{{ hostvars['localhost']['auth']['auth_url'] }}" 

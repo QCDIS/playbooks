@@ -34,4 +34,4 @@
           image_id:  "{{ image_info_output['openstack_image'][0]['id'] }}"        
 
     - debug:
-        var: image_info_output['openstack_image'][0]['id']
+        var: image_id

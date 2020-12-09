@@ -12,14 +12,10 @@
     
   tasks:
     - debug:
-        var: hostvars['localhost']['os_auth_url']
-        
-    - debug:
-        var: hostvars['localhost']['os_auth_url']        
+        var: hostvars['localhost']['auth'] 
                 
     - os_image_info:
-        auth:
-          auth_url: "{{ hostvars['localhost']['os_auth_url'] }}"
+        auth: "{{ hostvars['localhost']['auth'] }}" 
       register: image_info_output
 
     - debug:

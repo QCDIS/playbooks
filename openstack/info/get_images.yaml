@@ -11,10 +11,10 @@
       ansible_python_interpreter: /usr/bin/python3
     
   tasks:
-    - debug:
-        var: "{{ hostvars['localhost']['os'].split()[0] | lower}}"   
-    - debug:
-        var: "{{ hostvars['localhost']['os'].split()[1] | lower}}"           
+#     - debug:
+#         var: "{{ hostvars['localhost']['os'].split()[0] | lower}}"   
+#     - debug:
+#         var: "{{ hostvars['localhost']['os'].split()[1] | lower}}"           
                 
     - os_image_info:
         properties:
@@ -30,4 +30,4 @@
         OS_PROTOCOL: "{{ hostvars['localhost']['auth']['protocol'] }}" 
 
     - debug:
-        var: image_info_output
+        var: image_info_output['openstack_image'][0]['id']

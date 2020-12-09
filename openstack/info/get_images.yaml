@@ -11,28 +11,28 @@
       ansible_python_interpreter: /usr/bin/python3
     
   tasks:
+
 #     - debug:
-#         var: "{{ hostvars['localhost']['os'].split()[0] | lower}}"   
-#     - debug:
-#         var: "{{ hostvars['localhost']['os'].split()[1] | lower}}"           
+#         var: hostvars['localhost']['os'].split()[1]
                 
     - os_image_info:
         properties:
-          os_distro: "{{ hostvars['localhost']['os'].split()[0] | lower}}"   
-          os_version: "{{ hostvars['localhost']['os'].split()[1] | lower}}"    
+          os_distro: "{{ hostvars['localhost']['os'].split()[0] | lower}}"
+          os_version: "{{ hostvars['localhost']['os'].split()[1] | lower}}"
       register: image_info_output
-      environment: 
-        OS_AUTH_URL: "{{ hostvars['localhost']['auth']['auth_url'] }}" 
-        OS_ACCESS_TOKEN: "{{ hostvars['localhost']['auth']['token'] }}" 
-        OS_PROJECT_ID: "{{ hostvars['localhost']['auth']['project_id'] }}" 
-        OS_AUTH_TYPE: "{{ hostvars['localhost']['auth']['token_type'] }}" 
-        OS_IDENTITY_PROVIDER: "{{ hostvars['localhost']['auth']['identity_provider'] }}" 
-        OS_PROTOCOL: "{{ hostvars['localhost']['auth']['protocol'] }}" 
+      environment:
+        OS_AUTH_URL: "{{ hostvars['localhost']['auth']['auth_url'] }}"
+        OS_ACCESS_TOKEN: "{{ hostvars['localhost']['auth']['token'] }}"
+        OS_PROJECT_ID: "{{ hostvars['localhost']['auth']['project_id'] }}"
+        OS_AUTH_TYPE: "{{ hostvars['localhost']['auth']['token_type'] }}"
+        OS_IDENTITY_PROVIDER: "{{ hostvars['localhost']['auth']['identity_provider'] }}"
+        OS_PROTOCOL: "{{ hostvars['localhost']['auth']['protocol'] }}"
         
     - set_stats:
         data:
-          image_id:  "{{ image_info_output['openstack_image'][0]['id'] }}"        
-
+          image_id: "{{ image_info_output['openstack_image'][0]['id'] }}"
+      register: set_stats_output
 
     - debug:
-        var: image_id
+        var: set_stats_output
+

@@ -21,7 +21,7 @@
           os_protocol: "{{ hostvars['localhost']['auth']['protocol'] }}" 
           os_identity_provider: "{{ hostvars['localhost']['auth']['identity_provider'] }}" 
           token: "{{ hostvars['localhost']['auth']['token'] }}" 
-          token_type: "{{ hostvars['localhost']['auth']['token_type'] }}" 
+          os_auth_type: "{{ hostvars['localhost']['auth']['token_type'] }}" 
       register: image_info_output
 
     - debug:

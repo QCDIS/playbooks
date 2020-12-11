@@ -13,7 +13,19 @@
   tasks:
     - os_flavor_info:
       register: flavor_info_output
+      environment:
+        OS_AUTH_URL: "{{ hostvars['localhost']['auth']['auth_url'] }}"
+        OS_ACCESS_TOKEN: "{{ hostvars['localhost']['auth']['token'] }}"
+        OS_PROJECT_ID: "{{ hostvars['localhost']['auth']['project_id'] }}"
+        OS_AUTH_TYPE: "{{ hostvars['localhost']['auth']['token_type'] }}"
+        OS_IDENTITY_PROVIDER: "{{ hostvars['localhost']['auth']['identity_provider'] }}"
+        OS_PROTOCOL: "{{ hostvars['localhost']['auth']['protocol'] }}"
 
 
     - debug:
         var: flavor_info_output
+
+    - set_stats:
+        data:
+          image_id: "{{ image_info_output['openstack_image'][0]['id'] }}"
+      register: set_stats_output

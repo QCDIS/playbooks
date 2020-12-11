@@ -12,13 +12,20 @@
     
   tasks:
 
-#     - debug:
-#         var: hostvars['localhost']['os'].split()[1]
+    - set_fact:
+        os_distro: "{{ hostvars['localhost']['os'].split()[0] | lower}}"
+        os_version: "{{ hostvars['localhost']['os'].split()[1] | lower}}"
+      when: "' ' in hostvars['localhost']['os']"
+
+    - set_fact:
+        os_distro: "{{ hostvars['localhost']['os'] | lower}}"
+        os_version: " "
+      when: "' ' not in hostvars['localhost']['os']"
                 
     - os_image_info:
         properties:
-          os_distro: "{{ hostvars['localhost']['os'].split()[0] | lower}}"
-          os_version: "{{ hostvars['localhost']['os'].split()[1] | lower}}"
+          os_distro: "{{hostvars['localhost']['os_distro']}}"
+          os_version: "{{hostvars['localhost']['os_version']}}"
       register: image_info_output
       environment:
         OS_AUTH_URL: "{{ hostvars['localhost']['auth']['auth_url'] }}"
@@ -28,16 +35,33 @@
         OS_IDENTITY_PROVIDER: "{{ hostvars['localhost']['auth']['identity_provider'] }}"
         OS_PROTOCOL: "{{ hostvars['localhost']['auth']['protocol'] }}"
 
-    - debug:
-        var: image_info_output['openstack_image']
 
-    - set_stats:
-        data:
-          image_id: "{{ image_info_output['openstack_image'][0]['id'] }}"
-      register: set_stats_output
-#      when: image_info_output['openstack_image'] | length > 0
+    - set_fact:
+        image_id: "{{ image_info_output['openstack_image'][0]['id'] }}"
+      when: image_info_output['openstack_image'] | length > 0
 
-    - debug:
-        var: set_stats_output
-#      when: image_info_output['openstack_image'] | length > 0
-
+#    - os_image_info:
+#      register: image_info_output
+#      environment:
+#        OS_AUTH_URL: "{{ hostvars['localhost']['auth']['auth_url'] }}"
+#        OS_ACCESS_TOKEN: "{{ hostvars['localhost']['auth']['token'] }}"
+#        OS_PROJECT_ID: "{{ hostvars['localhost']['auth']['project_id'] }}"
+#        OS_AUTH_TYPE: "{{ hostvars['localhost']['auth']['token_type'] }}"
+#        OS_IDENTITY_PROVIDER: "{{ hostvars['localhost']['auth']['identity_provider'] }}"
+#        OS_PROTOCOL: "{{ hostvars['localhost']['auth']['protocol'] }}"
+#      when: image_info_output['openstack_image'] | length <= 0
+#
+#    - debug:
+#        var: image_info_output['openstack_image']
+#
+#    - set_fact:
+#        image_id: "{{ image_info_output['openstack_image'][0]['id'] }}"
+#      when: "'openstack_image' in image_info_output and image_info_output['openstack_image'] | length > 0"
+#
+#    - set_stats:
+#        data:
+#          image_id: "{{ hostvars['localhost']['image_id'] }}"
+#      register: set_stats_output
+#
+#    - debug:
+#        var: set_stats_output

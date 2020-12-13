@@ -11,31 +11,30 @@
       ansible_python_interpreter: /usr/bin/python3
     
   tasks:
-    - set_fact:
-        mem_size: "{{ hostvars['localhost']['mem_size'].split()[0] | lower}}"
-        units: "{{ hostvars['localhost']['mem_size'].split()[1] | lower}}"
-        vcpus: "{{ hostvars['localhost']['num_cores'] }}"
-      when: "' ' in hostvars['localhost']['os']"
+#    - set_fact:
+#        mem_size: "{{ hostvars['localhost']['mem_size'].split()[0] | lower}}"
+#        units: "{{ hostvars['localhost']['mem_size'].split()[1] | lower}}"
+#        vcpus: "{{ hostvars['localhost']['num_cores'] }}"
+#      when: "' ' in hostvars['localhost']['os']"
+#
+#    - set_fact:
+#        mem_size: "{{ hostvars['localhost']['mem_size'] | lower}}"
+#        units: ""
+#        vcpus: "{{ hostvars['localhost']['num_cores'] }}"
+#      when: "' ' not in hostvars['localhost']['mem_size']"
 
-    - set_fact:
-        mem_size: "{{ hostvars['localhost']['mem_size'] | lower}}"
-        units: ""
-        vcpus: "{{ hostvars['localhost']['num_cores'] }}"
-      when: "' ' not in hostvars['localhost']['mem_size']"
-
+    - local_action: copy content={{ hostvars['localhost'] }} dest=/tmp/hostvars.json
 
     - stat:
-        path: /tmp/flavor_info_output_{{ mem_size }}_{{ vcpus }}_{{hostvars['localhost']['auth']['project_id']}}.json
+        path: /tmp/flavor_info_output_{{hostvars['localhost']['auth']['project_id']}}.json
       register: stat_result
 
     - include_vars:
-        file: /tmp/flavor_info_output_{{ mem_size }}_{{ vcpus }}_{{hostvars['localhost']['auth']['project_id']}}.json
+        file: /tmp/flavor_info_output_{{hostvars['localhost']['auth']['project_id']}}.json
         name: flavor_info_output_cache
       when: stat_result.stat.exists
 
     - os_flavor_info:
-        ram: "{{ mem_size }}"
-        vcpus: "{{ vcpus }}"
       register: flavor_info_output
       environment:
         OS_AUTH_URL: "{{ hostvars['localhost']['auth']['auth_url'] }}"
@@ -46,16 +45,20 @@
         OS_PROTOCOL: "{{ hostvars['localhost']['auth']['protocol'] }}"
       when: not stat_result.stat.exists
 
-    - local_action: copy content={{ flavor_info_output }} dest=/tmp/flavor_info_output_{{ mem_size }}_{{ vcpus }}_{{hostvars['localhost']['auth']['project_id']}}.json
+    - local_action: copy content={{ flavor_info_output }} dest=/tmp/flavor_info_output_{{hostvars['localhost']['auth']['project_id']}}.json
       when: "'openstack_flavors' in flavor_info_output and flavor_info_output['openstack_flavors'] | length > 0"
 
-    - shell: jq -r '.openstack_flavors[] | select(.ram == 1024 and .vcpus == 1) | .id' /tmp/flavor_info_output_{{ mem_size }}_{{ vcpus }}_{{hostvars['localhost']['auth']['project_id']}}.json
-      register: image_flavor
+    - shell: python "{{ playbook_dir }}"/select_best_flavor.py /tmp/flavor_info_output_c1c9c25774fe418599bced1d45862c60.json /tmp/hostvars.json
+      register: select_best_flavor_output
+
+    - include_vars:
+        file: "{{ select_best_flavor_output.stdout }}"
+        name: selected_flavor
 
     - set_stats:
         data:
-          flavor_id: "{{ image_flavor }}"
-      register: set_stats_output
+          flavor_id: "{{ selected_flavor.id }}"
+      register: flavor_stats_output
 
     - debug:
-        var: set_stats_output
+        var: flavor_stats_output

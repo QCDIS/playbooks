@@ -68,8 +68,7 @@
     - set_stats:
         data:
           image_id: "{{ image }}"
-      register: set_stats_output
-
+      register: images_stats_output
 
     - debug:
-        var: set_stats_output
+        var: images_stats_output

@@ -38,12 +38,12 @@
       when: "'openstack_networks' in networks_info_output and networks_info_output['openstack_networks'] | length > 0"
 
     - shell: jq -r '.openstack_networks[] | select(.is_default!=false and .shared==true and .status=="ACTIVE") | .id' /tmp/networks_info_output_{{hostvars['localhost']['auth']['project_id']}}.json
-      register: natwork
+      register: network
 
     - set_stats:
         data:
-          natwork_id: "{{ natwork }}"
-      register: set_stats_output
+          natwork_id: "{{ network }}"
+      register: network_stats_output
 
     - debug:
-        var: set_stats_output
+        var: network_stats_output

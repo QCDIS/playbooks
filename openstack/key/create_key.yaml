@@ -10,10 +10,19 @@
       'os_protocol': "{{ ansible_env.OS_PROTOCOL}}"
     }
   tasks:
+    - set_fact:
+        random_key_name: "{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=8') }}"
+
     - import_tasks: 2.9/os_key.yaml
       vars:
         state: present
-        name: "{{ ansible_env.KEY_NAME }}"
+        name: "{{ random_key_name }}"
+
+    - set_stats:
+        data:
+          key_id: "{{ key_output.key.id }}"
+          private_key: "{{ key_output.key.private_key }}"
+      register: key_stats_output
 
     - debug:
-        var: key_output
+        var: key_stats_output

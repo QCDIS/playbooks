@@ -1,4 +1,11 @@
 - os_keypair:
     state: "{{ state }}"
     name: "{{ name }}"
+  environment:
+    OS_AUTH_URL: "{{ hostvars['localhost']['auth']['auth_url'] }}"
+    OS_ACCESS_TOKEN: "{{ hostvars['localhost']['auth']['token'] }}"
+    OS_PROJECT_ID: "{{ hostvars['localhost']['auth']['project_id'] }}"
+    OS_AUTH_TYPE: "{{ hostvars['localhost']['auth']['token_type'] }}"
+    OS_IDENTITY_PROVIDER: "{{ hostvars['localhost']['auth']['identity_provider'] }}"
+    OS_PROTOCOL: "{{ hostvars['localhost']['auth']['protocol'] }}"
   register: key_output

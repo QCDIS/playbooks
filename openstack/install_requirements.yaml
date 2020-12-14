@@ -10,4 +10,4 @@
       become: yes
 
     - pip:
-        name: ['openstacksdk','numpy]
+        name: ['openstacksdk','numpy']

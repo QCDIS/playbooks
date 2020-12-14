@@ -11,17 +11,6 @@
       ansible_python_interpreter: /usr/bin/python3
     
   tasks:
-#    - set_fact:
-#        mem_size: "{{ hostvars['localhost']['mem_size'].split()[0] | lower}}"
-#        units: "{{ hostvars['localhost']['mem_size'].split()[1] | lower}}"
-#        vcpus: "{{ hostvars['localhost']['num_cores'] }}"
-#      when: "' ' in hostvars['localhost']['os']"
-#
-#    - set_fact:
-#        mem_size: "{{ hostvars['localhost']['mem_size'] | lower}}"
-#        units: ""
-#        vcpus: "{{ hostvars['localhost']['num_cores'] }}"
-#      when: "' ' not in hostvars['localhost']['mem_size']"
 
     - local_action: copy content={{ hostvars['localhost'] }} dest=/tmp/hostvars.json
 

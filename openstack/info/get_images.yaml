@@ -23,31 +23,14 @@
       when: "' ' not in hostvars['localhost']['os']"
 
     - stat:
-        path: /tmp/image_info_output_{{hostvars['localhost']['os_distro']}}_{{hostvars['localhost']['os_version']}}_{{hostvars['localhost']['auth']['project_id']}}.json
+        path: /tmp/image_info_output_{{hostvars['localhost']['auth']['project_id']}}.json
       register: stat_result
 
     - include_vars:
-        file: /tmp/image_info_output_{{hostvars['localhost']['os_distro']}}_{{hostvars['localhost']['os_version']}}_{{hostvars['localhost']['auth']['project_id']}}.json
+        file: /tmp/image_info_output_{{hostvars['localhost']['auth']['project_id']}}.json
         name: image_info_output_cache
       when: stat_result.stat.exists
-
-    - os_image_info:
-        properties:
-          os_distro: "{{hostvars['localhost']['os_distro']}}"
-          os_version: "{{hostvars['localhost']['os_version']}}"
-      register: image_info_output_1
-      environment:
-        OS_AUTH_URL: "{{ hostvars['localhost']['auth']['auth_url'] }}"
-        OS_ACCESS_TOKEN: "{{ hostvars['localhost']['auth']['token'] }}"
-        OS_PROJECT_ID: "{{ hostvars['localhost']['auth']['project_id'] }}"
-        OS_AUTH_TYPE: "{{ hostvars['localhost']['auth']['token_type'] }}"
-        OS_IDENTITY_PROVIDER: "{{ hostvars['localhost']['auth']['identity_provider'] }}"
-        OS_PROTOCOL: "{{ hostvars['localhost']['auth']['protocol'] }}"
-      when: not stat_result.stat.exists
-
-    - local_action: copy content={{ image_info_output_1 }} dest=/tmp/image_info_output_{{hostvars['localhost']['os_distro']}}_{{hostvars['localhost']['os_version']}}_{{hostvars['localhost']['auth']['project_id']}}.json
-      when: "'openstack_image' in image_info_output_1 and image_info_output_1['openstack_image'] | length > 0"
-
+      
     - os_image_info:
       register: image_info_output_2
       environment:
@@ -57,17 +40,17 @@
         OS_AUTH_TYPE: "{{ hostvars['localhost']['auth']['token_type'] }}"
         OS_IDENTITY_PROVIDER: "{{ hostvars['localhost']['auth']['identity_provider'] }}"
         OS_PROTOCOL: "{{ hostvars['localhost']['auth']['protocol'] }}"
-      when: "image_info_output_1 is not defined and image_info_output_cache['openstack_image'] | length <= 0"
+      when: not stat_result.stat.exists
 
-    - local_action: copy content={{ image_info_output_2 }} dest=/tmp/image_info_output_{{hostvars['localhost']['os_distro']}}_{{hostvars['localhost']['os_version']}}_{{hostvars['localhost']['auth']['project_id']}}.json
-      when: "'image_info_output_2' in image_info_output_2 and image_info_output_2['openstack_image'] | length > 0"
+    - local_action: copy content={{ image_info_output_2 }} dest=/tmp/image_info_output_{{hostvars['localhost']['auth']['project_id']}}.json
+      when: "'openstack_image' in image_info_output_2 and image_info_output_2['openstack_image'] | length > 0"
 
-    - shell: jq -r '.openstack_image[] | select(.image_type == null or .name == "{{hostvars['localhost']['os_distro']}}") | .id ' /tmp/image_info_output_{{hostvars['localhost']['os_distro']}}_{{hostvars['localhost']['os_version']}}_{{hostvars['localhost']['auth']['project_id']}}.json
+    - shell: jq -r '.openstack_image[] | select(.image_type == null or .name == "{{hostvars['localhost']['os_distro']}}") | .id ' /tmp/image_info_output_{{hostvars['localhost']['auth']['project_id']}}.json
       register: image
 
     - set_stats:
         data:
-          image_id: "{{ image }}"
+          image_id: "{{ image['stdout_lines'][0] }}"
       register: images_stats_output
 
     - debug:

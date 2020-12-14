@@ -42,7 +42,7 @@
 
     - set_stats:
         data:
-          natwork_id: "{{ network }}"
+          network_id: "{{ network['stdout_lines'][0] }}"
       register: network_stats_output
 
     - debug:

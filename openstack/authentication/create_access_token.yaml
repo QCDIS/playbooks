@@ -56,5 +56,5 @@
           access_token: "{{ access_token.stdout }}"
       register: refresh_token_stats
 
-    - debug:
-        var: refresh_token_stats
+#    - debug:
+#        var: refresh_token_stats

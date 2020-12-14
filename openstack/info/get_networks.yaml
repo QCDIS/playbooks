@@ -11,6 +11,16 @@
       ansible_python_interpreter: /usr/bin/python3
 
   tasks:
+    - find:
+        paths: /tmp/
+        patterns: "networks_info_output_{{hostvars['localhost']['auth']['project_id']}}.json"
+        age: 10d
+      register: older_files
+
+    - file:
+        path: "{{ item.path }}"
+        state: absent
+      with_items: "{{ older_files.files }}"
 
     - stat:
         path: /tmp/networks_info_output_{{hostvars['localhost']['auth']['project_id']}}.json

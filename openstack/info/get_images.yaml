@@ -22,6 +22,17 @@
         os_version: ""
       when: "' ' not in hostvars['localhost']['os']"
 
+    - find:
+        paths: /tmp/
+        patterns: "image_info_output_{{hostvars['localhost']['auth']['project_id']}}.json"
+        age: 10d
+      register: older_files
+
+    - file:
+        path: "{{ item.path }}"
+        state: absent
+      with_items: "{{ older_files.files }}"
+
     - stat:
         path: /tmp/image_info_output_{{hostvars['localhost']['auth']['project_id']}}.json
       register: stat_result

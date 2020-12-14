@@ -14,6 +14,17 @@
 
     - local_action: copy content={{ hostvars['localhost'] }} dest=/tmp/hostvars.json
 
+    - find:
+        paths: /tmp/
+        patterns: "image_info_output_{{hostvars['localhost']['auth']['project_id']}}.json"
+        age: 10d
+      register: older_files
+
+    - file:
+        path: "{{ item.path }}"
+        state: absent
+      with_items: "{{ older_files.files }}"
+
     - stat:
         path: /tmp/flavor_info_output_{{hostvars['localhost']['auth']['project_id']}}.json
       register: stat_result

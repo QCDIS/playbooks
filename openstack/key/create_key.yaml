@@ -16,14 +16,14 @@
     - import_tasks: 2.9/os_key.yaml
       vars:
         state: present
-        name: sdia-"{{ random_key_name }}"
+        name: "sdia_{{ random_key_name }}"
         access_token: "{{ access_token }}"
 
     - set_stats:
         data:
           key_id: "{{ key_output.key.id }}"
           private_key: "{{ key_output.key.private_key }}"
-          key_name: sdia-"{{ random_key_name }}"
+          key_name: "sdia_{{ random_key_name }}"
       register: key_stats_output
 
     - debug:

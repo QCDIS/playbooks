@@ -1,5 +1,6 @@
 
 - os_server:
+    num_of_instances: "{{ num_of_instances }}"
     state: "{{ state }}"
     name: "{{ name }}"
     image: "{{image}}"

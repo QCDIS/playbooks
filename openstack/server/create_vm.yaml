@@ -11,7 +11,7 @@
       ansible_python_interpreter: /usr/bin/python3
 
   tasks:
-    - import_tasks: 2.9/vm.yaml
+    - include_tasks: 2.9/vm.yaml
       vars:
         state: present
         name: "{{ hostvars['localhost']['image_name'] }}"
@@ -20,6 +20,9 @@
         flavor: "{{ flavor_id }}"
         network: "{{ network_id }}"
         access_token: "{{ access_token }}"
+#      loop: "{{ hostvars['localhost']['num_of_instances'] }}"
+#      loop_control:
+#        loop_var: num_of_instances
 
     - debug:
         var: os_server_output

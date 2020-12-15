@@ -11,8 +11,7 @@
       ansible_python_interpreter: /usr/bin/python3
     
   tasks:
-
-    - local_action: copy content={{ hostvars['localhost'] }} dest=/tmp/hostvars.json
+    - local_action: copy content={{ hostvars['localhost']['instances'] }} dest=/tmp/request_instances.json
 
     - find:
         paths: /tmp/
@@ -43,11 +42,12 @@
         OS_AUTH_TYPE: "{{ hostvars['localhost']['auth']['token_type'] }}"
         OS_IDENTITY_PROVIDER: "{{ hostvars['localhost']['auth']['identity_provider'] }}"
         OS_PROTOCOL: "{{ hostvars['localhost']['auth']['protocol'] }}"
+      when: not stat_result.stat.exists
 
     - local_action: copy content={{ flavor_info_output }} dest=/tmp/flavor_info_output_{{hostvars['localhost']['auth']['project_id']}}.json
       when: "'openstack_flavors' in flavor_info_output and flavor_info_output['openstack_flavors'] | length > 0"
 
-    - shell: python "{{ playbook_dir }}"/select_best_flavor.py /tmp/flavor_info_output_c1c9c25774fe418599bced1d45862c60.json /tmp/hostvars.json
+    - shell: python "{{ playbook_dir }}"/select_best_flavor.py /tmp/flavor_info_output_{{hostvars['localhost']['auth']['project_id']}}.json /tmp/request_instances.json
       register: select_best_flavor_output
 
     - include_vars:
@@ -56,7 +56,7 @@
 
     - set_stats:
         data:
-          flavor_id: "{{ selected_flavor.id }}"
+          selected_flavor: "{{ selected_flavor }}"
       register: flavor_stats_output
 
     - debug:

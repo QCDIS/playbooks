@@ -1,17 +1,20 @@
 
-- os_server:
-    num_of_instances: "{{ num_of_instances }}"
-    state: "{{ state }}"
-    name: "{{ name }}"
-    image: "{{image}}"
-    key_name: "{{key_name}}"
-    flavor: "{{flavor}}"
-    network: "{{ network }}"
-  environment:
-    OS_AUTH_URL: "{{ hostvars['localhost']['auth']['auth_url'] }}"
-    OS_ACCESS_TOKEN: "{{ access_token }}"
-    OS_PROJECT_ID: "{{ hostvars['localhost']['auth']['project_id'] }}"
-    OS_AUTH_TYPE: "{{ hostvars['localhost']['auth']['token_type'] }}"
-    OS_IDENTITY_PROVIDER: "{{ hostvars['localhost']['auth']['identity_provider'] }}"
-    OS_PROTOCOL: "{{ hostvars['localhost']['auth']['protocol'] }}"
-  register: os_server_output
+#- os_server:
+#    state: "{{ state }}"
+#    name: "{{ name }}"
+#    image: "{{image}}"
+#    key_name: "{{key_name}}"
+#    flavor: "{{flavor}}"
+#    network: "{{ network }}"
+#  environment:
+#    OS_AUTH_URL: "{{ hostvars['localhost']['auth']['auth_url'] }}"
+#    OS_ACCESS_TOKEN: "{{ access_token }}"
+#    OS_PROJECT_ID: "{{ hostvars['localhost']['auth']['project_id'] }}"
+#    OS_AUTH_TYPE: "{{ hostvars['localhost']['auth']['token_type'] }}"
+#    OS_IDENTITY_PROVIDER: "{{ hostvars['localhost']['auth']['identity_provider'] }}"
+#    OS_PROTOCOL: "{{ hostvars['localhost']['auth']['protocol'] }}"
+#  register: os_server_output
+
+
+- debug:
+    msg:

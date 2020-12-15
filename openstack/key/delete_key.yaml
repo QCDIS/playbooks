@@ -13,7 +13,8 @@
     - import_tasks: 2.9/os_key.yaml
       vars:
         state: absent
-        name: "{{ ansible_env.KEY_NAME }}"
+        name: "{{ hostvars['localhost']['key_name'] }}"
+        access_token: "{{ access_token }}"
 
     - debug:
         var: key_output

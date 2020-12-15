@@ -17,6 +17,7 @@
       vars:
         state: present
         name: sdia-"{{ random_key_name }}"
+        access_token: "{{ access_token }}"
 
     - set_stats:
         data:

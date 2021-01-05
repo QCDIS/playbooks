@@ -1,7 +1,3 @@
-- set_fact:
-    os_distro: "{{ os_distro }}"
-    os_version: "{{ os_version }}"
-
 - find:
     paths: /tmp/
     patterns: "image_info_output_{{ project_id }}.json"
@@ -36,6 +32,16 @@
 - local_action: copy content={{ image_info_output_2 }} dest=/tmp/image_info_output_{{ project_id }}.json
   when: "'openstack_image' in image_info_output_2 and image_info_output_2['openstack_image'] | length > 0"
 
-- shell: jq -r '.openstack_image[] | select(.image_type == null and and .properties.os_distro== "{{ os_distro }}" and .properties.os_version=="{{ os_version }}") | .id ' /tmp/image_info_output_{{ project_id }}.json
-  register: image
+- shell: jq -r '.openstack_image[] | select(.image_type == null and .properties.os_distro == "{{ os_distro | lower }}" and .properties.os_version == "{{ os_version }}") | .id' /tmp/image_info_output_{{ project_id }}.json
+  register: image_id
 
+
+- set_stats:
+    data:
+      "{{ instance_name }}":
+        access_token: "{{ access_token }}"
+        image_id: "{{ image_id.stdout }}"
+  register: get_images_output
+
+- debug:
+    var: get_images_output

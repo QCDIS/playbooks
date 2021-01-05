@@ -25,6 +25,11 @@
       loop: "{{ hostvars['localhost']['instances'] | dict2items }}"
       register: images
 
+    - debug:
+        var: image
+
+    - debug:
+        var: images
 
     - set_stats:
         data:

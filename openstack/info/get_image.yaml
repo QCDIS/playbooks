@@ -36,6 +36,6 @@
 - local_action: copy content={{ image_info_output_2 }} dest=/tmp/image_info_output_{{ project_id }}.json
   when: "'openstack_image' in image_info_output_2 and image_info_output_2['openstack_image'] | length > 0"
 
-- shell: jq -r '.openstack_image[] | select(.image_type == null or .name == "{{ os_distro }}") | .id ' /tmp/image_info_output_{{ project_id }}.json
+- shell: jq -r '.openstack_image[] | select(.image_type == null and and .properties.os_distro== "{{ os_distro }}" and .properties.os_version=="{{ os_version }}") | .id ' /tmp/image_info_output_{{ project_id }}.json
   register: image
 

@@ -9,13 +9,13 @@
        'os_protocol': "{{ ansible_env.OS_PROTOCOL}}"
       }
       ansible_python_interpreter: /usr/bin/python3
-    
+
   tasks:
     - local_action: copy content={{ hostvars['localhost']['instances'] }} dest=/tmp/request_instances.json
 
     - find:
         paths: /tmp/
-        patterns: "image_info_output_{{hostvars['localhost']['auth']['project_id']}}.json"
+        patterns: "image_info_output_{{project_id}}.json"
         age: 10d
       register: older_files
 
@@ -25,29 +25,29 @@
       with_items: "{{ older_files.files }}"
 
     - stat:
-        path: /tmp/flavor_info_output_{{hostvars['localhost']['auth']['project_id']}}.json
+        path: /tmp/flavor_info_output_{{project_id}}.json
       register: stat_result
 
     - include_vars:
-        file: /tmp/flavor_info_output_{{hostvars['localhost']['auth']['project_id']}}.json
+        file: /tmp/flavor_info_output_{{project_id}}.json
         name: flavor_info_output_cache
       when: stat_result.stat.exists
 
     - os_flavor_info:
       register: flavor_info_output
       environment:
-        OS_AUTH_URL: "{{ hostvars['localhost']['auth']['auth_url'] }}"
+        OS_AUTH_URL: "{{ hostvars['localhost']['auth_url'] }}"
         OS_ACCESS_TOKEN: "{{ access_token }}"
-        OS_PROJECT_ID: "{{ hostvars['localhost']['auth']['project_id'] }}"
-        OS_AUTH_TYPE: "{{ hostvars['localhost']['auth']['token_type'] }}"
-        OS_IDENTITY_PROVIDER: "{{ hostvars['localhost']['auth']['identity_provider'] }}"
-        OS_PROTOCOL: "{{ hostvars['localhost']['auth']['protocol'] }}"
+        OS_PROJECT_ID: "{{ hostvars['localhost']['project_id'] }}"
+        OS_AUTH_TYPE: v3oidcaccesstoken
+        OS_IDENTITY_PROVIDER: "{{ hostvars['localhost']['identity_provider'] }}"
+        OS_PROTOCOL: openid
       when: not stat_result.stat.exists
 
-    - local_action: copy content={{ flavor_info_output }} dest=/tmp/flavor_info_output_{{hostvars['localhost']['auth']['project_id']}}.json
+    - local_action: copy content={{ flavor_info_output }} dest=/tmp/flavor_info_output_{{project_id}}.json
       when: "'openstack_flavors' in flavor_info_output and flavor_info_output['openstack_flavors'] | length > 0"
 
-    - shell: python "{{ playbook_dir }}"/select_best_flavor.py /tmp/flavor_info_output_{{hostvars['localhost']['auth']['project_id']}}.json /tmp/request_instances.json
+    - shell: python "{{ playbook_dir }}"/select_best_flavor.py /tmp/flavor_info_output_{{project_id}}.json /tmp/request_instances.json
       register: select_best_flavor_output
 
     - include_vars:

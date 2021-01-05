@@ -23,7 +23,8 @@
         protocol: openid
         instance_name: item.key
       loop: "{{ hostvars['localhost']['instances'] | dict2items }}"
-      register: images
+      loop_control:
+        loop_var: images
 
     - debug:
         var: image

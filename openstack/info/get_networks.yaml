@@ -13,7 +13,7 @@
   tasks:
     - find:
         paths: /tmp/
-        patterns: "networks_info_output_{{hostvars['localhost']['auth']['project_id']}}.json"
+        patterns: "networks_info_output_{{hostvars['localhost']['project_id']}}.json"
         age: 10d
       register: older_files
 
@@ -23,12 +23,12 @@
       with_items: "{{ older_files.files }}"
 
     - stat:
-        path: /tmp/networks_info_output_{{hostvars['localhost']['auth']['project_id']}}.json
+        path: /tmp/networks_info_output_{{hostvars['localhost']['project_id']}}.json
       register: stat_result
 
 
     - include_vars:
-        file: /tmp/networks_info_output_{{hostvars['localhost']['auth']['project_id']}}.json
+        file: /tmp/networks_info_output_{{hostvars['localhost']['project_id']}}.json
         name: networks_info_output_cache
       when: stat_result.stat.exists
 
@@ -36,18 +36,18 @@
     - os_networks_info:
       register: networks_info_output
       environment:
-        OS_AUTH_URL: "{{ hostvars['localhost']['auth']['auth_url'] }}"
+        OS_AUTH_URL: "{{ hostvars['localhost']['auth_url'] }}"
         OS_ACCESS_TOKEN: "{{ access_token }}"
-        OS_PROJECT_ID: "{{ hostvars['localhost']['auth']['project_id'] }}"
-        OS_AUTH_TYPE: "{{ hostvars['localhost']['auth']['token_type'] }}"
-        OS_IDENTITY_PROVIDER: "{{ hostvars['localhost']['auth']['identity_provider'] }}"
-        OS_PROTOCOL: "{{ hostvars['localhost']['auth']['protocol'] }}"
+        OS_PROJECT_ID: "{{ hostvars['localhost']['project_id'] }}"
+        OS_AUTH_TYPE: v3oidcaccesstoken
+        OS_IDENTITY_PROVIDER: "{{ hostvars['localhost']['identity_provider'] }}"
+        OS_PROTOCOL: openid
       when: not stat_result.stat.exists
 
-    - local_action: copy content={{ networks_info_output }} dest=/tmp/networks_info_output_{{hostvars['localhost']['auth']['project_id']}}.json
+    - local_action: copy content={{ networks_info_output }} dest=/tmp/networks_info_output_{{hostvars['localhost']['project_id']}}.json
       when: "'openstack_networks' in networks_info_output and networks_info_output['openstack_networks'] | length > 0"
 
-    - shell: jq -r '.openstack_networks[] | select(.is_default!=false and .shared==true and .status=="ACTIVE") | .id' /tmp/networks_info_output_{{hostvars['localhost']['auth']['project_id']}}.json
+    - shell: jq -r '.openstack_networks[] | select(.is_default!=false and .shared==true and .status=="ACTIVE") | .id' /tmp/networks_info_output_{{hostvars['localhost']['project_id']}}.json
       register: network
 
     - set_stats:

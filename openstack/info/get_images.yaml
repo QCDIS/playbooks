@@ -1,0 +1,36 @@
+- hosts: localhost
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    auth_data: {
+      'auth_url': "{{ ansible_env.os_auth_url }}",
+      'os_access_token': "{{ ansible_env.os_access_token }}",
+      'os_project_id': "{{ ansible_env.os_project_id }}",
+      'os_auth_type': "{{ ansible_env.os_auth_type }}",
+      'os_identity_provider': "{{ ansible_env.os_identity_provider}}",
+      'os_protocol': "{{ ansible_env.os_protocol}}"
+    }
+  tasks:
+
+    - include_tasks: get_image.yaml
+      vars:
+        os_distro: item.value.os_distro
+        os_version: item.value.os_version
+        project_id: "{{ hostvars['localhost']['project_id'] }}"
+        auth_url: "{{ hostvars['localhost']['auth_url'] }}"
+        access_token: "{{ access_token }}"
+        token_type: v3oidcaccesstoken
+        identity_provider: "{{ hostvars['localhost']['identity_provider'] }}"
+        protocol: openid
+        instance_name: item.key
+      loop: "{{ hostvars['localhost']['instances'] | dict2items }}"
+      register: images
+
+
+    - set_stats:
+        data:
+          access_token: "{{ access_token }}"
+          images: "{{ images }}"
+      register: get_images_output
+
+    - debug:
+        var: get_images_output

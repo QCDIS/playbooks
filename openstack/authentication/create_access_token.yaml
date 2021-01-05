@@ -14,7 +14,7 @@
 
     - find:
         paths: /tmp/
-        patterns: "refresh_token_responce_{{hostvars['localhost']['user']}}.json"
+        patterns: "refresh_token_responce_{{hostvars['localhost']['credentials'][0]['user']}}.json"
         age: 1h
       register: older_files
 

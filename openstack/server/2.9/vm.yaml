@@ -14,7 +14,3 @@
     OS_IDENTITY_PROVIDER: "{{ identity_provider }}"
     OS_PROTOCOL: "{{ protocol }}"
   register: os_server_output
-
-
-- debug:
-    msg:

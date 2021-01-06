@@ -21,9 +21,10 @@
 
     - set_stats:
         data:
-          key_id: "{{ key_output.key.id }}"
-          private_key: "{{ key_output.key.private_key }}"
-          key_name: "sdia_{{ random_key_name }}"
+          instances:
+            key_id: "{{ key_output.key.id }}"
+            private_key: "{{ key_output.key.private_key }}"
+            key_name: "sdia_{{ random_key_name }}"
       register: key_stats_output
 
     - debug:

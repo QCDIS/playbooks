@@ -1,19 +1,19 @@
 
-#- os_server:
-#    state: "{{ state }}"
-#    name: "{{ name }}"
-#    image: "{{image}}"
-#    key_name: "{{key_name}}"
-#    flavor: "{{flavor}}"
-#    network: "{{ network }}"
-#  environment:
-#    OS_AUTH_URL: "{{ hostvars['localhost']['auth_url'] }}"
-#    OS_ACCESS_TOKEN: "{{ access_token }}"
-#    OS_PROJECT_ID: "{{ hostvars['localhost']['project_id'] }}"
-#    OS_AUTH_TYPE: v3oidcaccesstoken
-#    OS_IDENTITY_PROVIDER: "{{ hostvars['localhost']['identity_provider'] }}"
-#    OS_PROTOCOL: openid
-#  register: os_server_output
+- os_server:
+    state: "{{ state }}"
+    name: "{{ name }}"
+    image: "{{image}}"
+    key_name: "{{key_name}}"
+    flavor: "{{flavor}}"
+    network: "{{ network }}"
+  environment:
+    OS_AUTH_URL: "{{ auth_url }}"
+    OS_ACCESS_TOKEN: "{{ access_token }}"
+    OS_PROJECT_ID: "{{ project_id }}"
+    OS_AUTH_TYPE: v3oidcaccesstoken
+    OS_IDENTITY_PROVIDER: "{{ identity_provider }}"
+    OS_PROTOCOL: "{{ protocol }}"
+  register: os_server_output
 
 
 - debug:

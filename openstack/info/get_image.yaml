@@ -38,9 +38,9 @@
 
 - set_stats:
     data:
-      "{{ instance_name }}":
-        access_token: "{{ access_token }}"
-        image_id: "{{ image_id.stdout }}"
+      instances:
+        "{{ instance_name }}":
+          image_id: "{{ image_id.stdout }}"
   register: get_images_output
 
 - debug:

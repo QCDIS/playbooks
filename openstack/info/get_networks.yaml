@@ -52,7 +52,8 @@
 
     - set_stats:
         data:
-          network_id: "{{ network['stdout_lines'][0] }}"
+          instances:
+            network_id: "{{ network['stdout_lines'][0] }}"
       register: network_stats_output
 
     - debug:

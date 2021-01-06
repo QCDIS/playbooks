@@ -56,7 +56,9 @@
 
     - set_stats:
         data:
-          selected_flavor: "{{ selected_flavor }}"
+          instances:
+            "{{ instance_name }}":
+              flavor_id: "{{ selected_flavor.id }}"
       register: flavor_stats_output
 
     - debug:

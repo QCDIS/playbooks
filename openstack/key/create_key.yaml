@@ -19,12 +19,15 @@
         name: "sdia_{{ random_key_name }}"
         access_token: "{{ access_token }}"
 
+
     - set_stats:
         data:
           instances:
-            key_id: "{{ key_output.key.id }}"
-            private_key: "{{ key_output.key.private_key }}"
-            key_name: "sdia_{{ random_key_name }}"
+            "{{ item.key }}":
+              key_id: "{{ key_output.key.id }}"
+              private_key: "{{ key_output.key.private_key }}"
+              key_name: "sdia_{{ random_key_name }}"
+      loop: "{{ instances | dict2items }}"
       register: key_stats_output
 
     - debug:

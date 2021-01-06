@@ -12,13 +12,13 @@
 
   tasks:
     - debug:
-        var: item
-      loop: "{{ hostvars['localhost']['instances'] | dict2items }}"
+        var: item.key
+      loop: "{{ instances | dict2items }}"
 
 #    - include_tasks: 2.9/vm.yaml
 #      vars:
 #        state: present
-#        name: "{{ hostvars['localhost']['instances'] }}"
+#        name: "{{ item.key }}"
 #        image: "{{ image_id }}"
 #        key_name: "{{ key_name }}"
 #        flavor: "{{ flavor_id }}"

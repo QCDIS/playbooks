@@ -53,7 +53,9 @@
     - set_stats:
         data:
           instances:
-            network_id: "{{ network['stdout_lines'][0] }}"
+            "{{ item.key }}":
+              network_id: "{{ network['stdout_lines'][0] }}"
+      loop: "{{ hostvars['localhost']['instances'] | dict2items }}"
       register: network_stats_output
 
     - debug:

@@ -1,0 +1,59 @@
+- hosts: localhost
+  vars:
+    - auth_data: {
+       'auth_url': "{{ ansible_env.OS_AUTH_URL }}",
+       'os_access_token': "{{ ansible_env.OS_ACCESS_TOKEN }}",
+       'os_project_id': "{{ ansible_env.OS_PROJECT_ID }}",
+       'os_auth_type': "{{ ansible_env.OS_AUTH_TYPE }}",
+       'os_identity_provider': "{{ ansible_env.OS_IDENTITY_PROVIDER}}",
+       'os_protocol': "{{ ansible_env.OS_PROTOCOL}}"
+      }
+      ansible_python_interpreter: /usr/bin/python3
+
+  tasks:
+    - find:
+        paths: /tmp/
+        patterns: "networks_info_output_{{ project_id }}.json"
+        age: 10d
+      register: older_files
+
+    - file:
+        path: "{{ item.path }}"
+        state: absent
+      with_items: "{{ older_files.files }}"
+
+    - stat:
+        path: /tmp/networks_info_output_{{ project_id }}.json
+      register: stat_result
+
+
+    - include_vars:
+        file: /tmp/networks_info_output_{{ project_id }}.json
+        name: networks_info_output_cache
+      when: stat_result.stat.exists
+
+
+    - os_networks_info:
+      register: networks_info_output
+      environment:
+        OS_AUTH_URL: "{{ auth_url }}"
+        OS_ACCESS_TOKEN: "{{ access_token }}"
+        OS_PROJECT_ID: "{{ project_id }}"
+        OS_AUTH_TYPE: "{{ token_type }}"
+        OS_IDENTITY_PROVIDER: "{{ identity_provider }}"
+        OS_PROTOCOL: "{{ protocol }}"
+      when: not stat_result.stat.exists
+
+    - local_action: copy content={{ networks_info_output }} dest=/tmp/networks_info_output_{{ project_id }}.json
+      when: "'openstack_networks' in networks_info_output and networks_info_output['openstack_networks'] | length > 0"
+
+    - shell: jq -r '.openstack_networks[] | select(.is_default!=false and .shared==true and .status=="ACTIVE") | { "{{ instance_name }}" :{network_id:.id}}' /tmp/networks_info_output_{{ project_id }}.json
+      register: network
+
+    - set_stats:
+        data:
+          instances: "{{ network.stdout }}"
+      register: network_stats_output
+
+    - debug:
+        var: network_stats_output

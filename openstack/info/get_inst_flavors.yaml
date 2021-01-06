@@ -46,21 +46,17 @@
 
     - local_action: copy content={{ flavor_info_output }} dest=/tmp/flavor_info_output_{{project_id}}.json
       when: "'openstack_flavors' in flavor_info_output and flavor_info_output['openstack_flavors'] | length > 0"
-
+#
     - shell: python "{{ playbook_dir }}"/select_best_flavor.py /tmp/flavor_info_output_{{project_id}}.json /tmp/request_instances.json
-      register: select_best_flavor_output
+      register: select_best_flavors_output
 
     - include_vars:
-        file: "{{ select_best_flavor_output.stdout }}"
-        name: selected_flavor
+        file: "{{ select_best_flavors_output.stdout }}"
+        name: selected_flavors
 
     - set_stats:
-        data:
-          instances:
-            "{{ item.key }}":
-              flavor_id: "{{ selected_flavor.id }}"
+        data: "{{selected_flavors}}"
       register: flavor_stats_output
-      loop: "{{ hostvars['localhost']['instances'] | dict2items }}"
 
     - debug:
         var: flavor_stats_output

@@ -23,21 +23,4 @@
         protocol: openid
         instance_name: "{{ item.key }}"
       loop: "{{ hostvars['localhost']['instances'] | dict2items }}"
-      register: images
 
-    - debug:
-        var: get_images_output
-
-#    - debug:
-#        var: get_image_output
-
-
-
-#    - set_stats:
-#        data:
-#          access_token: "{{ access_token }}"
-#          images: "{{ images }}"
-#      register: get_images_output
-#
-#    - debug:
-#        var: get_images_output

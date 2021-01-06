@@ -11,52 +11,13 @@
       ansible_python_interpreter: /usr/bin/python3
 
   tasks:
-    - find:
-        paths: /tmp/
-        patterns: "networks_info_output_{{hostvars['localhost']['project_id']}}.json"
-        age: 10d
-      register: older_files
-
-    - file:
-        path: "{{ item.path }}"
-        state: absent
-      with_items: "{{ older_files.files }}"
-
-    - stat:
-        path: /tmp/networks_info_output_{{hostvars['localhost']['project_id']}}.json
-      register: stat_result
-
-
-    - include_vars:
-        file: /tmp/networks_info_output_{{hostvars['localhost']['project_id']}}.json
-        name: networks_info_output_cache
-      when: stat_result.stat.exists
-
-
-    - os_networks_info:
-      register: networks_info_output
-      environment:
-        OS_AUTH_URL: "{{ hostvars['localhost']['auth_url'] }}"
-        OS_ACCESS_TOKEN: "{{ access_token }}"
-        OS_PROJECT_ID: "{{ hostvars['localhost']['project_id'] }}"
-        OS_AUTH_TYPE: v3oidcaccesstoken
-        OS_IDENTITY_PROVIDER: "{{ hostvars['localhost']['identity_provider'] }}"
-        OS_PROTOCOL: openid
-      when: not stat_result.stat.exists
-
-    - local_action: copy content={{ networks_info_output }} dest=/tmp/networks_info_output_{{hostvars['localhost']['project_id']}}.json
-      when: "'openstack_networks' in networks_info_output and networks_info_output['openstack_networks'] | length > 0"
-
-    - shell: jq -r '.openstack_networks[] | select(.is_default!=false and .shared==true and .status=="ACTIVE") | .id' /tmp/networks_info_output_{{hostvars['localhost']['project_id']}}.json
-      register: network
-
-    - set_stats:
-        data:
-          instances:
-            "{{ item.key }}":
-              network_id: "{{ network['stdout_lines'][0] }}"
+    - include_tasks: get_network.yaml
+      vars:
+        project_id: "{{ hostvars['localhost']['project_id'] }}"
+        auth_url: "{{ hostvars['localhost']['auth_url'] }}"
+        access_token: "{{ access_token }}"
+        token_type: v3oidcaccesstoken
+        identity_provider: "{{ hostvars['localhost']['identity_provider'] }}"
+        protocol: openid
+        instance_name: "{{ item.key }}"
       loop: "{{ hostvars['localhost']['instances'] | dict2items }}"
-      register: network_stats_output
-
-    - debug:
-        var: network_stats_output

@@ -21,8 +21,8 @@ def get_shorter_dist(available_instances, requested_instances):
             dist = norm(requested_vector - available_vector)
             if dist < min_dist:
                 min_dist = dist
-                # selected_flavor = flavor
-                selected_flavors[requested_instance_name] = flavor
+                selected_flavor = {'flavor_id': flavor['id']}
+                selected_flavors[requested_instance_name] = selected_flavor
 
     return selected_flavors
 
@@ -38,9 +38,11 @@ if __name__ == "__main__":
     requested_instances = json.load(f)
 
     selected_flavors = get_shorter_dist(available_instances, requested_instances)
+    instances = {'instances':selected_flavors}
+
     fd, filename = tempfile.mkstemp()
 
     with os.fdopen(fd, 'w') as tmp:
         # do stuff with temp file
-        json.dump(selected_flavors, tmp)
+        json.dump(instances, tmp)
     print(filename)

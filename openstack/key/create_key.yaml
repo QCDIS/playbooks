@@ -22,20 +22,13 @@
 
     - local_action: copy content={{ key_output }} dest=/tmp/key_output.json
 
-    - set_stats:
-        data:
-          instances:
-            "{{ item.key }}":
-              key_id: "{{ key_output.key.id }}"
-              private_key: "{{ key_output.key.private_key }}"
-              key_name: "sdia_{{ random_key_name }}"
+    - shell: jq -r '.key | { "{{ item.key }}" :{ key:{id:.id, private_key:.private_key, name:.name} }} ' /tmp/key_output.json
       loop: "{{ instances | dict2items }}"
-      register: key_stats_output
+      register: key
 
 
     - debug:
-        var: item
-      loop: "{{ instances | dict2items }}"
+        var: key
 
 
 #    - debug:

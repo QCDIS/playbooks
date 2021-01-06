@@ -57,9 +57,10 @@
     - set_stats:
         data:
           instances:
-            "{{ instance_name }}":
+            "{{ item.key }}":
               flavor_id: "{{ selected_flavor.id }}"
       register: flavor_stats_output
+      loop: "{{ hostvars['localhost']['instances'] | dict2items }}"
 
     - debug:
         var: flavor_stats_output

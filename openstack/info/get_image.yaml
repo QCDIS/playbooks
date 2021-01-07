@@ -37,7 +37,7 @@
 
 - set_stats:
     data:
-      instances: "{{ image_id.stdout }}"
+      images: "{{ image_id.stdout }}"
   register: get_images_output
 
 - debug:

@@ -40,7 +40,7 @@
 
 - set_stats:
     data:
-      instances: "{{ network.stdout }}"
+      networks: "{{ network.stdout }}"
   register: network_stats_output
 
 - debug:

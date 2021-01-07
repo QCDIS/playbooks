@@ -11,9 +11,12 @@
       ansible_python_interpreter: /usr/bin/python3
 
   tasks:
-    - debug:
-        var: item
-      loop: "{{ instances | dict2items }}"
+    - local_action: copy content={{ images }} dest=/tmp/{{ item }}.json
+      with_items:
+        - images
+        - selected_flavors
+        - networks
+        - ssh_keys
 
 #    - include_tasks: 2.9/vm.yaml
 #      vars:

@@ -6,7 +6,7 @@
 
 - set_stats:
     data:
-      instances: "{{ key.stdout }}"
+      ssh_keys: "{{ key.stdout }}"
   register: key_stats_output
 
 - debug:

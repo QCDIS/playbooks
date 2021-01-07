@@ -15,18 +15,18 @@
         var: item.key
       loop: "{{ instances | dict2items }}"
 
-#    - include_tasks: 2.9/vm.yaml
-#      vars:
-#        state: present
-#        name: "{{ item.key }}"
-#        image: "{{ image_id }}"
-#        key_name: "{{ key_name }}"
-#        flavor: "{{ flavor_id }}"
-#        network: "{{ network_id }}"
-#        access_token: "{{ access_token }}"
-#        protocol: openid
-#        instance_name: "{{ item.key }}"
-#      loop: "{{ hostvars['localhost']['instances'] | dict2items }}"
+    - include_tasks: 2.9/vm.yaml
+      vars:
+        state: present
+        name: "{{ item.key }}"
+        image: "{{ image_id }}"
+        key_name: "{{ key_name }}"
+        flavor: "{{ flavor_id }}"
+        network: "{{ network_id }}"
+        access_token: "{{ access_token }}"
+        protocol: openid
+        instance_name: "{{ item.key }}"
+      loop: "{{ hostvars['localhost']['instances'] | dict2items }}"
 
 #    - debug:
 #        var: os_server_output

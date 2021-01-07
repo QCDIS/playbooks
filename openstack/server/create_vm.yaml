@@ -11,12 +11,10 @@
       ansible_python_interpreter: /usr/bin/python3
 
   tasks:
-    - local_action: copy content={{ item }} dest=/tmp/{{ item }}.json
-      with_items:
-        - images
-        - selected_flavors
-        - networks
-        - ssh_keys
+    - local_action: copy content={{ images }} dest=/tmp/images.json
+    - local_action: copy content={{ selected_flavors }} dest=/tmp/selected_flavors.json
+    - local_action: copy content={{ networks }} dest=/tmp/networks.json
+    - local_action: copy content={{ ssh_keys }} dest=/tmp/ssh_keys.json
 
 #    - include_tasks: 2.9/vm.yaml
 #      vars:

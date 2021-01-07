@@ -38,7 +38,7 @@ if __name__ == "__main__":
     requested_instances = json.load(f)
 
     selected_flavors = get_shorter_dist(available_instances, requested_instances)
-    instances = {'selected_flavors':selected_flavors}
+    instances = {'instances':selected_flavors}
 
     fd, filename = tempfile.mkstemp()
 

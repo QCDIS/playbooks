@@ -10,29 +10,19 @@
       'os_protocol': "{{ ansible_env.OS_PROTOCOL}}"
     }
   tasks:
-    - debug:
-        var: selected_flavors
+    - set_fact:
+        random_key_name: "{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=8') }}"
 
-    - debug:
-        var: images
-
-    - debug:
-        var: networks
-
-
-#    - set_fact:
-#        random_key_name: "{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=8') }}"
+    - import_tasks: 2.9/os_key.yaml
+      vars:
+        state: present
+        name: "sdia_{{ random_key_name }}"
+        access_token: "{{ access_token }}"
 #
-#    - import_tasks: 2.9/os_key.yaml
-#      vars:
-#        state: present
-#        name: "sdia_{{ random_key_name }}"
-#        access_token: "{{ access_token }}"
-##
-##
-#    - local_action: copy content={{ key_stats_output }} dest=/tmp/key_output.json
-##
-#    - include_tasks: create_key.yaml
-#      vars:
-#        instance_name: "{{ item.key }}"
-#      loop: "{{ instances | dict2items }}"
+#
+    - local_action: copy content={{ key_stats_output }} dest=/tmp/key_output.json
+#
+    - include_tasks: create_key.yaml
+      vars:
+        instance_name: "{{ item.key }}"
+      loop: "{{ instances | dict2items }}"

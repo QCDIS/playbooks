@@ -2,9 +2,9 @@
 - os_server:
     state: "{{ state }}"
     name: "{{ name }}"
-    image: "{{image}}"
-    key_name: "{{key_name}}"
-    flavor: "{{flavor}}"
+    image: "{{ image }}"
+    key_name: "{{ key_name }}"
+    flavor: "{{ flavor }}"
     network: "{{ network }}"
   environment:
     OS_AUTH_URL: "{{ auth_url }}"

@@ -30,6 +30,11 @@
         file: /tmp/vms.json
         name: vms
 
+
+
+    - debug:
+        var: auth_url
+
     - include_tasks: 2.9/vm.yaml
       vars:
         state: present
@@ -41,7 +46,6 @@
         access_token: "{{ access_token }}"
         protocol: openid
         instance_name: "{{ item.key }}"
-        auth_url: "{{ auth_url }}"
       loop: "{{ vms | dict2items }}"
 
     - debug:

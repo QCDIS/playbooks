@@ -1,18 +1,4 @@
 
-#- debug:
-#    var: item
-#  with_items:
-#    - "{{state}}"
-#    - "{{name}}"
-#    - "{{image}}"
-#    - "{{key_name}}"
-#    - "{{flavor}}"
-#    - "{{network}}"
-#    - "{{auth_url}}"
-##    - "{{access_token}}"
-##    - "{{identity_provider}}"
-##    - "{{protocol}}"
-
 - os_server:
     state: "{{ state }}"
     name: "{{ name }}"

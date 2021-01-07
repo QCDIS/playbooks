@@ -1,3 +1,5 @@
+
+
 - shell: jq -r '.key | { "{{ item.key }}" :{ key:{id:.id, private_key:.private_key, name:.name} }} ' /tmp/key_output.json
   register: key
 

@@ -11,23 +11,38 @@
       ansible_python_interpreter: /usr/bin/python3
 
   tasks:
-    - local_action: copy content={{ images }} dest=/tmp/images.json
-    - local_action: copy content={{ selected_flavors }} dest=/tmp/selected_flavors.json
-    - local_action: copy content={{ networks }} dest=/tmp/networks.json
-    - local_action: copy content={{ ssh_keys }} dest=/tmp/ssh_keys.json
 
-#    - include_tasks: 2.9/vm.yaml
-#      vars:
-#        state: present
-#        name: "{{ item.key }}"
-#        image: "{{ image_id }}"
-#        key_name: "{{ key_name }}"
-#        flavor: "{{ flavor_id }}"
-#        network: "{{ network_id }}"
-#        access_token: "{{ access_token }}"
-#        protocol: openid
-#        instance_name: "{{ item.key }}"
-#      loop: "{{ hostvars['localhost']['instances'] | dict2items }}"
+    - local_action: copy content={{ item.value }} dest=/tmp/{{ item.name }}.json
+      with_items:
+        - { name: images, value: "{{ images }}" }
+        - { name: selected_flavors, value: "{{ selected_flavors }}" }
+        - { name: networks, value: "{{ networks }}" }
+        - { name: ssh_keys, value: "{{ ssh_keys }}" }
 
-#    - debug:
-#        var: os_server_output
+    - shell: jq -s '.[0] * .[1]' /tmp/images.json /tmp/networks.json > /tmp/images_networks.json
+
+    - shell: jq -s '.[0] * .[1]' /tmp/images_networks.json /tmp/ssh_keys.json > /tmp/images_networks_ssh_keys.json
+
+    - shell: jq -s '.[0] * .[1]' /tmp/images_networks_ssh_keys.json  /tmp/selected_flavors.json > /tmp/vms.json
+
+
+    - include_vars:
+        file: /tmp/vms.json
+        name: vms
+
+    - include_tasks: 2.9/vm.yaml
+      vars:
+        state: present
+        name: "{{ item.key }}"
+        image: "{{ item.value['image_id'] }}"
+        key_name: "{{ item.value['key']['name'] }}"
+        flavor: "{{ item.value['flavor_id'] }}"
+        network: "{{ item.value['network_id'] }}"
+        access_token: "{{ access_token }}"
+        protocol: openid
+        instance_name: "{{ item.key }}"
+        auth_url: "{{ auth_url }}"
+      loop: "{{ vms | dict2items }}"
+
+    - debug:
+        var: os_server_output

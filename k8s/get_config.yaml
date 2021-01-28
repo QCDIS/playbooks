@@ -9,11 +9,8 @@
 
     - pip:
         name:
-            - openshift==0.11.0
-            - kubernetes==11.0.0
-
-    - community.kubernetes.k8s_cluster_info:
-        register: api_status
+          - openshift==0.11.0
+          - kubernetes==11.0.0
 
     - debug:
-        var: api_status
+        var: "{{lookup('file', '~/.kube/config') }}"

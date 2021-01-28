@@ -13,7 +13,7 @@
           - kubernetes==11.0.0
 
 
-    - shell: echo ${HOME}
+    - shell: ls -lah ${HOME}
       register: out
 
     - debug:

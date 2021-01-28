@@ -12,5 +12,4 @@
           - openshift==0.11.0
           - kubernetes==11.0.0
 
-    - debug:
-        var: "{{lookup('file', '/home/vm_user/.kube/config') }}"
+    - shell: ls ~/

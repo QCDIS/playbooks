@@ -5,29 +5,24 @@
     k8s_state: present
     k8s_namespace: kubernetes-dashboard
     k8s_dashboard_installed: lookup('env', 'k8s_dashboard_installed') 
-  tasks:   
-
-    - pip:
-        name:
-            - openshift==0.11.0
-            - kubernetes==11.0.0
+  tasks:
 
     - file:
-      path: /tmp/metrics_server
-      state: directory
+        path: /tmp/metrics_server
+        state: directory
 
     - get_url:
         url: https://raw.githubusercontent.com/QCDIS/DevOpsTutorial/winter-school-21/K8s/metrics_server/"{{item}}"
         dest: /tmp/metrics_server/"{{item}}"
-    with_items:
-      - aggregated-metrics-reader.yaml
-      - auth-delegator.yaml
-      - auth-reader.yaml
-      - metrics-apiservice.yaml
-      - metrics-server-deployment.yaml
-      - metrics-server-service.yaml
-      - resource-reader.yaml
+      with_items:
+        - aggregated-metrics-reader.yaml
+        - auth-delegator.yaml
+        - auth-reader.yaml
+        - metrics-apiservice.yaml
+        - metrics-server-deployment.yaml
+        - metrics-server-service.yaml
+        - resource-reader.yaml
 
       - k8s:
-        state: "{{k8s_state}}"
-        src: /tmp/k8s_dashboard.yaml
+          state: "{{k8s_state}}"
+          src: /tmp/k8s_dashboard.yaml

@@ -25,4 +25,4 @@
 
     - k8s:
         state: "{{k8s_state}}"
-        src: /tmp/k8s_dashboard.yaml
+        src: /tmp/metrics_server

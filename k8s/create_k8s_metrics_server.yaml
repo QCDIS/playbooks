@@ -12,8 +12,8 @@
         state: directory
 
     - get_url:
-        url: https://raw.githubusercontent.com/QCDIS/DevOpsTutorial/winter-school-21/K8s/metrics_server/"{{item}}"
-        dest: /tmp/metrics_server/"{{item}}"
+        url: https://raw.githubusercontent.com/QCDIS/DevOpsTutorial/winter-school-21/K8s/metrics_server/{{item}}
+        dest: /tmp/metrics_server/{{item}}
       with_items:
         - aggregated-metrics-reader.yaml
         - auth-delegator.yaml

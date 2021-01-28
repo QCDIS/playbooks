@@ -17,11 +17,11 @@
     - name: Prune everything from shell
       shell: docker system prune --all -f
 
-    - name: Prune everything from shell
-      shell: docker container prune
+    - name: container prune
+      shell: docker container prune -f
         
-    - name: Prune everything from shell
-      shell: docker volume prune
+    - name: volume prune
+      shell: docker volume prune -f
 
     - name: list images
       shell: "docker images"

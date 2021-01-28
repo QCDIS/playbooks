@@ -23,6 +23,6 @@
         - metrics-server-service.yaml
         - resource-reader.yaml
 
-      - k8s:
-          state: "{{k8s_state}}"
-          src: /tmp/k8s_dashboard.yaml
+    - k8s:
+        state: "{{k8s_state}}"
+        src: /tmp/k8s_dashboard.yaml

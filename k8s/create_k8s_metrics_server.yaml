@@ -30,4 +30,12 @@
 
     - k8s:
         state: "{{k8s_state}}"
-        src: /tmp/metrics_server
+        src: /tmp/metrics_server/{{item}}
+      with_items:
+        - aggregated-metrics-reader.yaml
+        - auth-delegator.yaml
+        - auth-reader.yaml
+        - metrics-apiservice.yaml
+        - metrics-server-deployment.yaml
+        - metrics-server-service.yaml
+        - resource-reader.yaml

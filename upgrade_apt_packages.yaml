@@ -21,6 +21,9 @@
       
     - name: update via shell
       shell: apt -y update && apt -y upgrade
+
+    - name: autoclean
+      shell: apt -y autoclean && apt -y autoremove
             
     - name: Update and upgrade apt packages
       apt:

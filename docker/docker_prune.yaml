@@ -16,8 +16,13 @@
         
     - name: Prune everything from shell
       shell: docker system prune --all -f
+
+    - name: Prune everything from shell
+      shell: docker container prune
         
-        
+    - name: Prune everything from shell
+      shell: docker volume prune
+
     - name: list images
       shell: "docker images"
       register: images

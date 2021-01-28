@@ -12,9 +12,5 @@
           - openshift==0.11.0
           - kubernetes==11.0.0
 
-    - shell: ls ~/
-      register: out
-
-
     - debug:
-        var: out
+        var: ansible_env.HOME

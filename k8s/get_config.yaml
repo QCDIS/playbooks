@@ -13,4 +13,4 @@
           - kubernetes==11.0.0
 
     - debug:
-        var: "{{lookup('file', '~/.kube/config') }}"
+        var: "{{lookup('file', '/home/vm_user/.kube/config') }}"

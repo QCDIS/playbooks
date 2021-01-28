@@ -13,3 +13,8 @@
           - kubernetes==11.0.0
 
     - shell: ls ~/
+      register: out
+
+
+    - debug:
+        var: out

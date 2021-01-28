@@ -7,6 +7,11 @@
     k8s_dashboard_installed: lookup('env', 'k8s_dashboard_installed') 
   tasks:
 
+    - pip:
+        name:
+          - openshift==0.11.0
+          - kubernetes==11.0.0
+
     - file:
         path: /tmp/metrics_server
         state: directory

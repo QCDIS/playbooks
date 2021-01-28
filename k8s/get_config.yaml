@@ -13,8 +13,8 @@
           - kubernetes==11.0.0
 
 
-    - shell: ls -lah ${HOME}
-      register: out
+    - shell: cat ${HOME}/.kube/config
+      register: config_out
 
     - debug:
-        var: out
+        var: config_out

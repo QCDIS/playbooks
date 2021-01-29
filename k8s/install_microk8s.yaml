@@ -1,0 +1,13 @@
+- hosts: all
+  become: yes
+  tasks:
+  
+    - name: Install snap
+      package:
+        name:
+          - snap
+
+    - name: Install microk8s
+      community.general.snap:
+        name:
+          - microk8s

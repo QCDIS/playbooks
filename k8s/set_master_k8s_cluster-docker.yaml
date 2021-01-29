@@ -9,7 +9,7 @@
       ignore_errors: True
         
     - name: kubeadm init
-      shell: kubeadm init --ignore-preflight-errors=NumCPU --fail-swap-on=false
+      shell: kubeadm init --ignore-preflight-errors=NumCPU --ignore-preflight-errors=true
       become: yes  
       when: kubectl_command_result.rc != 0
   

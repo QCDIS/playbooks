@@ -22,8 +22,10 @@ metadata:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: admin-user
-  namespace: kube-system
+  labels:
+    k8s-app: kubernetes-dashboard
+  name: kubernetes-dashboard
+  namespace: kubernetes-dashboard
 
 ---
 
@@ -117,9 +119,6 @@ rules:
     resources: ["services/proxy"]
     resourceNames: ["heapster", "http:heapster:", "https:heapster:", "dashboard-metrics-scraper", "http:dashboard-metrics-scraper"]
     verbs: ["get"]
-  - apiGroups: ["", "extensions", "apps"]
-    resources: ["deployments", "replicasets", "pods", "services"]
-    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
 
 ---
 
@@ -158,15 +157,15 @@ subjects:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: admin-user
+  name: kubernetes-dashboard
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: cluster-admin
+  name: kubernetes-dashboard
 subjects:
-- kind: ServiceAccount
-  name: admin-user
-  namespace: kube-system
+  - kind: ServiceAccount
+    name: kubernetes-dashboard
+    namespace: kubernetes-dashboard
 
 ---
 
@@ -190,7 +189,7 @@ spec:
     spec:
       containers:
         - name: kubernetes-dashboard
-          image: kubernetesui/dashboard:v2.1.0
+          image: kubernetesui/dashboard:v2.0.0
           imagePullPolicy: Always
           ports:
             - containerPort: 8443
@@ -249,6 +248,7 @@ spec:
       targetPort: 8000
   selector:
     k8s-app: dashboard-metrics-scraper
+
 ---
 
 kind: Deployment
@@ -273,7 +273,7 @@ spec:
     spec:
       containers:
         - name: dashboard-metrics-scraper
-          image: kubernetesui/metrics-scraper:v1.0.6
+          image: kubernetesui/metrics-scraper:v1.0.4
           ports:
             - containerPort: 8000
               protocol: TCP

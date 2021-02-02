@@ -20,10 +20,7 @@
 
 
 
-    - name: Create k8s_dashboard
-      k8s:
-        state: absent
-        src: /tmp/k8s_dashboard.yaml
+    - shell: kubectl delete ns kubernetes-dashboard
       ignore_errors: yes
 
     - name: Create k8s_dashboard

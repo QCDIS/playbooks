@@ -19,6 +19,13 @@
         dest: /tmp/k8s_dashboard.yaml         
 
 
+
+    - name: Create k8s_dashboard
+      k8s:
+        state: absent
+        src: /tmp/k8s_dashboard.yaml
+      ignore_errors: yes
+
     - name: Create k8s_dashboard
       k8s:
         state: "{{k8s_state}}"

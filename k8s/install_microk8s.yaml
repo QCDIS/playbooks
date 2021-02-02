@@ -1,0 +1,16 @@
+- hosts: all
+  become: yes
+  tasks:
+  
+    - name: Upgrade all apt packages
+        apt: upgrade=dist force_apt_get=yes 
+      
+    - name: Install snap
+      package:
+        name:
+          - snap
+
+    - name: Install microk8s
+      community.general.snap:
+        name:
+          - microk8s

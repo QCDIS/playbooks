@@ -119,7 +119,9 @@ rules:
     resources: ["services/proxy"]
     resourceNames: ["heapster", "http:heapster:", "https:heapster:", "dashboard-metrics-scraper", "http:dashboard-metrics-scraper"]
     verbs: ["get"]
-
+  - apiGroups: ["", "extensions", "apps"]
+    resources: ["deployments", "replicasets", "pods", "services"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
 ---
 
 kind: ClusterRole
@@ -190,7 +192,7 @@ spec:
     spec:
       containers:
         - name: kubernetes-dashboard
-          image: kubernetesui/dashboard:v2.0.0-beta4
+          image: kubernetesui/dashboard:v2.1.0
           imagePullPolicy: Always
           ports:
             - containerPort: 8443
@@ -222,6 +224,8 @@ spec:
         - name: tmp-volume
           emptyDir: {}
       serviceAccountName: kubernetes-dashboard
+      nodeSelector:
+        "kubernetes.io/os": linux
       # Comment the following tolerations if Dashboard must not be deployed on master
       tolerations:
         - key: node-role.kubernetes.io/master
@@ -262,10 +266,12 @@ spec:
     metadata:
       labels:
         k8s-app: dashboard-metrics-scraper
+        annotations:
+          seccomp.security.alpha.kubernetes.io/pod: 'runtime/default'
     spec:
       containers:
         - name: dashboard-metrics-scraper
-          image: kubernetesui/metrics-scraper:v1.0.1
+          image: kubernetesui/metrics-scraper:v1.0.6
           ports:
             - containerPort: 8000
               protocol: TCP
@@ -280,6 +286,8 @@ spec:
           - mountPath: /tmp
             name: tmp-volume
       serviceAccountName: kubernetes-dashboard
+      nodeSelector:
+        "kubernetes.io/os": linux
       # Comment the following tolerations if Dashboard must not be deployed on master
       tolerations:
         - key: node-role.kubernetes.io/master

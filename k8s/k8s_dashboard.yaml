@@ -18,15 +18,11 @@ metadata:
   name: kubernetes-dashboard
 
 ---
-
-apiVersion: v1
+ apiVersion: v1
 kind: ServiceAccount
 metadata:
-  labels:
-    k8s-app: kubernetes-dashboard
-  name: kubernetes-dashboard
+  name: admin-user
   namespace: kubernetes-dashboard
-
 ---
 
 kind: Service
@@ -153,20 +149,18 @@ subjects:
     namespace: kubernetes-dashboard
 
 ---
-
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: kubernetes-dashboard
+  name: admin-user
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: kubernetes-dashboard
+  name: cluster-admin
 subjects:
-  - kind: ServiceAccount
-    name: kubernetes-dashboard
-    namespace: kubernetes-dashboard
-
+- kind: ServiceAccount
+  name: admin-user
+  namespace: kubernetes-dashboard
 ---
 
 kind: Deployment

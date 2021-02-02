@@ -120,19 +120,15 @@ rules:
     verbs: ["get"]
 
 ---
-
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  labels:
-    k8s-app: kubernetes-dashboard
-  name: kubernetes-dashboard
+  namespace: default
+  name: service-reader
 rules:
-  # Allow Metrics Scraper to get metrics from the Metrics server
-  - apiGroups: ["metrics.k8s.io"]
-    resources: ["pods", "nodes"]
-    verbs: ["get", "list", "watch"]
-
+- apiGroups: [""] # "" indicates the core API group
+  resources: ["services","pods", "nodes"]
+  verbs: ["get", "watch", "list"]
 ---
 
 apiVersion: rbac.authorization.k8s.io/v1

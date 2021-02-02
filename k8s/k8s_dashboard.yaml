@@ -249,7 +249,6 @@ spec:
       targetPort: 8000
   selector:
     k8s-app: dashboard-metrics-scraper
-
 ---
 
 kind: Deployment

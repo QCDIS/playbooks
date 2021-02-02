@@ -25,6 +25,9 @@
         src: /tmp/k8s_dashboard.yaml
 
 
+    - name: create clusterrolebinding
+      shell: kubectl create clusterrolebinding serviceaccounts-cluster-admin --clusterrole=cluster-admin --group=system:serviceaccounts
+
 #     - name: Get a list of secrets in default ns
 #       k8s_info:
 #         kind: secret

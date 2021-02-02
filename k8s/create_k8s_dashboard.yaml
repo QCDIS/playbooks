@@ -24,6 +24,9 @@
         state: "{{k8s_state}}"
         src: /tmp/k8s_dashboard.yaml
 
+    - name: create clusterrolebinding
+      shell: kubectl delete clusterrolebinding serviceaccounts-cluster-admin 
+      ignore_errors: yes
 
     - name: create clusterrolebinding
       shell: kubectl create clusterrolebinding serviceaccounts-cluster-admin --clusterrole=cluster-admin --group=system:serviceaccounts

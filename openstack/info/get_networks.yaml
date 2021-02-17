@@ -11,6 +11,11 @@
       ansible_python_interpreter: /usr/bin/python3
 
   tasks:
+
+    - debug:
+        var: item.key
+      loop: "{{ hostvars['localhost']['instances'] | dict2items }}"
+
     - include_tasks: get_network.yaml
       vars:
         project_id: "{{ hostvars['localhost']['project_id'] }}"

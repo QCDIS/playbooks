@@ -10,10 +10,6 @@
       'os_protocol': "{{ ansible_env.OS_PROTOCOL}}"
     }
   tasks:
-    - debug:
-        var: item.value['key']['name']
-      loop: "{{ hostvars['localhost']['ssh_keys'] | dict2items }}"
-
     - include_tasks: 2.9/os_key.yaml
       vars:
         state: absent
@@ -23,7 +19,7 @@
         token_type: v3oidcaccesstoken
         identity_provider: "{{ hostvars['localhost']['identity_provider'] }}"
         protocol: openid
-        name: "{{ item['key']['name'] }}"
+        name: "{{ item.value['key']['name'] }}"
       loop: "{{ hostvars['localhost']['ssh_keys'] | dict2items }}"
 
 

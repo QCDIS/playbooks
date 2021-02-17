@@ -11,7 +11,7 @@
     }
   tasks:
     - debug:
-        var: item.key
+        var: item.value['key']['name']
       loop: "{{ hostvars['localhost']['ssh_keys'] | dict2items }}"
 
     - include_tasks: 2.9/os_key.yaml

@@ -10,6 +10,10 @@
       'os_protocol': "{{ ansible_env.OS_PROTOCOL}}"
     }
   tasks:
+    - debug:
+        var: item.key
+      loop: "{{ hostvars['localhost']['ssh_keys'] | dict2items }}"
+
     - include_tasks: 2.9/os_key.yaml
       vars:
         state: absent

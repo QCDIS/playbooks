@@ -2,10 +2,10 @@
     state: "{{ state }}"
     name: "{{ name }}"
   environment:
-    OS_AUTH_URL: "{{ hostvars['localhost']['auth_url'] }}"
+    OS_AUTH_URL: "{{ auth_url }}"
     OS_ACCESS_TOKEN: "{{ access_token }}"
-    OS_PROJECT_ID: "{{ hostvars['localhost']['project_id'] }}"
+    OS_PROJECT_ID: "{{ project_id }}"
     OS_AUTH_TYPE: v3oidcaccesstoken
-    OS_IDENTITY_PROVIDER: "{{ hostvars['localhost']['identity_provider'] }}"
+    OS_IDENTITY_PROVIDER: "{{ identity_provider }}"
     OS_PROTOCOL: openid
   register: key_output

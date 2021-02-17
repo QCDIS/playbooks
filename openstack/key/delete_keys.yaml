@@ -10,19 +10,23 @@
       'os_protocol': "{{ ansible_env.OS_PROTOCOL}}"
     }
   tasks:
-    - set_fact:
-        random_key_name: "{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=8') }}"
-
-    - import_tasks: 2.9/os_key.yaml
+    - include_tasks: 2.9/os_key.yaml
       vars:
-        state: present
         project_id: "{{ hostvars['localhost']['project_id'] }}"
         auth_url: "{{ hostvars['localhost']['auth_url'] }}"
         access_token: "{{ access_token }}"
         token_type: v3oidcaccesstoken
         identity_provider: "{{ hostvars['localhost']['identity_provider'] }}"
         protocol: openid
+        name: "{{ item['key']['name'] }}"
+      loop: "{{ hostvars['localhost']['instances'] | dict2items }}"
+
+
+    - import_tasks: 2.9/os_key.yaml
+      vars:
+        state: absent
         name: "sdia_{{ random_key_name }}"
+        access_token: "{{ access_token }}"
 #
 #
     - local_action: copy content={{ key_output }} dest=/tmp/key_output.json

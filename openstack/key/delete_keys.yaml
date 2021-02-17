@@ -19,7 +19,7 @@
         identity_provider: "{{ hostvars['localhost']['identity_provider'] }}"
         protocol: openid
         name: "{{ item['key']['name'] }}"
-      loop: "{{ hostvars['localhost']['instances'] | dict2items }}"
+      loop: "{{ hostvars['localhost']['ssh_keys'] | dict2items }}"
 
 
     - import_tasks: 2.9/os_key.yaml

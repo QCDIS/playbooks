@@ -31,12 +31,7 @@
         file: /tmp/refresh_token_responce_{{hostvars['localhost']['credentials'][0]['user']}}.json
         name: refresh_token_cache
       when: stat_result.stat.exists
-      
 
-    - debug:
-        var: hostvars['localhost']['credentials'][0]['token'] | b64decode
-      when: not stat_result.stat.exists
-      
 
     - uri:
         url: "{{hostvars['localhost']['credentials'][0]['auth_url']}}"

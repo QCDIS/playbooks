@@ -12,6 +12,7 @@
   tasks:
     - include_tasks: 2.9/os_key.yaml
       vars:
+        state: absent
         project_id: "{{ hostvars['localhost']['project_id'] }}"
         auth_url: "{{ hostvars['localhost']['auth_url'] }}"
         access_token: "{{ access_token }}"

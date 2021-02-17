@@ -30,11 +30,6 @@
         file: /tmp/vms.json
         name: vms
 
-
-
-    - debug:
-        var: auth_url
-
     - include_tasks: 2.9/vm.yaml
       vars:
         state: present

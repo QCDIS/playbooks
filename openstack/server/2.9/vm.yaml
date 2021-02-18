@@ -1,3 +1,11 @@
+- stat:
+    path: /tmp/os_server_output{{ project_id }}.json
+  register: stat_result
+
+- file:
+    path: /tmp/os_server_output{{ project_id }}.json
+    state: absent
+  when: stat_result.stat.exists
 
 - os_server:
     state: "{{ state }}"
@@ -16,8 +24,12 @@
     OS_PROTOCOL: "{{ protocol }}"
   register: os_server_output
 
+- local_action: copy content={{ os_server_output }} dest=/tmp/os_server_output{{ project_id }}.json
+
+- shell: jq '.openstack | {"compute":{"accessIPv4"}}' /tmp/os_server_output{{ project_id }}.json
+  register: vm_ip
 
 - set_stats:
     data:
-      vm: "{{ os_server_output }}"
+      vm: "{{ vm_ip.stdout }}"
   register: os_server_output

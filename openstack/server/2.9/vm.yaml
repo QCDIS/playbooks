@@ -19,5 +19,5 @@
 
 - set_stats:
     data:
-      vm: "{{ os_server_output.stdout }}"
+      vm: "{{ os_server_output }}"
   register: os_server_output

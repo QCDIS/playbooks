@@ -15,6 +15,11 @@
     flavor: "{{ flavor }}"
     network: "{{ network }}"
     timeout: 300
+    userdata: |
+      {%- raw -%}#!/bin/bash
+        sudo useradd -m vm_user
+        sudo usermod -a -G sudo vm_user
+      {% endraw %}
   environment:
     OS_AUTH_URL: "{{ auth_url }}"
     OS_ACCESS_TOKEN: "{{ access_token }}"

@@ -6,6 +6,7 @@
     key_name: "{{ key_name }}"
     flavor: "{{ flavor }}"
     network: "{{ network }}"
+    timeout: 300
   environment:
     OS_AUTH_URL: "{{ auth_url }}"
     OS_ACCESS_TOKEN: "{{ access_token }}"

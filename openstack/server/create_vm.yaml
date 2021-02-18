@@ -42,6 +42,3 @@
         protocol: openid
         instance_name: "{{ item.key }}"
       loop: "{{ vms | dict2items }}"
-
-    - debug:
-        var: os_server_output

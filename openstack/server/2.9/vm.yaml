@@ -16,6 +16,7 @@
   register: os_server_output
 
 
-
-- debug:
-    var: os_server_output
+- set_stats:
+    data:
+      vm: "{{ os_server_output.stdout }}"
+  register: os_server_output

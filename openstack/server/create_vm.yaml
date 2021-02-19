@@ -35,10 +35,11 @@
         state: present
         name: "{{ item.key }}"
         image: "{{ item.value['image_id'] }}"
-        key_name: "{{ item.value['key']['name'] }}"
+        key_name: "{{ item.value['attributes']['user_key_pair']['keys']['name'] }}"
         flavor: "{{ item.value['flavor_id'] }}"
         network: "{{ item.value['network_id'] }}"
         access_token: "{{ access_token }}"
         protocol: openid
         instance_name: "{{ item.key }}"
+        username: vm_user
       loop: "{{ vms | dict2items }}"

@@ -1,6 +1,6 @@
 
 
-- shell: jq -r '.key | { "{{ item.key }}" :{ key:{id:.id, private_key:.private_key, name:.name} }} ' /tmp/key_output.json
+- shell: jq -r '.key | { "{{ item.key }}":{ attributes:{ user_key_pair:{ protocol:"ssh",keys:{id:.id, private_key:.private_key, name:.name} }}}}' /tmp/key_output.json
   register: key
 
 

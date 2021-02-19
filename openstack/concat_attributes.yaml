@@ -15,6 +15,6 @@
         file: /tmp/attributes.json
         name: attributes
 
-  - set_stats:
-      data: "{{ attributes }}"
-    register: attributes
+    - set_stats:
+        data: "{{ attributes }}"
+      register: attributes

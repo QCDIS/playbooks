@@ -31,7 +31,7 @@
 
 - local_action: copy content={{ os_server_output }} dest=/tmp/os_server_output{{ project_id }}.json
 
-- shell: jq '.openstack | {"{{ name }}":{"accessIPv4"}}' /tmp/os_server_output{{ project_id }}.json
+- shell: jq '.openstack | {"{{ name }}":{attributes:{public_ip:.accessIPv4 }}}' /tmp/os_server_output{{ project_id }}.json
   register: vm_ip
 
 - set_stats:

@@ -7,7 +7,7 @@
     - local_action: copy content={{ item.value }} dest=/tmp/{{ item.name }}.json
       with_items:
         - { name: ssh_keys, value: "{{ ssh_keys }}" }
-        - { name: os_server_output, value: "{{ os_server_output }}" }
+        - { name: vm, value: "{{ vm }}" }
 
     - shell: jq -s '.[0] * .[1]' /tmp/ssh_keys.json  /tmp/os_server_output.json > /tmp/attributes.json
 

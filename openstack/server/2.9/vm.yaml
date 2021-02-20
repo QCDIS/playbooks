@@ -17,8 +17,9 @@
     timeout: 300
     userdata: |
       {%- raw -%}#!/bin/bash
-        sudo useradd -m vm_user
-        sudo usermod -a -G sudo vm_user
+        sudo usermod -l vm_user $USER
+        sudo usermod -d /home/vm_user -m vm_user
+        sudo groupmod -n haversham $USER
       {% endraw %}
   environment:
     OS_AUTH_URL: "{{ auth_url }}"

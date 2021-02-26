@@ -1,9 +1,6 @@
 
-- shell: jq .key.private_key /tmp/key_output.json | base64
+- shell: jq '.key.private_key| gsub("[\\n\\t]"; "")' /tmp/key_output.json | base64 |tr -d '\n'
   register: private_key_base64
-
-- debug:
-    var: private_key_base64.stdout
 
 - shell: jq -r '.key | { "{{ item.key }}":{ attributes:{ user_key_pair:{ protocol:"ssh",keys:{id:.id, private_key:"{{private_key_base64.stdout}}", name:.name} }}}}' /tmp/key_output.json
   register: key

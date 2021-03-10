@@ -18,15 +18,22 @@
 #    name: image_info_output_cache
 #  when: stat_result.stat.exists
 
-- azure_rm_image_info:
+- shell: "echo $AZURE_CLIENT_ID && echo $AZURE_TENANT && echo $AZURE_SECRET"
   environment:
     AZURE_CLIENT_ID: "{{ client_id }}"
     AZURE_TENANT: "{{ tenant_id }}"
     AZURE_SECRET: "{{ secret }}"
   register: image_info_output_2
 
-- debug:
-    var: image_info_output_2
+#- azure_rm_image_info:
+#  environment:
+#    AZURE_CLIENT_ID: "{{ client_id }}"
+#    AZURE_TENANT: "{{ tenant_id }}"
+#    AZURE_SECRET: "{{ secret }}"
+#  register: image_info_output_2
+
+#- debug:
+#    var: image_info_output_2
 
 #- local_action: copy content={{ image_info_output_2 }} dest=/tmp/image_info_output_{{ project_id }}.json
 #  when: "'openstack_image' in image_info_output_2 and image_info_output_2['openstack_image'] | length > 0"

@@ -16,9 +16,15 @@
     network: "{{ network }}"
     timeout: 300
     userdata: |
-      {%- raw -%}#!/bin/bash
-        sudo usermod -d /home/$USER -m -g $USER -l $USER vm_user
-        sudo usermod -aG wheel $USER
+      {%- raw -%}
+      #!/bin/bash
+      default_user=`ls /home`
+      sudo useradd -m vm_user -s /bin/bash &> out.log
+      sudo mkdir /home/vm_user/.ssh/ &>> out.log
+      sudo cp -r /home/$default_user/.ssh/ /home/vm_user/&>> out.log
+      sudo chown -R vm_user /home/vm_user/.ssh/ &>> out.log
+      sudo usermod -a -G sudo vm_user &>> out.log
+      echo "vm_user  ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/vm_user &>> out.log
       {% endraw %}
   environment:
     OS_AUTH_URL: "{{ auth_url }}"

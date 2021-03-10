@@ -9,5 +9,6 @@
         instance_name: "{{ item.key }}"
         client_id: "{{ hostvars['localhost']['user'] }}"
         tenant_id: "{{ hostvars['localhost']['extra_properties']['tenant'] }}"
+        subscription_id: "{{ hostvars['localhost']['extra_properties']['subscription_id'] }}"
         secret: "{{ hostvars['localhost']['token'] }}"
       loop: "{{ hostvars['localhost']['instances'] | dict2items }}"

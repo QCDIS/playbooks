@@ -1,0 +1,42 @@
+#- find:
+#    paths: /tmp/
+#    patterns: "image_info_output_{{ project_id }}.json"
+#    age: 10d
+#  register: older_files
+#
+#- file:
+#    path: "{{ item.path }}"
+#    state: absent
+#  with_items: "{{ older_files.files }}"
+#
+#- stat:
+#    path: /tmp/image_info_output_{{ project_id }}.json
+#  register: stat_result
+#
+#- include_vars:
+#    file: /tmp/image_info_output_{{ project_id }}.json
+#    name: image_info_output_cache
+#  when: stat_result.stat.exists
+
+- azure_rm_image_info:
+    client_id: "{{client_id}}"
+    tenant: "{{tenant_id}}"
+    secret: "{{secret}}"
+  register: image_info_output_2
+
+- debug:
+    var: image_info_output_2
+
+#- local_action: copy content={{ image_info_output_2 }} dest=/tmp/image_info_output_{{ project_id }}.json
+#  when: "'openstack_image' in image_info_output_2 and image_info_output_2['openstack_image'] | length > 0"
+#
+#- shell: jq -r '.openstack_image[] | select(.image_type == null and .properties.os_distro == "{{ os_distro | lower }}" and .properties.os_version == "{{ os_version }}" and .status == "active") | { "{{ instance_name }}":{image_id:.id}}' /tmp/image_info_output_{{ project_id }}.json
+#  register: image_id
+#
+#- set_stats:
+#    data:
+#      images: "{{ image_id.stdout }}"
+#  register: get_images_output
+#
+#- debug:
+#    var: get_images_output

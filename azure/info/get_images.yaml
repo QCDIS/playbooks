@@ -1,0 +1,14 @@
+- hosts: localhost
+  vars:
+  tasks:
+
+    - include_tasks: get_image.yaml
+      vars:
+        os_distro: "{{ item.value.os_distro }}"
+        os_version: "{{ item.value.os_version }}"
+        instance_name: "{{ item.key }}"
+        client_id: "{{ hostvars['localhost']['user'] }}"
+        tenant: "{{ hostvars['localhost']['extra_properties']['tenant'] }}"
+        secret: "{{hostvars['localhost']['user']['token']}}"
+      loop: "{{ hostvars['localhost']['instances'] | dict2items }}"
+

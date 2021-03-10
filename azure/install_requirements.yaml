@@ -9,4 +9,4 @@
       become: yes
 
     - pip:
-        name: ['setuptools_rust','msrest','azure-cli','ansible[azure]']
+        name: ['setuptools_rust','msrest','azure-cli','ansible[azure]','azure-mgmt-monitor']

@@ -9,5 +9,6 @@
       become: yes
 
     - pip:
-        name: ['setuptools_rust','msrest','azure-cli','azure-mgmt-monitor','ansible[azure]']
-        state: absent
+        name:
+          - ansible[azure]>=2.0.0
+          - msrest

@@ -4,6 +4,10 @@
 
   tasks:
 
+
+    - debug:
+        var: hostvars['localhost']
+
     - package:
         name: jq
         state: present

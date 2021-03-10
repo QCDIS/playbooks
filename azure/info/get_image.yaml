@@ -20,7 +20,6 @@
 
 - azure_rm_image_info:
   environment:
-    SUBSCRIPTION_ID: "{{ subscription_id }}"
     AZURE_CLIENT_ID: "{{ client_id }}"
     AZURE_TENANT: "{{ tenant_id }}"
     AZURE_SECRET: "{{ secret }}"

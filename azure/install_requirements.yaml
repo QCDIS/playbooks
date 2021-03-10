@@ -9,4 +9,4 @@
       become: yes
 
     - pip:
-        name: ['ansible[azure]']
+        name: ['setuptools_rust','ansible[azure]']

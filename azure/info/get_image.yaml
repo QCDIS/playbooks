@@ -18,19 +18,12 @@
 #    name: image_info_output_cache
 #  when: stat_result.stat.exists
 
-- shell: "echo $AZURE_CLIENT_ID && echo $AZURE_TENANT && echo $AZURE_SECRET"
-  environment:
-    AZURE_CLIENT_ID: "{{ client_id }}"
-    AZURE_TENANT: "{{ tenant_id }}"
-    AZURE_SECRET: "{{ secret }}"
-  register: image_info_output_2
-
-#- azure_rm_image_info:
+- azure_rm_image_info:
 #  environment:
 #    AZURE_CLIENT_ID: "{{ client_id }}"
 #    AZURE_TENANT: "{{ tenant_id }}"
 #    AZURE_SECRET: "{{ secret }}"
-#  register: image_info_output_2
+  register: image_info_output_2
 
 - debug:
     var: image_info_output_2

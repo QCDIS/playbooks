@@ -32,8 +32,8 @@
 #    AZURE_SECRET: "{{ secret }}"
 #  register: image_info_output_2
 
-#- debug:
-#    var: image_info_output_2
+- debug:
+    var: image_info_output_2
 
 #- local_action: copy content={{ image_info_output_2 }} dest=/tmp/image_info_output_{{ project_id }}.json
 #  when: "'openstack_image' in image_info_output_2 and image_info_output_2['openstack_image'] | length > 0"

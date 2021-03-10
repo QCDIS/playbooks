@@ -3,11 +3,6 @@
       ansible_python_interpreter: /usr/bin/python3
 
   tasks:
-
-
-    - debug:
-        var: hostvars['localhost']
-
     - package:
         name: jq
         state: present

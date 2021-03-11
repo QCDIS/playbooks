@@ -13,6 +13,10 @@
           - ansible[azure]>=2.0.0
           - msrest
 
+
+    - path: /var/lib/awx/.azure
+        state: directory
+
     - file:
         path: /var/lib/awx/.azure/azureProfile.json
         state: touch

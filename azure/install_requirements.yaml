@@ -13,8 +13,8 @@
           - ansible[azure]>=2.0.0
           - msrest
 
-
-    - path: /var/lib/awx/.azure
+    - file:
+        path: /var/lib/awx/.azure/
         state: directory
 
     - file:

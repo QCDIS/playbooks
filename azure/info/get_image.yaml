@@ -19,10 +19,10 @@
 #  when: stat_result.stat.exists
 
 - azure_rm_image_info:
-  environment:
-    AZURE_CLIENT_ID: "{{ client_id }}"
-    AZURE_TENANT: "{{ tenant_id }}"
-    AZURE_SECRET: "{{ secret }}"
+#  environment:
+#    AZURE_CLIENT_ID: "{{ client_id }}"
+#    AZURE_TENANT: "{{ tenant_id }}"
+#    AZURE_SECRET: "{{ secret }}"
   register: image_info_output_2
 
 - debug:

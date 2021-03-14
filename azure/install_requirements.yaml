@@ -9,9 +9,15 @@
       become: yes
 
     - pip:
+        name: pip
+        state: latest
+
+    - pip:
         name:
-          - ansible[azure]>=2.0.0
+          - ansible[azure]
           - msrest
+#          - azure-mgmt-network
+#          - azure-mgmt-compute
 
     - file:
         path: /var/lib/awx/.azure/

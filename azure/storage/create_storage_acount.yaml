@@ -1,0 +1,9 @@
+- hosts: localhost
+  vars:
+      ansible_python_interpreter: /home/alogo/Downloads/venv/bin/python
+  tasks:
+    - name: Create storage account
+      azure_rm_storageaccount:
+        resource_group: Testing
+        name: testaccount001
+        account_type: Standard_LRS

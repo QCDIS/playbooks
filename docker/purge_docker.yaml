@@ -1,0 +1,14 @@
+- hosts: all
+  become: yes
+  gather_facts: no
+  tasks:
+
+    - name: purge docker*
+      shell: apt purge docker* -y
+
+    - name: Clean files
+      file:
+        state: absent
+        path: "{{item}}"
+      with_items:
+        - /etc/apt/sources.list.d/download_docker_com_linux_ubuntu.list

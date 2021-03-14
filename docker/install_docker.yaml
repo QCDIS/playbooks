@@ -39,7 +39,6 @@
         upgrade: yes
         update_cache: yes
         autoremove: yes
-        autoremove: yes      
         
 
     - name: Add Docker Repository

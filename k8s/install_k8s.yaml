@@ -5,13 +5,36 @@
     - name: Add the Kubernetes signing key
       apt_key:
         url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
-        state: present   
+        state: present
 
     - name: Add kubernetes
       apt_repository:
         repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
-        state: present   
-        
-    - name: Update and install kubeadm
-      apt: update_cache=yes name=kubeadm state=latest            
+        state: present
+
+    - name: Install Kubernetes Packages
+      apt:
+        pkg:
+        - kubeadm
+        - kubelet
+        - kubectl
+        - kubernetes-cni
+
+#    - name: open api ports
+#      ansible.posix.firewalld:
+#        port: 8080/tcp
+#        permanent: yes
+#        state: enabled
+#
+#    - name: open api ports
+#      ansible.posix.firewalld:
+#        port: 6443/tcp
+#        permanent: yes
+#        state: enabled
+#
+#    - name: open  Nodeport
+#      ansible.posix.firewalld:
+#        port: 30000-32767/tcp
+#        permanent: yes
+#        state: enabled
 

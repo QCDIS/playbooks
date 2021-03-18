@@ -2,66 +2,93 @@
   become: yes
   gather_facts: no
   tasks:
-  
-  
     - name: Wait for automatic system updates
       shell: while sudo fuser /var/lib/dpkg/{{ item }} >/dev/null 2>&1; do sleep 3; done;
       with_items:
         - lock
-        - lock-frontend  
-  
+        - lock-frontend
+
     - name: Check that the /dev/xvdh exists
       stat:
         path: /dev/xvdh
       register: mount_volume
-      
+#
     - name: Update
       apt:
         update_cache: yes
       register: update_result
-      ignore_errors: True        
-      
+      ignore_errors: True
+
     - name: Update from shell
       shell: apt update
-      when: update_result.failed == True 
-      
-      
-    - name: Install gnupg2
-      apt: update_cache=yes name=gnupg2 state=latest            
-      
+      when: update_result.failed == True
+
+    - name: Install a list of packages
+      apt:
+        pkg:
+        - docker
+        - docker-engine
+        - docker.io
+        - containerd
+        - runc
+        state: absent
+
+    - name: Update
+      apt:
+        update_cache: yes
+
+
+    - name: remove old
+      apt:
+        pkg:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - gnupg
+        - lsb-release
+        state: present
+
     - name: Add Docker GPG apt Key
       apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
-        state: present   
-        
+        state: present
+
     - name: Update and upgrade2
       apt:
         upgrade: yes
         update_cache: yes
         autoremove: yes
-        
+
+    - shell: "echo $(lsb_release -cs)"
+      register: dist
 
     - name: Add Docker Repository
       apt_repository:
-        repo: deb https://download.docker.com/linux/ubuntu bionic stable
-        state: present        
-           
+        repo: deb https://download.docker.com/linux/ubuntu "{{ dist.stdout }}" stable
+        state: present
 
     - name: Update and upgrade
       apt:
-        update_cache: yes       
-        
-    - name: Update and install docker-ce
-      apt: update_cache=yes name=docker-ce state=latest              
-      
+        update_cache: yes
+
+
+    - shell: "sudo dpkg --configure -a"
+
+    - name: Install docker
+      apt:
+        pkg:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+
     - name: Change data-root location in /etc/docker/daemon.json if mount exists
       shell: |
         echo '{"data-root": "/data"}' > /etc/docker/daemon.json
       when: mount_volume.stat.exists == True
-      
+
     - name: Restart service docker, in all cases
       service:
         name: docker
-        state: restarted     
+        state: restarted
       ignore_errors: yes
-      when: mount_volume.stat.exists == True  
+      when: mount_volume.stat.exists == True

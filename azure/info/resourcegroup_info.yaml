@@ -1,0 +1,12 @@
+- hosts: localhost
+  vars:
+  tasks:
+
+    - name: Get facts for all resource groups
+      azure_rm_resourcegroup_info:
+      register: resourcegroup_info
+
+
+    - debug:
+        var: resourcegroup_info
+

@@ -9,7 +9,7 @@
         location: "{{hostvars['localhost']['domain']}}"
         tags:
           creator: sdia
-        register: resourcegroup_output
+      register: resourcegroup_output
 
 
     - debug:

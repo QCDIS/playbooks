@@ -7,12 +7,12 @@
 
 
     - include_tasks: get_image.yaml
-      vars:
-        os_distro: "{{ item.value.os_distro }}"
-        os_version: "{{ item.value.os_version }}"
-        instance_name: "{{ item.key }}"
+#      vars:
+#        os_distro: "{{ item.value.os_distro }}"
+#        os_version: "{{ item.value.os_version }}"
+#        instance_name: "{{ item.key }}"
 #        client_id: "{{ hostvars['localhost']['user'] }}"
 #        tenant_id: "{{ hostvars['localhost']['extra_properties']['tenant'] }}"
 #        subscription_id: "{{ hostvars['localhost']['extra_properties']['subscription_id'] }}"
 #        secret: "{{ hostvars['localhost']['token'] }}"
-      loop: "{{ hostvars['localhost']['instances'] | dict2items }}"
+#      loop: "{{ hostvars['localhost']['instances'] | dict2items }}"

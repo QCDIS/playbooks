@@ -16,7 +16,7 @@
         name:
           - ansible[azure]
           - msrest
-#          - azure-mgmt-network
+          - ansible-tower-cli
 #          - azure-mgmt-compute
 
 

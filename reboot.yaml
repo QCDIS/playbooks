@@ -1,0 +1,8 @@
+---
+- hosts: all
+  tasks:
+    - name: Reboot the machine (Wait for 5 min)
+      become: yes
+      reboot:
+        reboot_timeout: 300
+

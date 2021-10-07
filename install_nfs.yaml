@@ -53,13 +53,9 @@
     - name: Add a line exports
       lineinfile:
         path: /etc/exports
-        line: /mnt/kubedata/ 145.100.128.0/21(rw,sync,no_subtree_check,no_root_squash,no_all_squash,insecure)
-        
-    - name: Add a line exports
-      lineinfile:
-        path: /etc/exports
-        line: /mnt/kubedata/ 145.146.100.0/24(rw,sync,no_subtree_check,no_root_squash,no_all_squash,insecure)
-        
+        line: "/mnt/kubedata/ {{ item }} (rw,sync,no_subtree_check,no_root_squash,no_all_squash,insecure)"
+      with_itmes: "{{ node_ips }}"
+                
     - name: exportfs
       shell: exportfs -rav
  

@@ -18,10 +18,6 @@
       raw: apt -y update && apt install -y python-minimal
       when: check_python.rc != 0    
       
-    #- pip:
-        #name:
-            #- openshift==0.11.0
-            #- kubernetes==11.0.0      
       
     - name: Update and upgrade apt packages
       apt:
